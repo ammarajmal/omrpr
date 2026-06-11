@@ -1,0 +1,8 @@
+results/
+data/WTT/
+data/static_bags/
+data/context_data/
+__pycache__/
+*.pyc
+.env
+*.egg-info/
