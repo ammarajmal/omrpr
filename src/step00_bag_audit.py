@@ -31,14 +31,17 @@ def audit_bag(bag_path: Path) -> dict:
     topic_msgtypes = {}
 
     with Reader(bag_path) as reader:
-        # --- FILL THIS IN ---
-        # 1. Find bag_start_ns: the minimum timestamp across ALL messages
-        # 2. For each message, record its normalized timestamp under its topic
-        # 3. Record the msgtype for each topic
-        # Hint: iterate with:
-        #   for connection, timestamp, rawdata in reader.messages():
-        # Remember: t_normalized = (timestamp - bag_start_ns) / 1e9
-        pass
+        for connection, timestamp, _ in reader.messages():
+            topic_timestamps[connection.topic].append(timestamp)
+            topic_msgtypes[connection.topic] = connection.msgtype
+
+    bag_start_ns = min(ts[0] for ts in topic_timestamps.values())
+    for topic in topic_timestamps:
+        topic_timestamps[topic] = [
+            (t - bag_start_ns) / 1e9 for t in topic_timestamps[topic]
+        ]
+
+
 
     # Build per-topic stats
     stats = {"bag": bag_path.name, "topics": {}}
@@ -72,7 +75,15 @@ def compute_acceptance(stats: dict) -> str:
     # PASS: all image topics FPS in 59-61 Hz AND max_gap_s <= 0.1
     # WARN: FPS 55-59 or 61-65 OR one gap 0.1-0.5
     # FAIL: any image topic FPS < 55 OR any gap > 0.5
-    pass
+    result = "PASS"
+    for topic, t in stats["topics"].items():
+        if "image" not in topic and "compressed" not in topic:
+            continue
+        if t["fps"] < 55 or t["max_gap_s"] > 0.5:
+            return "FAIL"
+        if (55 <= t["fps"] < 59) or (61 < t["fps"] <= 65) or (0.1 < t["max_gap_s"] <= 0.5):
+            result = "WARN"
+    return result
 
 
 def print_report(stats: dict, acceptance: str):
@@ -97,7 +108,13 @@ def save_json(stats: dict, acceptance: str, bag_path: Path):
     # Save to: results/step00/<bag_stem>_audit.json
     # Include acceptance in the saved dict
     # Hint: use Path.mkdir(parents=True, exist_ok=True) to create the folder
-    pass
+    output_dir = Path("results/step00")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_path = output_dir / f"{bag_path.stem}_audit.json"
+    stats["acceptance"] = acceptance
+    with open(output_path, "w") as f:
+        json.dump(stats, f, indent=4)
+
 
 
 def main():
