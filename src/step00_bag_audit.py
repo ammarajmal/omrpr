@@ -35,7 +35,7 @@ def audit_bag(bag_path: Path) -> dict:
             topic_timestamps[connection.topic].append(timestamp)
             topic_msgtypes[connection.topic] = connection.msgtype
 
-    bag_start_ns = min(ts[0] for ts in topic_timestamps.values())
+    bag_start_ns = min(min(ts) for ts in topic_timestamps.values())
     for topic in topic_timestamps:
         topic_timestamps[topic] = [
             (t - bag_start_ns) / 1e9 for t in topic_timestamps[topic]
