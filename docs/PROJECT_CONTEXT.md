@@ -1,14 +1,10 @@
-# PhD Paper 2 — OMRPR Supervisor: Complete Project Briefing
-
-**For:** Claude Project "OMRPR Supervisor — Clean Start"
+# OMRPR — Project Context and Design Rationale
 **Prepared by:** Ammar Ajmal (PhD Researcher)
 **Date:** 2026-06-16
-**Purpose:** Feed this document as the initial context so the supervisor can guide a clean,
-defensible, end-to-end re-implementation of the Paper 2 data pipeline from raw ROS bag files.
+**Status:** Active
 
-> **⚠ CRITICAL: This document is the pipeline implementation guide.**
-> The authoritative Paper 2 manuscript state (confirmed numbers, resolved decisions, prose drafts)
-> lives in the separate project "PhD Paper 2 — OMRPR Writing Supervisor."
+> This document captures the experimental context, pipeline design decisions, confirmed parameter values, known pitfalls, and claim boundaries for the OMRPR offline multi-camera displacement reconstruction project.
+
 > When numbers in this document conflict with confirmed manuscript values, the manuscript project wins.
 > Key confirmed overrides are listed explicitly in Section 2.4 and Section 0 below.
 
