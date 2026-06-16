@@ -1,0 +1,28 @@
+{
+  "description": "Maps LDV D-label filenames to WTT condition labels and RPM values. LDV raw files are in centimetres (cm). Step 10 converts to mm and stores in _mm_corrected columns. LDV was recorded in Tunnel B, September 2025. WTT camera bags were recorded in Tunnel A, October 2025. Comparison is condition-level only — NOT simultaneous.",
+  "units_raw": "cm",
+  "units_converted": "mm",
+  "fs_hz": 360,
+  "conditions": [
+    {"ldv_file": "D01.csv", "wtt_condition": "e1_20rpm",  "rpm": 20},
+    {"ldv_file": "D02.csv", "wtt_condition": "e2_40rpm",  "rpm": 40},
+    {"ldv_file": "D03.csv", "wtt_condition": "e3_50rpm",  "rpm": 50},
+    {"ldv_file": "D04.csv", "wtt_condition": "e4_60rpm",  "rpm": 60,  "note": "VIV outlier — report separately"},
+    {"ldv_file": "D05.csv", "wtt_condition": "e5_70rpm",  "rpm": 70},
+    {"ldv_file": "D06.csv", "wtt_condition": "e6_80rpm",  "rpm": 80},
+    {"ldv_file": "D07.csv", "wtt_condition": "e7_90rpm",  "rpm": 90},
+    {"ldv_file": "D08.csv", "wtt_condition": "e8_100rpm", "rpm": 100},
+    {"ldv_file": "D09.csv", "wtt_condition": "e9_110rpm", "rpm": 110},
+    {"ldv_file": "D10.csv", "wtt_condition": "e10_120rpm","rpm": 120},
+    {"ldv_file": "D11.csv", "wtt_condition": "e11_140rpm","rpm": 140},
+    {"ldv_file": "D12.csv", "wtt_condition": "e12_160rpm","rpm": 160},
+    {"ldv_file": "D13.csv", "wtt_condition": "e13_180rpm","rpm": 180},
+    {"ldv_file": "D14.csv", "wtt_condition": "e14_200rpm","rpm": 200},
+    {"ldv_file": "D15.csv", "wtt_condition": "e15_220rpm","rpm": 220},
+    {"ldv_file": "D16.csv", "wtt_condition": "e16_240rpm","rpm": 240},
+    {"ldv_file": "D17.csv", "wtt_condition": "e17_260rpm","rpm": 260},
+    {"ldv_file": "D18.csv", "wtt_condition": "e18_280rpm","rpm": 280},
+    {"ldv_file": "D19.csv", "wtt_condition": "e19_300rpm","rpm": 300},
+    {"ldv_file": "D20.csv", "wtt_condition": "e20_320rpm","rpm": 320, "note": "High-wind unstable — report separately"}
+  ]
+}
