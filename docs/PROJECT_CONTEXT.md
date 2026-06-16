@@ -27,7 +27,7 @@ They override older values that appear elsewhere in this document.
 | Natural freq f_α | ~5.15 Hz | **3.103 Hz** | 6 independent sources |
 | Frequency ratio | 2.64 | **2.17** | 6 independent sources |
 | Structural damping | 0.28% | **≈ 1.9%** | 6 independent sources |
-| Max pairwise timing drift | not specified | **46.4 ms (cam2–cam3)** | Timing audit |
+| Max pairwise timing drift | not specified | **20.0 ms (cam1–cam3)** | Step 09 timing audit (clean pipeline) |
 | Camera bags tunnel | not specified | **Tunnel A, October 2025** | Bag metadata |
 | LDV reference tunnel | same as camera | **Tunnel B, September 2025** | Facility records |
 
@@ -383,7 +383,7 @@ Step 9:  Uncertainty quantification
                  torsion_diff_y_mm static RMS < 0.1 mm (target: 0.033 mm)
                  Bootstrap CI width < 20% relative for stable non-near-floor conditions
          Note:   Use moving-block bootstrap for time series (not standard bootstrap)
-                 Max pairwise timing drift to report: 46.4 ms (cam2–cam3)
+                 Max pairwise timing drift to report: 20.0 ms (cam1–cam3, Step 09 result)
 
 Step 10: LDV condition-level comparison
          Input:  Per-condition bending/torsion RMS + LDV reference (converted to mm)
@@ -746,7 +746,7 @@ Never open the next step until the current step passes all three levels.
 - Cam1–cam2 Y-axis misalignment: bounded, quantified — 0.038 mm at 5 mm amplitude (12.8% of RMSE); fixed bias, not random; stated as uncertainty contribution
 - Static noise floor: bending 0.017 mm RMS, torsion proxy 0.033 mm RMS
 - Bootstrap within-run stability: ~13–15% CI width for stable non-near-floor conditions
-- Timing mitigation: 46.4 ms max pairwise drift, software common-grid only
+- Timing mitigation: 20.0 ms max pairwise drift (cam1–cam3), software common-grid only
 - 60 RPM case: diagnosed as VIV aerodynamic intermittency, not camera failure
 - e20_320rpm: characterized as high-wind unstable motion, reported separately
 

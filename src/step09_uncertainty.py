@@ -30,7 +30,7 @@ ACCEPTANCE CRITERIA:
     Noise floor cam3 world-Y worst-case RMS < 0.10 mm (target ~0.033 mm)
     Camera agreement: 20/21 conditions aligned Z std < 15 mm
     Bootstrap CI: stable non-near-floor conditions relative width < 20%
-    Max timing drift: report honestly (confirmed 46.4 ms cam2-cam3)
+    Max timing drift: report honestly (20.0 ms cam1-cam3, from clean pipeline Step 09)
 
 LIMITATIONS:
     Static bags were not recorded simultaneously across cameras (recorded hours apart).
@@ -764,7 +764,7 @@ def run_section_d(results_dir: Path, config: dict) -> dict:
     of the nearest-neighbour timestamp difference. This is the worst-case timing
     error that the Step 05 common-grid interpolation must handle.
 
-    The 46.4 ms confirmed value (cam2-cam3) should be reproduced here.
+    Actual result (clean pipeline): 20.0 ms max pairwise drift, cam1-cam3.
     Reporting this honestly is required — a reviewer will ask for the worst case.
     """
     print("\n=== SECTION D: Timing Audit ===")
