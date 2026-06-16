@@ -1,0 +1,421 @@
+Found 21 condition(s) — processing all.
+
+=== SYNCHRONIZATION: e0_0rpm ===
+
+  cam1: 1832 frames | t=[0.008991, 30.557292]s
+  cam2: 1832 frames | t=[0.000000, 30.548124]s
+  cam3: 1833 frames | t=[0.014853, 30.548830]s
+
+  Common window: [0.014853, 30.548124]s -> 1832 frames at 60 Hz
+
+  cam1: 1832 synced frames | y_w std=0.006mm | z_w mean=1.3959m
+  cam2: 1832 synced frames | y_w std=0.006mm | z_w mean=1.7836m
+  cam3: 1832 synced frames | y_w std=0.003mm | z_w mean=1.7419m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.6 mm
+    cam1-cam3: 345.9 mm
+    cam2-cam3: 41.7 mm
+
+
+=== SYNCHRONIZATION: e10_120rpm ===
+
+  cam1: 1829 frames | t=[0.000000, 30.495296]s
+  cam2: 1828 frames | t=[0.015020, 30.493214]s
+  cam3: 1830 frames | t=[0.004510, 30.487376]s
+
+  Common window: [0.015020, 30.487376]s -> 1829 frames at 60 Hz
+
+  cam1: 1829 synced frames | y_w std=0.244mm | z_w mean=1.3959m
+  cam2: 1829 synced frames | y_w std=0.243mm | z_w mean=1.7834m
+  cam3: 1829 synced frames | y_w std=0.150mm | z_w mean=1.7407m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.5 mm
+    cam1-cam3: 344.8 mm
+    cam2-cam3: 42.6 mm
+
+
+=== SYNCHRONIZATION: e11_140rpm ===
+
+  cam1: 1832 frames | t=[0.002827, 30.547635]s
+  cam2: 1831 frames | t=[0.002643, 30.535233]s
+  cam3: 1833 frames | t=[0.000000, 30.531610]s
+
+  Common window: [0.002827, 30.531610]s -> 1832 frames at 60 Hz
+
+  cam1: 1832 synced frames | y_w std=1.416mm | z_w mean=1.3942m
+  cam2: 1832 synced frames | y_w std=1.415mm | z_w mean=1.7823m
+  cam3: 1832 synced frames | y_w std=0.182mm | z_w mean=1.7407m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 388.1 mm
+    cam1-cam3: 346.5 mm
+    cam2-cam3: 41.6 mm
+
+
+=== SYNCHRONIZATION: e12_160rpm ===
+
+  cam1: 1830 frames | t=[0.004293, 30.516182]s
+  cam2: 1830 frames | t=[0.004372, 30.520454]s
+  cam3: 1833 frames | t=[0.000000, 30.532582]s
+
+  Common window: [0.004372, 30.516182]s -> 1831 frames at 60 Hz
+
+  cam1: 1831 synced frames | y_w std=2.348mm | z_w mean=1.3924m
+  cam2: 1831 synced frames | y_w std=2.345mm | z_w mean=1.7800m
+  cam3: 1831 synced frames | y_w std=0.258mm | z_w mean=1.7405m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.6 mm
+    cam1-cam3: 348.1 mm
+    cam2-cam3: 39.5 mm
+
+
+=== SYNCHRONIZATION: e13_180rpm ===
+
+  cam1: 1828 frames | t=[0.000000, 30.478594]s
+  cam2: 1827 frames | t=[0.000683, 30.462840]s
+  cam3: 1829 frames | t=[0.006583, 30.473159]s
+
+  Common window: [0.006583, 30.462840]s -> 1828 frames at 60 Hz
+
+  cam1: 1828 synced frames | y_w std=2.766mm | z_w mean=1.3914m
+  cam2: 1828 synced frames | y_w std=2.762mm | z_w mean=1.7788m
+  cam3: 1828 synced frames | y_w std=0.366mm | z_w mean=1.7408m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.3 mm
+    cam1-cam3: 349.3 mm
+    cam2-cam3: 38.0 mm
+
+
+=== SYNCHRONIZATION: e14_200rpm ===
+
+  cam1: 1829 frames | t=[0.000000, 30.495944]s
+  cam2: 1828 frames | t=[0.000083, 30.480997]s
+  cam3: 1829 frames | t=[0.013147, 30.480761]s
+
+  Common window: [0.013147, 30.480761]s -> 1829 frames at 60 Hz
+
+  cam1: 1829 synced frames | y_w std=2.865mm | z_w mean=1.3913m
+  cam2: 1829 synced frames | y_w std=2.863mm | z_w mean=1.7785m
+  cam3: 1829 synced frames | y_w std=0.385mm | z_w mean=1.7406m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.3 mm
+    cam1-cam3: 349.3 mm
+    cam2-cam3: 38.0 mm
+
+
+=== SYNCHRONIZATION: e15_220rpm ===
+
+  cam1: 1828 frames | t=[0.000000, 30.478045]s
+  cam2: 1827 frames | t=[0.001870, 30.463926]s
+  cam3: 1829 frames | t=[0.000800, 30.466301]s
+
+  Common window: [0.001870, 30.463926]s -> 1828 frames at 60 Hz
+
+  cam1: 1828 synced frames | y_w std=2.091mm | z_w mean=1.3930m
+  cam2: 1828 synced frames | y_w std=2.085mm | z_w mean=1.7807m
+  cam3: 1828 synced frames | y_w std=0.501mm | z_w mean=1.7406m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.8 mm
+    cam1-cam3: 347.7 mm
+    cam2-cam3: 40.1 mm
+
+
+=== SYNCHRONIZATION: e16_240rpm ===
+
+  cam1: 1828 frames | t=[0.000307, 30.480303]s
+  cam2: 1827 frames | t=[0.003189, 30.466943]s
+  cam3: 1829 frames | t=[0.000000, 30.467164]s
+
+  Common window: [0.003189, 30.466943]s -> 1828 frames at 60 Hz
+
+  cam1: 1828 synced frames | y_w std=0.737mm | z_w mean=1.3960m
+  cam2: 1828 synced frames | y_w std=0.735mm | z_w mean=1.7833m
+  cam3: 1828 synced frames | y_w std=0.687mm | z_w mean=1.7408m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.3 mm
+    cam1-cam3: 344.7 mm
+    cam2-cam3: 42.5 mm
+
+
+=== SYNCHRONIZATION: e17_260rpm ===
+
+  cam1: 1832 frames | t=[0.000000, 30.547100]s
+  cam2: 1831 frames | t=[0.003787, 30.539358]s
+  cam3: 1833 frames | t=[0.000981, 30.533891]s
+
+  Common window: [0.003787, 30.533891]s -> 1832 frames at 60 Hz
+
+  cam1: 1832 synced frames | y_w std=0.850mm | z_w mean=1.3960m
+  cam2: 1832 synced frames | y_w std=0.848mm | z_w mean=1.7833m
+  cam3: 1832 synced frames | y_w std=0.825mm | z_w mean=1.7407m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.3 mm
+    cam1-cam3: 344.7 mm
+    cam2-cam3: 42.6 mm
+
+
+=== SYNCHRONIZATION: e18_280rpm ===
+
+  cam1: 1830 frames | t=[0.000000, 30.513369]s
+  cam2: 1829 frames | t=[0.005528, 30.501950]s
+  cam3: 1831 frames | t=[0.004485, 30.504037]s
+
+  Common window: [0.005528, 30.501950]s -> 1830 frames at 60 Hz
+
+  cam1: 1830 synced frames | y_w std=1.105mm | z_w mean=1.3959m
+  cam2: 1830 synced frames | y_w std=1.102mm | z_w mean=1.7833m
+  cam3: 1830 synced frames | y_w std=1.069mm | z_w mean=1.7407m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.4 mm
+    cam1-cam3: 344.8 mm
+    cam2-cam3: 42.6 mm
+
+
+=== SYNCHRONIZATION: e19_300rpm ===
+
+  cam1: 1830 frames | t=[0.002448, 30.515813]s
+  cam2: 1830 frames | t=[0.007804, 30.523101]s
+  cam3: 1833 frames | t=[0.000000, 30.531854]s
+
+  Common window: [0.007804, 30.515813]s -> 1831 frames at 60 Hz
+
+  cam1: 1831 synced frames | y_w std=1.247mm | z_w mean=1.3958m
+  cam2: 1831 synced frames | y_w std=1.245mm | z_w mean=1.7833m
+  cam3: 1831 synced frames | y_w std=1.202mm | z_w mean=1.7406m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.5 mm
+    cam1-cam3: 344.8 mm
+    cam2-cam3: 42.7 mm
+
+
+=== SYNCHRONIZATION: e1_20rpm ===
+
+  cam1: 1830 frames | t=[0.000865, 30.506382]s
+  cam2: 1830 frames | t=[0.000000, 30.513891]s
+  cam3: 1831 frames | t=[0.006577, 30.505744]s
+
+  Common window: [0.006577, 30.505744]s -> 1830 frames at 60 Hz
+
+  cam1: 1830 synced frames | y_w std=0.008mm | z_w mean=1.3959m
+  cam2: 1830 synced frames | y_w std=0.008mm | z_w mean=1.7836m
+  cam3: 1830 synced frames | y_w std=0.003mm | z_w mean=1.7420m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.7 mm
+    cam1-cam3: 346.0 mm
+    cam2-cam3: 41.6 mm
+
+
+=== SYNCHRONIZATION: e20_320rpm ===
+
+  cam1: 1112 frames | t=[0.076410, 30.423506]s
+  cam2: 1122 frames | t=[0.083881, 30.496951]s
+  cam3: 1831 frames | t=[0.012944, 30.512223]s
+
+  Common window: [0.083881, 30.423506]s -> 1821 frames at 60 Hz
+
+  cam1: 1821 synced frames | y_w std=9.869mm | z_w mean=1.3793m
+  cam2: 1821 synced frames | y_w std=9.831mm | z_w mean=1.7627m
+  cam3: 1821 synced frames | y_w std=2.194mm | z_w mean=1.7400m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 383.3 mm
+    cam1-cam3: 360.7 mm
+    cam2-cam3: 32.9 mm
+
+
+=== SYNCHRONIZATION: e2_40rpm ===
+
+  cam1: 1829 frames | t=[0.000000, 30.498678]s
+  cam2: 1828 frames | t=[0.009552, 30.490274]s
+  cam3: 1830 frames | t=[0.005888, 30.488605]s
+
+  Common window: [0.009552, 30.488605]s -> 1829 frames at 60 Hz
+
+  cam1: 1829 synced frames | y_w std=0.012mm | z_w mean=1.3959m
+  cam2: 1829 synced frames | y_w std=0.010mm | z_w mean=1.7836m
+  cam3: 1829 synced frames | y_w std=0.009mm | z_w mean=1.7424m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.7 mm
+    cam1-cam3: 346.5 mm
+    cam2-cam3: 41.1 mm
+
+
+=== SYNCHRONIZATION: e3_50rpm ===
+
+  cam1: 1830 frames | t=[0.000000, 30.514251]s
+  cam2: 1830 frames | t=[0.010009, 30.529002]s
+  cam3: 1831 frames | t=[0.020035, 30.513139]s
+
+  Common window: [0.020035, 30.513139]s -> 1830 frames at 60 Hz
+
+  cam1: 1830 synced frames | y_w std=0.025mm | z_w mean=1.3959m
+  cam2: 1830 synced frames | y_w std=0.022mm | z_w mean=1.7835m
+  cam3: 1830 synced frames | y_w std=0.023mm | z_w mean=1.7423m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.6 mm
+    cam1-cam3: 346.4 mm
+    cam2-cam3: 41.2 mm
+
+
+=== SYNCHRONIZATION: e4_60rpm ===
+
+  cam1: 1829 frames | t=[0.005332, 30.503896]s
+  cam2: 1830 frames | t=[0.000000, 30.514586]s
+  cam3: 1831 frames | t=[0.000917, 30.500388]s
+
+  Common window: [0.005332, 30.500388]s -> 1830 frames at 60 Hz
+
+  cam1: 1830 synced frames | y_w std=0.087mm | z_w mean=1.3959m
+  cam2: 1830 synced frames | y_w std=0.085mm | z_w mean=1.7835m
+  cam3: 1830 synced frames | y_w std=0.086mm | z_w mean=1.7410m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.5 mm
+    cam1-cam3: 345.0 mm
+    cam2-cam3: 42.5 mm
+
+
+=== SYNCHRONIZATION: e5_70rpm ===
+
+  cam1: 1828 frames | t=[0.000000, 30.479684]s
+  cam2: 1828 frames | t=[0.009862, 30.491136]s
+  cam3: 1829 frames | t=[0.011470, 30.478377]s
+
+  Common window: [0.011470, 30.478377]s -> 1829 frames at 60 Hz
+
+  cam1: 1829 synced frames | y_w std=3.080mm | z_w mean=1.3942m
+  cam2: 1829 synced frames | y_w std=3.073mm | z_w mean=1.7823m
+  cam3: 1829 synced frames | y_w std=3.086mm | z_w mean=1.7408m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 388.1 mm
+    cam1-cam3: 346.6 mm
+    cam2-cam3: 41.5 mm
+
+
+=== SYNCHRONIZATION: e6_80rpm ===
+
+  cam1: 1829 frames | t=[0.004590, 30.501890]s
+  cam2: 1829 frames | t=[0.000000, 30.504802]s
+  cam3: 1831 frames | t=[0.010681, 30.510022]s
+
+  Common window: [0.010681, 30.501890]s -> 1830 frames at 60 Hz
+
+  cam1: 1830 synced frames | y_w std=1.403mm | z_w mean=1.3955m
+  cam2: 1830 synced frames | y_w std=1.400mm | z_w mean=1.7833m
+  cam3: 1830 synced frames | y_w std=1.393mm | z_w mean=1.7407m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.8 mm
+    cam1-cam3: 345.2 mm
+    cam2-cam3: 42.6 mm
+
+
+=== SYNCHRONIZATION: e7_90rpm ===
+
+  cam1: 1828 frames | t=[0.000000, 30.479582]s
+  cam2: 1828 frames | t=[0.011891, 30.491664]s
+  cam3: 1830 frames | t=[0.000075, 30.482171]s
+
+  Common window: [0.011891, 30.479582]s -> 1829 frames at 60 Hz
+
+  cam1: 1829 synced frames | y_w std=1.621mm | z_w mean=1.3938m
+  cam2: 1829 synced frames | y_w std=1.618mm | z_w mean=1.7818m
+  cam3: 1829 synced frames | y_w std=0.103mm | z_w mean=1.7409m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 388.0 mm
+    cam1-cam3: 347.1 mm
+    cam2-cam3: 40.9 mm
+
+
+=== SYNCHRONIZATION: e8_100rpm ===
+
+  cam1: 1829 frames | t=[0.003317, 30.501148]s
+  cam2: 1829 frames | t=[0.000000, 30.497542]s
+  cam3: 1831 frames | t=[0.008953, 30.509051]s
+
+  Common window: [0.008953, 30.497542]s -> 1830 frames at 60 Hz
+
+  cam1: 1830 synced frames | y_w std=0.247mm | z_w mean=1.3959m
+  cam2: 1830 synced frames | y_w std=0.245mm | z_w mean=1.7834m
+  cam3: 1830 synced frames | y_w std=0.123mm | z_w mean=1.7405m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.5 mm
+    cam1-cam3: 344.6 mm
+    cam2-cam3: 42.8 mm
+
+
+=== SYNCHRONIZATION: e9_110rpm ===
+
+  cam1: 1829 frames | t=[0.008787, 30.506382]s
+  cam2: 1829 frames | t=[0.007164, 30.504429]s
+  cam3: 1831 frames | t=[0.000000, 30.498350]s
+
+  Common window: [0.008787, 30.498350]s -> 1830 frames at 60 Hz
+
+  cam1: 1830 synced frames | y_w std=0.175mm | z_w mean=1.3959m
+  cam2: 1830 synced frames | y_w std=0.174mm | z_w mean=1.7834m
+  cam3: 1830 synced frames | y_w std=0.152mm | z_w mean=1.7409m
+
+  t_s identical across all cameras (max_diff < 1e-9s)
+
+  Raw Z disagreement (before baseline alignment in Step 06):
+    cam1-cam2: 387.4 mm
+    cam1-cam3: 345.0 mm
+    cam2-cam3: 42.5 mm
+

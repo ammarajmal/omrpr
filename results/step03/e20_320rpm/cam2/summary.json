@@ -1,0 +1,18 @@
+{
+  "condition": "e20_320rpm",
+  "cam": "cam2",
+  "total_detected": 1122,
+  "low_quality_threshold": 50.0,
+  "low_quality_count": 0,
+  "quality_score": {
+    "mean": 10586.8899,
+    "min": 9030.6927,
+    "max": 11465.8488,
+    "std": 494.0488
+  },
+  "corner_sharpness": {
+    "mean": 36.5926,
+    "min": 27.1777,
+    "max": 51.2066
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "condition": "e20_320rpm",
+  "cam": "cam2",
+  "total_frames": 1829,
+  "detected_frames": 1122,
+  "missed_frames": 707,
+  "detection_rate": 0.61345,
+  "max_consecutive_miss": 6
+}

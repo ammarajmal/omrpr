@@ -1,0 +1,170 @@
+Found 21 bag(s) — processing all.
+
+
+=== FRAME EXPORT: e0_0rpm ===
+
+  cam1:  1832 frames | max_gap=0.0256s | monotonic=True | OK
+  cam2:  1832 frames | max_gap=0.0250s | monotonic=True | OK
+  cam3:  1833 frames | max_gap=0.0245s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e10_120rpm ===
+
+  cam1:  1829 frames | max_gap=0.0263s | monotonic=True | OK
+  cam2:  1828 frames | max_gap=0.0253s | monotonic=True | OK
+  cam3:  1830 frames | max_gap=0.0244s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e11_140rpm ===
+
+  cam1:  1832 frames | max_gap=0.0259s | monotonic=True | OK
+  cam2:  1831 frames | max_gap=0.0260s | monotonic=True | OK
+  cam3:  1833 frames | max_gap=0.0243s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e12_160rpm ===
+
+  cam1:  1830 frames | max_gap=0.0255s | monotonic=True | OK
+  cam2:  1830 frames | max_gap=0.0261s | monotonic=True | OK
+  cam3:  1833 frames | max_gap=0.0244s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e13_180rpm ===
+
+  cam1:  1828 frames | max_gap=0.0254s | monotonic=True | OK
+  cam2:  1827 frames | max_gap=0.0261s | monotonic=True | OK
+  cam3:  1829 frames | max_gap=0.0242s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e14_200rpm ===
+
+  cam1:  1829 frames | max_gap=0.0265s | monotonic=True | OK
+  cam2:  1828 frames | max_gap=0.0262s | monotonic=True | OK
+  cam3:  1829 frames | max_gap=0.0241s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e15_220rpm ===
+
+  cam1:  1828 frames | max_gap=0.0258s | monotonic=True | OK
+  cam2:  1827 frames | max_gap=0.0257s | monotonic=True | OK
+  cam3:  1829 frames | max_gap=0.0242s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e16_240rpm ===
+
+  cam1:  1828 frames | max_gap=0.0257s | monotonic=True | OK
+  cam2:  1827 frames | max_gap=0.0252s | monotonic=True | OK
+  cam3:  1829 frames | max_gap=0.0240s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e17_260rpm ===
+
+  cam1:  1832 frames | max_gap=0.0252s | monotonic=True | OK
+  cam2:  1831 frames | max_gap=0.0255s | monotonic=True | OK
+  cam3:  1833 frames | max_gap=0.0247s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e18_280rpm ===
+
+  cam1:  1830 frames | max_gap=0.0251s | monotonic=True | OK
+  cam2:  1829 frames | max_gap=0.0254s | monotonic=True | OK
+  cam3:  1831 frames | max_gap=0.0250s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e19_300rpm ===
+
+  cam1:  1830 frames | max_gap=0.0255s | monotonic=True | OK
+  cam2:  1830 frames | max_gap=0.0254s | monotonic=True | OK
+  cam3:  1833 frames | max_gap=0.0249s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e1_20rpm ===
+
+  cam1:  1830 frames | max_gap=0.0255s | monotonic=True | OK
+  cam2:  1830 frames | max_gap=0.0251s | monotonic=True | OK
+  cam3:  1831 frames | max_gap=0.0242s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e20_320rpm ===
+
+  cam1:  1829 frames | max_gap=0.0278s | monotonic=True | OK
+  cam2:  1829 frames | max_gap=0.0258s | monotonic=True | OK
+  cam3:  1831 frames | max_gap=0.0246s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e2_40rpm ===
+
+  cam1:  1829 frames | max_gap=0.0257s | monotonic=True | OK
+  cam2:  1828 frames | max_gap=0.0251s | monotonic=True | OK
+  cam3:  1830 frames | max_gap=0.0246s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e3_50rpm ===
+
+  cam1:  1830 frames | max_gap=0.0254s | monotonic=True | OK
+  cam2:  1830 frames | max_gap=0.0263s | monotonic=True | OK
+  cam3:  1831 frames | max_gap=0.0252s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e4_60rpm ===
+
+  cam1:  1829 frames | max_gap=0.0256s | monotonic=True | OK
+  cam2:  1830 frames | max_gap=0.0256s | monotonic=True | OK
+  cam3:  1831 frames | max_gap=0.0242s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e5_70rpm ===
+
+  cam1:  1828 frames | max_gap=0.0267s | monotonic=True | OK
+  cam2:  1828 frames | max_gap=0.0250s | monotonic=True | OK
+  cam3:  1829 frames | max_gap=0.0241s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e6_80rpm ===
+
+  cam1:  1829 frames | max_gap=0.0259s | monotonic=True | OK
+  cam2:  1829 frames | max_gap=0.0254s | monotonic=True | OK
+  cam3:  1831 frames | max_gap=0.0256s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e7_90rpm ===
+
+  cam1:  1828 frames | max_gap=0.0260s | monotonic=True | OK
+  cam2:  1828 frames | max_gap=0.0249s | monotonic=True | OK
+  cam3:  1830 frames | max_gap=0.0243s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e8_100rpm ===
+
+  cam1:  1829 frames | max_gap=0.0259s | monotonic=True | OK
+  cam2:  1829 frames | max_gap=0.0267s | monotonic=True | OK
+  cam3:  1831 frames | max_gap=0.0311s | monotonic=True | OK
+
+  ✓ All cameras PASS
+
+=== FRAME EXPORT: e9_110rpm ===
+
+  cam1:  1829 frames | max_gap=0.0249s | monotonic=True | OK
+  cam2:  1829 frames | max_gap=0.0252s | monotonic=True | OK
+  cam3:  1831 frames | max_gap=0.0241s | monotonic=True | OK
+
+  ✓ All cameras PASS

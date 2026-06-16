@@ -1,0 +1,22 @@
+{
+  "per_pair": {
+    "cam1-cam2": {
+      "max_drift_ms_across_conditions": 15.754,
+      "mean_drift_ms_across_conditions": 12.171
+    },
+    "cam1-cam3": {
+      "max_drift_ms_across_conditions": 20.035,
+      "mean_drift_ms_across_conditions": 12.399
+    },
+    "cam2-cam3": {
+      "max_drift_ms_across_conditions": 15.864,
+      "mean_drift_ms_across_conditions": 11.952
+    }
+  },
+  "overall_max_drift_ms": 20.035,
+  "note": "Max pairwise nearest-neighbour timestamp drift from Step 01 timestamps. This is NOT the synchronisation error in the fused signal \u2014 Step 05 common-grid interpolation converts timing drift into an interpolation error of O(delta_t^2), not O(delta_t). At 1.4 Hz dominant frequency, interpolation amplitude error is approximately (pi*f*delta_t)^2 * A / 2, where A is signal amplitude.",
+  "gate": {
+    "SECTION_D_PASS": true,
+    "note": "Timing audit is informational \u2014 no hard threshold. Report the number honestly in the manuscript."
+  }
+}

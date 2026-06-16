@@ -1,0 +1,15 @@
+{
+  "condition": "e11_140rpm",
+  "cam": "cam1",
+  "total_frames": 1832,
+  "reproj_err": {
+    "mean": 0.1006,
+    "max": 0.253,
+    "min": 0.0026,
+    "std": 0.0416
+  },
+  "high_reproj_count": 0,
+  "bad_reproj_count": 0,
+  "reproj_warn_thresh": 3.0,
+  "reproj_bad_thresh": 10.0
+}

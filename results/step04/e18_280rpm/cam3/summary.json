@@ -1,0 +1,15 @@
+{
+  "condition": "e18_280rpm",
+  "cam": "cam3",
+  "total_frames": 1831,
+  "reproj_err": {
+    "mean": 0.1683,
+    "max": 0.5901,
+    "min": 0.001,
+    "std": 0.0956
+  },
+  "high_reproj_count": 0,
+  "bad_reproj_count": 0,
+  "reproj_warn_thresh": 3.0,
+  "reproj_bad_thresh": 10.0
+}

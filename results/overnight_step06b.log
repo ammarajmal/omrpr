@@ -1,0 +1,652 @@
+Found 21 condition(s) — processing all.
+
+=== BASELINE ALIGNMENT: e0_0rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005588  y=-0.005472  z=+1.395945
+    cam2: x=-0.000729  y=-0.002637  z=+1.783593
+    cam3: x=-0.000589  y=+0.002097  z=+1.741885
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.6 mm
+    cam1_cam3: 345.9 mm
+    cam2_cam3: 41.7 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=0.1604 mm  mean=-0.0000 mm  max=0.7191 mm  | improvement=2416.8x
+    cam1_cam3: std=0.2354 mm  mean=-0.0000 mm  max=1.0098 mm  | improvement=1469.6x
+    cam2_cam3: std=0.2312 mm  mean=-0.0000 mm  max=0.7799 mm  | improvement=180.4x
+
+  cam1: y_w_mm std=0.0065 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=0.0056 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.0029 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 0.1604 mm — PASS
+    cam1_cam3: 0.2354 mm — PASS
+    cam2_cam3: 0.2312 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e10_120rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005605  y=-0.005530  z=+1.395920
+    cam2: x=-0.000725  y=-0.002716  z=+1.783372
+    cam3: x=-0.000577  y=+0.001996  z=+1.740726
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.5 mm
+    cam1_cam3: 344.8 mm
+    cam2_cam3: 42.6 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=0.5787 mm  mean=0.0000 mm  max=2.0336 mm  | improvement=669.5x
+    cam1_cam3: std=1.1708 mm  mean=-0.0000 mm  max=3.3368 mm  | improvement=294.5x
+    cam2_cam3: std=1.2086 mm  mean=-0.0000 mm  max=3.7221 mm  | improvement=35.3x
+
+  cam1: y_w_mm std=0.2437 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=0.2427 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.1497 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 0.5787 mm — PASS
+    cam1_cam3: 1.1708 mm — PASS
+    cam2_cam3: 1.2086 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e11_140rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005585  y=-0.005634  z=+1.394206
+    cam2: x=-0.000738  y=-0.002828  z=+1.782292
+    cam3: x=-0.000585  y=+0.001897  z=+1.740670
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 388.1 mm
+    cam1_cam3: 346.5 mm
+    cam2_cam3: 41.6 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=2.1264 mm  mean=-0.0000 mm  max=4.4765 mm  | improvement=182.5x
+    cam1_cam3: std=2.5836 mm  mean=-0.0000 mm  max=7.4984 mm  | improvement=134.1x
+    cam2_cam3: std=1.6930 mm  mean=-0.0000 mm  max=5.9379 mm  | improvement=24.6x
+
+  cam1: y_w_mm std=1.4156 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=1.4153 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.1821 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 2.1264 mm — PASS
+    cam1_cam3: 2.5836 mm — PASS
+    cam2_cam3: 1.6930 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e12_160rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005556  y=-0.005737  z=+1.392383
+    cam2: x=-0.000757  y=-0.002929  z=+1.779977
+    cam3: x=-0.000590  y=+0.001797  z=+1.740501
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.6 mm
+    cam1_cam3: 348.1 mm
+    cam2_cam3: 39.5 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=1.7960 mm  mean=0.0000 mm  max=5.1210 mm  | improvement=215.8x
+    cam1_cam3: std=5.1030 mm  mean=-0.0000 mm  max=12.8851 mm  | improvement=68.2x
+    cam2_cam3: std=4.3673 mm  mean=-0.0000 mm  max=11.3405 mm  | improvement=9.0x
+
+  cam1: y_w_mm std=2.3485 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=2.3446 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.2579 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 1.7960 mm — PASS
+    cam1_cam3: 5.1030 mm — PASS
+    cam2_cam3: 4.3673 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e13_180rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005542  y=-0.005816  z=+1.391445
+    cam2: x=-0.000765  y=-0.003002  z=+1.778772
+    cam3: x=-0.000594  y=+0.001709  z=+1.740757
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.3 mm
+    cam1_cam3: 349.3 mm
+    cam2_cam3: 38.0 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=1.7068 mm  mean=0.0000 mm  max=6.4650 mm  | improvement=226.9x
+    cam1_cam3: std=6.0421 mm  mean=-0.0000 mm  max=14.8508 mm  | improvement=57.8x
+    cam2_cam3: std=5.5634 mm  mean=-0.0000 mm  max=13.5075 mm  | improvement=6.8x
+
+  cam1: y_w_mm std=2.7656 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=2.7623 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.3656 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 1.7068 mm — PASS
+    cam1_cam3: 6.0421 mm — PASS
+    cam2_cam3: 5.5634 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e14_200rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005536  y=-0.005823  z=+1.391271
+    cam2: x=-0.000774  y=-0.003014  z=+1.778549
+    cam3: x=-0.000589  y=+0.001662  z=+1.740587
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.3 mm
+    cam1_cam3: 349.3 mm
+    cam2_cam3: 38.0 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=1.6613 mm  mean=-0.0000 mm  max=4.8085 mm  | improvement=233.1x
+    cam1_cam3: std=6.6305 mm  mean=0.0000 mm  max=14.6975 mm  | improvement=52.7x
+    cam2_cam3: std=6.1451 mm  mean=0.0000 mm  max=14.0758 mm  | improvement=6.2x
+
+  cam1: y_w_mm std=2.8653 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=2.8627 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.3848 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 1.6613 mm — PASS
+    cam1_cam3: 6.6305 mm — PASS
+    cam2_cam3: 6.1451 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e15_220rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005557  y=-0.005700  z=+1.392965
+    cam2: x=-0.000759  y=-0.002887  z=+1.780741
+    cam3: x=-0.000588  y=+0.001764  z=+1.740640
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.8 mm
+    cam1_cam3: 347.7 mm
+    cam2_cam3: 40.1 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=1.8243 mm  mean=0.0000 mm  max=4.2221 mm  | improvement=212.6x
+    cam1_cam3: std=4.7458 mm  mean=-0.0000 mm  max=11.4087 mm  | improvement=73.3x
+    cam2_cam3: std=3.8258 mm  mean=-0.0000 mm  max=10.8685 mm  | improvement=10.5x
+
+  cam1: y_w_mm std=2.0912 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=2.0848 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.5005 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 1.8243 mm — PASS
+    cam1_cam3: 4.7458 mm — PASS
+    cam2_cam3: 3.8258 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e16_240rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.004982  y=-0.005633  z=+1.396002
+    cam2: x=-0.000726  y=-0.002855  z=+1.783279
+    cam3: x=-0.000583  y=+0.001773  z=+1.740751
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.3 mm
+    cam1_cam3: 344.7 mm
+    cam2_cam3: 42.5 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=0.9892 mm  mean=0.0000 mm  max=3.9028 mm  | improvement=391.5x
+    cam1_cam3: std=1.5069 mm  mean=0.0000 mm  max=4.7987 mm  | improvement=228.8x
+    cam2_cam3: std=1.6578 mm  mean=0.0000 mm  max=5.5823 mm  | improvement=25.7x
+
+  cam1: y_w_mm std=0.7367 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=0.7353 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.6872 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 0.9892 mm — PASS
+    cam1_cam3: 1.5069 mm — PASS
+    cam2_cam3: 1.6578 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e17_260rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.004992  y=-0.005679  z=+1.395991
+    cam2: x=-0.000720  y=-0.002913  z=+1.783280
+    cam3: x=-0.000580  y=+0.001712  z=+1.740727
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.3 mm
+    cam1_cam3: 344.7 mm
+    cam2_cam3: 42.6 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=0.9606 mm  mean=-0.0000 mm  max=3.1751 mm  | improvement=403.2x
+    cam1_cam3: std=1.6604 mm  mean=-0.0000 mm  max=4.8494 mm  | improvement=207.6x
+    cam2_cam3: std=1.8956 mm  mean=-0.0000 mm  max=5.6107 mm  | improvement=22.4x
+
+  cam1: y_w_mm std=0.8501 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=0.8482 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.8249 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 0.9606 mm — PASS
+    cam1_cam3: 1.6604 mm — PASS
+    cam2_cam3: 1.8956 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e18_280rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.004988  y=-0.005687  z=+1.395893
+    cam2: x=-0.000722  y=-0.002921  z=+1.783258
+    cam3: x=-0.000580  y=+0.001682  z=+1.740667
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.4 mm
+    cam1_cam3: 344.8 mm
+    cam2_cam3: 42.6 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=1.2044 mm  mean=0.0000 mm  max=4.6142 mm  | improvement=321.6x
+    cam1_cam3: std=1.8895 mm  mean=0.0000 mm  max=6.1112 mm  | improvement=182.5x
+    cam2_cam3: std=2.2348 mm  mean=0.0000 mm  max=7.4079 mm  | improvement=19.1x
+
+  cam1: y_w_mm std=1.1046 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=1.1018 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=1.0687 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 1.2044 mm — PASS
+    cam1_cam3: 1.8895 mm — PASS
+    cam2_cam3: 2.2348 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e19_300rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.004988  y=-0.005682  z=+1.395803
+    cam2: x=-0.000725  y=-0.002917  z=+1.783256
+    cam3: x=-0.000574  y=+0.001665  z=+1.740561
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.5 mm
+    cam1_cam3: 344.8 mm
+    cam2_cam3: 42.7 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=1.3548 mm  mean=0.0000 mm  max=4.7289 mm  | improvement=286.0x
+    cam1_cam3: std=1.9812 mm  mean=-0.0000 mm  max=6.1761 mm  | improvement=174.0x
+    cam2_cam3: std=2.4282 mm  mean=-0.0000 mm  max=7.5976 mm  | improvement=17.6x
+
+  cam1: y_w_mm std=1.2471 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=1.2451 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=1.2023 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 1.3548 mm — PASS
+    cam1_cam3: 1.9812 mm — PASS
+    cam2_cam3: 2.4282 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e1_20rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005591  y=-0.005470  z=+1.395920
+    cam2: x=-0.000729  y=-0.002638  z=+1.783590
+    cam3: x=-0.000589  y=+0.002096  z=+1.741953
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.7 mm
+    cam1_cam3: 346.0 mm
+    cam2_cam3: 41.6 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=0.1614 mm  mean=0.0000 mm  max=0.6535 mm  | improvement=2401.9x
+    cam1_cam3: std=0.2431 mm  mean=0.0000 mm  max=1.0366 mm  | improvement=1423.4x
+    cam2_cam3: std=0.2479 mm  mean=0.0000 mm  max=1.1038 mm  | improvement=168.0x
+
+  cam1: y_w_mm std=0.0076 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=0.0078 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.0028 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 0.1614 mm — PASS
+    cam1_cam3: 0.2431 mm — PASS
+    cam2_cam3: 0.2479 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e20_320rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.004115  y=-0.007252  z=+1.379316
+    cam2: x=-0.001517  y=-0.004492  z=+1.762651
+    cam3: x=-0.000711  y=+0.000481  z=+1.740021
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 383.3 mm
+    cam1_cam3: 360.7 mm
+    cam2_cam3: 22.6 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=7.4188 mm  mean=-0.0000 mm  max=37.6333 mm  | improvement=51.7x
+    cam1_cam3: std=24.8684 mm  mean=-0.0000 mm  max=54.0354 mm  | improvement=14.5x
+    cam2_cam3: std=28.5673 mm  mean=0.0000 mm  max=63.9325 mm  | improvement=0.8x
+
+  cam1: y_w_mm std=9.8693 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=9.8314 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=2.1945 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 7.4188 mm — PASS
+    cam1_cam3: 24.8684 mm — FAIL
+    cam2_cam3: 28.5673 mm — FAIL
+
+  One or more pairs exceed 15 mm gate — INVESTIGATE before Step 07
+
+
+=== BASELINE ALIGNMENT: e2_40rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005591  y=-0.005485  z=+1.395894
+    cam2: x=-0.000729  y=-0.002652  z=+1.783571
+    cam3: x=-0.000591  y=+0.002085  z=+1.742427
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.7 mm
+    cam1_cam3: 346.5 mm
+    cam2_cam3: 41.1 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=0.1692 mm  mean=-0.0000 mm  max=0.5627 mm  | improvement=2291.2x
+    cam1_cam3: std=0.3907 mm  mean=-0.0000 mm  max=1.3430 mm  | improvement=887.0x
+    cam2_cam3: std=0.4072 mm  mean=0.0000 mm  max=1.3226 mm  | improvement=101.0x
+
+  cam1: y_w_mm std=0.0116 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=0.0101 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.0089 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 0.1692 mm — PASS
+    cam1_cam3: 0.3907 mm — PASS
+    cam2_cam3: 0.4072 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e3_50rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005596  y=-0.005494  z=+1.395882
+    cam2: x=-0.000730  y=-0.002666  z=+1.783504
+    cam3: x=-0.000583  y=+0.002077  z=+1.742291
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.6 mm
+    cam1_cam3: 346.4 mm
+    cam2_cam3: 41.2 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=0.1813 mm  mean=-0.0000 mm  max=0.8157 mm  | improvement=2138.0x
+    cam1_cam3: std=0.7325 mm  mean=-0.0000 mm  max=2.3598 mm  | improvement=472.9x
+    cam2_cam3: std=0.7657 mm  mean=0.0000 mm  max=2.4362 mm  | improvement=53.8x
+
+  cam1: y_w_mm std=0.0248 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=0.0224 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.0231 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 0.1813 mm — PASS
+    cam1_cam3: 0.7325 mm — PASS
+    cam2_cam3: 0.7657 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e4_60rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005599  y=-0.005491  z=+1.395941
+    cam2: x=-0.000730  y=-0.002665  z=+1.783485
+    cam3: x=-0.000575  y=+0.002071  z=+1.740972
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.5 mm
+    cam1_cam3: 345.0 mm
+    cam2_cam3: 42.5 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=0.2284 mm  mean=0.0000 mm  max=0.7478 mm  | improvement=1696.8x
+    cam1_cam3: std=1.1100 mm  mean=0.0000 mm  max=2.5567 mm  | improvement=310.8x
+    cam2_cam3: std=1.0470 mm  mean=-0.0000 mm  max=2.4116 mm  | improvement=40.6x
+
+  cam1: y_w_mm std=0.0866 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=0.0847 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.0858 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 0.2284 mm — PASS
+    cam1_cam3: 1.1100 mm — PASS
+    cam2_cam3: 1.0470 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e5_70rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005620  y=-0.005525  z=+1.394203
+    cam2: x=-0.000701  y=-0.002705  z=+1.782278
+    cam3: x=-0.000549  y=+0.002031  z=+1.740782
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 388.1 mm
+    cam1_cam3: 346.6 mm
+    cam2_cam3: 41.5 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=2.1576 mm  mean=0.0000 mm  max=3.7798 mm  | improvement=179.9x
+    cam1_cam3: std=2.5330 mm  mean=-0.0000 mm  max=5.5171 mm  | improvement=136.8x
+    cam2_cam3: std=4.4375 mm  mean=-0.0000 mm  max=7.7877 mm  | improvement=9.4x
+
+  cam1: y_w_mm std=3.0803 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=3.0732 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=3.0861 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 2.1576 mm — PASS
+    cam1_cam3: 2.5330 mm — PASS
+    cam2_cam3: 4.4375 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e6_80rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005604  y=-0.005507  z=+1.395489
+    cam2: x=-0.000722  y=-0.002683  z=+1.783292
+    cam3: x=-0.000568  y=+0.002049  z=+1.740704
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.8 mm
+    cam1_cam3: 345.2 mm
+    cam2_cam3: 42.6 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=1.4583 mm  mean=-0.0000 mm  max=3.6236 mm  | improvement=265.9x
+    cam1_cam3: std=1.7710 mm  mean=-0.0000 mm  max=5.4965 mm  | improvement=194.9x
+    cam2_cam3: std=2.8629 mm  mean=0.0000 mm  max=7.3860 mm  | improvement=14.9x
+
+  cam1: y_w_mm std=1.4029 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=1.3999 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=1.3927 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 1.4583 mm — PASS
+    cam1_cam3: 1.7710 mm — PASS
+    cam2_cam3: 2.8629 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e7_90rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005575  y=-0.005569  z=+1.393788
+    cam2: x=-0.000741  y=-0.002750  z=+1.781788
+    cam3: x=-0.000580  y=+0.001990  z=+1.740874
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 388.0 mm
+    cam1_cam3: 347.1 mm
+    cam2_cam3: 40.9 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=2.0529 mm  mean=-0.0000 mm  max=4.4471 mm  | improvement=189.0x
+    cam1_cam3: std=3.0458 mm  mean=-0.0000 mm  max=7.6984 mm  | improvement=114.0x
+    cam2_cam3: std=2.0604 mm  mean=-0.0000 mm  max=6.3845 mm  | improvement=19.9x
+
+  cam1: y_w_mm std=1.6213 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=1.6176 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.1034 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 2.0529 mm — PASS
+    cam1_cam3: 3.0458 mm — PASS
+    cam2_cam3: 2.0604 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e8_100rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005600  y=-0.005497  z=+1.395912
+    cam2: x=-0.000726  y=-0.002679  z=+1.783374
+    cam3: x=-0.000580  y=+0.002032  z=+1.740527
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.5 mm
+    cam1_cam3: 344.6 mm
+    cam2_cam3: 42.8 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=0.7084 mm  mean=-0.0000 mm  max=1.8844 mm  | improvement=547.0x
+    cam1_cam3: std=1.2577 mm  mean=-0.0000 mm  max=3.9263 mm  | improvement=274.0x
+    cam2_cam3: std=1.2082 mm  mean=0.0000 mm  max=3.7775 mm  | improvement=35.5x
+
+  cam1: y_w_mm std=0.2469 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=0.2454 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.1226 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 0.7084 mm — PASS
+    cam1_cam3: 1.2577 mm — PASS
+    cam2_cam3: 1.2082 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+
+
+=== BASELINE ALIGNMENT: e9_110rpm ===
+
+  Per-camera full-run means (metres):
+    cam1: x=+0.005603  y=-0.005498  z=+1.395948
+    cam2: x=-0.000728  y=-0.002681  z=+1.783382
+    cam3: x=-0.000580  y=+0.002029  z=+1.740906
+
+  Raw Z disagreement (DC offset between cameras):
+    cam1_cam2: 387.4 mm
+    cam1_cam3: 345.0 mm
+    cam2_cam3: 42.5 mm
+
+  Aligned Z disagreement (residual std after mean removal):
+    cam1_cam2: std=0.3732 mm  mean=-0.0000 mm  max=1.0761 mm  | improvement=1038.1x
+    cam1_cam3: std=1.1172 mm  mean=-0.0000 mm  max=3.0447 mm  | improvement=308.8x
+    cam2_cam3: std=1.1446 mm  mean=0.0000 mm  max=3.0609 mm  | improvement=37.1x
+
+  cam1: y_w_mm std=0.1753 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam2: y_w_mm std=0.1743 mm  (sanity: should match step05 y_w std * 1000)
+
+  cam3: y_w_mm std=0.1520 mm  (sanity: should match step05 y_w std * 1000)
+
+  Gate check (target: aligned Z std < 15 mm):
+    cam1_cam2: 0.3732 mm — PASS
+    cam1_cam3: 1.1172 mm — PASS
+    cam2_cam3: 1.1446 mm — PASS
+
+  All camera pairs within 15 mm gate — PASS
+

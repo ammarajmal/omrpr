@@ -1,0 +1,18 @@
+{
+  "step": "step11_rts_smoothing",
+  "status": "PASS",
+  "n_conditions": 21,
+  "n_pass": 21,
+  "n_fail": 0,
+  "smoother": "Rauch-Tung-Striebel (non-causal, offline only)",
+  "state_vector": "[position, velocity] \u2014 1D per channel",
+  "process_model": "constant velocity, dt=1/60 s (uniform grid)",
+  "process_noise_std": 10.0,
+  "measurement_noise_std": 0.05,
+  "acceptance_criteria": {
+    "phase_shift_threshold_ms": 10.0,
+    "freq_tolerance_hz": 0.1,
+    "amplitude_ratio_min": 0.95
+  },
+  "note_non_causal": "RTS backward pass uses future observations. Only valid offline. Never claim real-time capability."
+}

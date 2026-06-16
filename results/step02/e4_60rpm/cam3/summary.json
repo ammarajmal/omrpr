@@ -1,0 +1,9 @@
+{
+  "condition": "e4_60rpm",
+  "cam": "cam3",
+  "total_frames": 1831,
+  "detected_frames": 1831,
+  "missed_frames": 0,
+  "detection_rate": 1.0,
+  "max_consecutive_miss": 0
+}

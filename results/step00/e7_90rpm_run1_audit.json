@@ -1,0 +1,61 @@
+{
+    "bag": "e7_90rpm_run1.bag",
+    "topics": {
+        "/sony_cam1/image_raw/compressed": {
+            "msgtype": "sensor_msgs/msg/CompressedImage",
+            "count": 1828,
+            "first_s": 0.0,
+            "last_s": 30.4796,
+            "duration_s": 30.4796,
+            "fps": 59.94,
+            "max_gap_s": 0.026
+        },
+        "/sony_cam3/image_raw/compressed": {
+            "msgtype": "sensor_msgs/msg/CompressedImage",
+            "count": 1830,
+            "first_s": 0.0001,
+            "last_s": 30.4822,
+            "duration_s": 30.4821,
+            "fps": 60.0,
+            "max_gap_s": 0.0243
+        },
+        "/sony_cam1/camera_info": {
+            "msgtype": "sensor_msgs/msg/CameraInfo",
+            "count": 1828,
+            "first_s": 0.0003,
+            "last_s": 30.4803,
+            "duration_s": 30.4801,
+            "fps": 59.94,
+            "max_gap_s": 0.0264
+        },
+        "/sony_cam3/camera_info": {
+            "msgtype": "sensor_msgs/msg/CameraInfo",
+            "count": 1830,
+            "first_s": 0.0003,
+            "last_s": 30.4826,
+            "duration_s": 30.4824,
+            "fps": 60.0,
+            "max_gap_s": 0.0246
+        },
+        "/sony_cam2/image_raw/compressed": {
+            "msgtype": "sensor_msgs/msg/CompressedImage",
+            "count": 1828,
+            "first_s": 0.0119,
+            "last_s": 30.4917,
+            "duration_s": 30.4798,
+            "fps": 59.94,
+            "max_gap_s": 0.0249
+        },
+        "/sony_cam2/camera_info": {
+            "msgtype": "sensor_msgs/msg/CameraInfo",
+            "count": 1828,
+            "first_s": 0.0124,
+            "last_s": 30.4921,
+            "duration_s": 30.4798,
+            "fps": 59.94,
+            "max_gap_s": 0.025
+        }
+    },
+    "timestamp_skew_s": 0.0124,
+    "acceptance": "PASS"
+}

@@ -1,0 +1,59 @@
+{
+  "geometry_used": {
+    "pvolt": 2.7,
+    "dside_cm": 13.0,
+    "db_cm": 20.0,
+    "dp": 1.538462,
+    "fs_hz": 360,
+    "bias_file": "D00",
+    "note_dp": "dp=1.538 NOT 2.0; MATLAB script had wrong dside=10cm, confirmed value is dside=130mm from facility document"
+  },
+  "full_regime": {
+    "bending_pearson_r": 0.8319825450401166,
+    "bending_pearson_p": 5.4128525643293855e-06,
+    "bending_spearman_rho": 0.7428571428571428,
+    "bending_spearman_p": 0.00017540444660487062,
+    "bending_mae_mm": 0.8334431186660586,
+    "bending_rmse_mm": 1.603467710794905,
+    "bending_ratio_mean": 1.3454859410002284,
+    "bending_ratio_std": 0.8177232450446852,
+    "bending_n_conditions": 20,
+    "torsion_pearson_r": 0.9917351593532914,
+    "torsion_pearson_p": 1.658483782523754e-17,
+    "torsion_spearman_rho": 0.9458646616541352,
+    "torsion_spearman_p": 3.113604214027191e-10,
+    "torsion_mae_mm": 0.8199197244840313,
+    "torsion_rmse_mm": 1.577078450651093,
+    "torsion_ratio_mean": 0.5726571966447666,
+    "torsion_ratio_std": 0.409573098508982,
+    "torsion_n_conditions": 20
+  },
+  "stable_regime": {
+    "stable_bending_pearson_r": 0.8450431987291208,
+    "stable_bending_pearson_p": 1.0156235951085658e-05,
+    "stable_bending_spearman_rho": 0.8637770897832818,
+    "stable_bending_spearman_p": 3.854410891744889e-06,
+    "stable_bending_mae_mm": 0.48446706926883437,
+    "stable_bending_rmse_mm": 0.7192052367676631,
+    "stable_bending_ratio_mean": 1.3393326567728938,
+    "stable_bending_ratio_std": 0.7344159463040194,
+    "stable_bending_n_conditions": 18,
+    "stable_torsion_pearson_r": 0.9395511780722222,
+    "stable_torsion_pearson_p": 7.408613145127266e-09,
+    "stable_torsion_spearman_rho": 0.9277605779153767,
+    "stable_torsion_spearman_p": 2.9679222772500766e-08,
+    "stable_torsion_mae_mm": 0.5487165438379789,
+    "stable_torsion_rmse_mm": 0.7713649927683429,
+    "stable_torsion_ratio_mean": 0.5986235126726467,
+    "stable_torsion_ratio_std": 0.4117484509826192,
+    "stable_torsion_n_conditions": 18
+  },
+  "n_full": 20,
+  "n_stable": 18,
+  "excluded_from_stable": [
+    "e4_60rpm",
+    "e20_320rpm"
+  ],
+  "cross_tunnel_note": "Camera bags: Tunnel A, October 2025. LDV: Tunnel B, September 2025. Same facility, same model, same year. Comparison is condition-level only \u2014 NOT simultaneous validation.",
+  "claim_boundary": "The ratio (camera/LDV) is NOT an accuracy claim. Sources of ratio deviation have not been independently decomposed."
+}

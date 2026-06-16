@@ -1,0 +1,15 @@
+{
+  "condition": "e20_320rpm",
+  "cam": "cam3",
+  "total_frames": 1831,
+  "reproj_err": {
+    "mean": 0.7421,
+    "max": 1.7163,
+    "min": 0.0328,
+    "std": 0.4161
+  },
+  "high_reproj_count": 0,
+  "bad_reproj_count": 0,
+  "reproj_warn_thresh": 3.0,
+  "reproj_bad_thresh": 10.0
+}

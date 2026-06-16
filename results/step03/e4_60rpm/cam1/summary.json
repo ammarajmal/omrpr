@@ -1,0 +1,18 @@
+{
+  "condition": "e4_60rpm",
+  "cam": "cam1",
+  "total_detected": 1829,
+  "low_quality_threshold": 50.0,
+  "low_quality_count": 0,
+  "quality_score": {
+    "mean": 9999.7324,
+    "min": 9557.0513,
+    "max": 10445.7361,
+    "std": 144.8773
+  },
+  "corner_sharpness": {
+    "mean": 40.9971,
+    "min": 34.4959,
+    "max": 47.9959
+  }
+}

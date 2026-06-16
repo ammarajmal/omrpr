@@ -1,0 +1,21 @@
+{
+  "step": "step12_figures_tables",
+  "status": "PASS",
+  "n_generated": 7,
+  "n_errors": 0,
+  "generated": [
+    "Fig 01 -- displacement traces",
+    "Fig 02 -- frequency overview",
+    "Fig 03 -- LDV scatter",
+    "Fig 04 -- camera agreement",
+    "Fig 05 -- uncertainty + CI",
+    "Tab 01",
+    "Tab 02"
+  ],
+  "errors": [],
+  "captions_checked": 5,
+  "forbidden_found": [],
+  "claim_boundary_pass": true,
+  "note_non_simultaneous": "LDV comparison is condition-level only. Camera and LDV recorded at different times in separate tunnel runs.",
+  "note_torsion_proxy": "torsion_diff_y_mm is a two-point differential displacement proxy, not a validated torsion angle measurement."
+}

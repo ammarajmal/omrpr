@@ -1,0 +1,15 @@
+{
+  "condition": "e4_60rpm",
+  "cam": "cam1",
+  "total_frames": 1829,
+  "reproj_err": {
+    "mean": 0.0903,
+    "max": 0.126,
+    "min": 0.0367,
+    "std": 0.013
+  },
+  "high_reproj_count": 0,
+  "bad_reproj_count": 0,
+  "reproj_warn_thresh": 3.0,
+  "reproj_bad_thresh": 10.0
+}

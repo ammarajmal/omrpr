@@ -1,0 +1,148 @@
+Found 21 condition(s) — processing all.
+
+=== POSE ESTIMATION: e0_0rpm ===
+
+  cam1: 1832 frames | reproj_err mean=0.0858px max=0.1263px | high_reproj=0 bad=0 | OK
+  cam2: 1832 frames | reproj_err mean=0.1155px max=0.1781px | high_reproj=0 bad=0 | OK
+  cam3: 1833 frames | reproj_err mean=0.1999px max=0.2428px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e10_120rpm ===
+
+  cam1: 1829 frames | reproj_err mean=0.0865px max=0.1524px | high_reproj=0 bad=0 | OK
+  cam2: 1828 frames | reproj_err mean=0.0970px max=0.2132px | high_reproj=0 bad=0 | OK
+  cam3: 1830 frames | reproj_err mean=0.1232px max=0.3646px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e11_140rpm ===
+
+  cam1: 1832 frames | reproj_err mean=0.1006px max=0.2530px | high_reproj=0 bad=0 | OK
+  cam2: 1831 frames | reproj_err mean=0.1225px max=0.3319px | high_reproj=0 bad=0 | OK
+  cam3: 1833 frames | reproj_err mean=0.2443px max=0.9665px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e12_160rpm ===
+
+  cam1: 1830 frames | reproj_err mean=0.1176px max=0.3178px | high_reproj=0 bad=0 | OK
+  cam2: 1830 frames | reproj_err mean=0.1217px max=0.3370px | high_reproj=0 bad=0 | OK
+  cam3: 1833 frames | reproj_err mean=0.2522px max=1.0193px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e13_180rpm ===
+
+  cam1: 1828 frames | reproj_err mean=0.1252px max=0.3407px | high_reproj=0 bad=0 | OK
+  cam2: 1827 frames | reproj_err mean=0.1305px max=0.3189px | high_reproj=0 bad=0 | OK
+  cam3: 1829 frames | reproj_err mean=0.3257px max=1.0521px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e14_200rpm ===
+
+  cam1: 1829 frames | reproj_err mean=0.1276px max=0.3474px | high_reproj=0 bad=0 | OK
+  cam2: 1828 frames | reproj_err mean=0.1317px max=0.3326px | high_reproj=0 bad=0 | OK
+  cam3: 1829 frames | reproj_err mean=0.3470px max=1.0941px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e15_220rpm ===
+
+  cam1: 1828 frames | reproj_err mean=0.1135px max=0.3337px | high_reproj=0 bad=0 | OK
+  cam2: 1827 frames | reproj_err mean=0.1218px max=0.3943px | high_reproj=0 bad=0 | OK
+  cam3: 1829 frames | reproj_err mean=0.2652px max=1.0780px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e16_240rpm ===
+
+  cam1: 1828 frames | reproj_err mean=0.0910px max=0.1615px | high_reproj=0 bad=0 | OK
+  cam2: 1827 frames | reproj_err mean=0.1041px max=0.2540px | high_reproj=0 bad=0 | OK
+  cam3: 1829 frames | reproj_err mean=0.1758px max=0.6157px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e17_260rpm ===
+
+  cam1: 1832 frames | reproj_err mean=0.0903px max=0.1487px | high_reproj=0 bad=0 | OK
+  cam2: 1831 frames | reproj_err mean=0.1040px max=0.2326px | high_reproj=0 bad=0 | OK
+  cam3: 1833 frames | reproj_err mean=0.1650px max=0.5688px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e18_280rpm ===
+
+  cam1: 1830 frames | reproj_err mean=0.0909px max=0.1642px | high_reproj=0 bad=0 | OK
+  cam2: 1829 frames | reproj_err mean=0.1043px max=0.2299px | high_reproj=0 bad=0 | OK
+  cam3: 1831 frames | reproj_err mean=0.1683px max=0.5901px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e19_300rpm ===
+
+  cam1: 1830 frames | reproj_err mean=0.0924px max=0.1898px | high_reproj=0 bad=0 | OK
+  cam2: 1830 frames | reproj_err mean=0.1085px max=0.2705px | high_reproj=0 bad=0 | OK
+  cam3: 1833 frames | reproj_err mean=0.2172px max=0.6965px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e1_20rpm ===
+
+  cam1: 1830 frames | reproj_err mean=0.0850px max=0.1205px | high_reproj=0 bad=0 | OK
+  cam2: 1830 frames | reproj_err mean=0.1148px max=0.1915px | high_reproj=0 bad=0 | OK
+  cam3: 1831 frames | reproj_err mean=0.2010px max=0.2565px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e20_320rpm ===
+
+  cam1: 1112 frames | reproj_err mean=0.2807px max=0.8753px | high_reproj=0 bad=0 | OK
+  cam2: 1122 frames | reproj_err mean=0.2961px max=0.8147px | high_reproj=0 bad=0 | OK
+  cam3: 1831 frames | reproj_err mean=0.7421px max=1.7163px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e2_40rpm ===
+
+  cam1: 1829 frames | reproj_err mean=0.0900px max=0.1321px | high_reproj=0 bad=0 | OK
+  cam2: 1828 frames | reproj_err mean=0.1056px max=0.1837px | high_reproj=0 bad=0 | OK
+  cam3: 1830 frames | reproj_err mean=0.2017px max=0.2557px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e3_50rpm ===
+
+  cam1: 1830 frames | reproj_err mean=0.0919px max=0.1272px | high_reproj=0 bad=0 | OK
+  cam2: 1830 frames | reproj_err mean=0.1023px max=0.1991px | high_reproj=0 bad=0 | OK
+  cam3: 1831 frames | reproj_err mean=0.1832px max=0.2524px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e4_60rpm ===
+
+  cam1: 1829 frames | reproj_err mean=0.0903px max=0.1260px | high_reproj=0 bad=0 | OK
+  cam2: 1830 frames | reproj_err mean=0.0954px max=0.1854px | high_reproj=0 bad=0 | OK
+  cam3: 1831 frames | reproj_err mean=0.1534px max=0.2144px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e5_70rpm ===
+
+  cam1: 1828 frames | reproj_err mean=0.1051px max=0.1732px | high_reproj=0 bad=0 | OK
+  cam2: 1828 frames | reproj_err mean=0.1155px max=0.2114px | high_reproj=0 bad=0 | OK
+  cam3: 1829 frames | reproj_err mean=0.1890px max=0.3832px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e6_80rpm ===
+
+  cam1: 1829 frames | reproj_err mean=0.0919px max=0.1502px | high_reproj=0 bad=0 | OK
+  cam2: 1829 frames | reproj_err mean=0.1056px max=0.2366px | high_reproj=0 bad=0 | OK
+  cam3: 1831 frames | reproj_err mean=0.1505px max=0.3644px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e7_90rpm ===
+
+  cam1: 1828 frames | reproj_err mean=0.1041px max=0.3183px | high_reproj=0 bad=0 | OK
+  cam2: 1828 frames | reproj_err mean=0.1200px max=0.3029px | high_reproj=0 bad=0 | OK
+  cam3: 1830 frames | reproj_err mean=0.2859px max=1.0316px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e8_100rpm ===
+
+  cam1: 1829 frames | reproj_err mean=0.0871px max=0.1399px | high_reproj=0 bad=0 | OK
+  cam2: 1829 frames | reproj_err mean=0.0976px max=0.1907px | high_reproj=0 bad=0 | OK
+  cam3: 1831 frames | reproj_err mean=0.1155px max=0.3221px | high_reproj=0 bad=0 | OK
+
+
+=== POSE ESTIMATION: e9_110rpm ===
+
+  cam1: 1829 frames | reproj_err mean=0.0876px max=0.1423px | high_reproj=0 bad=0 | OK
+  cam2: 1829 frames | reproj_err mean=0.0927px max=0.1979px | high_reproj=0 bad=0 | OK
+  cam3: 1831 frames | reproj_err mean=0.1564px max=0.3106px | high_reproj=0 bad=0 | OK
+

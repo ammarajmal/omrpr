@@ -1,0 +1,29 @@
+{
+  "step": "step10_ldv_comparison",
+  "status": "FAIL",
+  "gate": {
+    "gate_overall": "FAIL",
+    "bending_pearson_gate": "FAIL",
+    "torsion_pearson_gate": "PASS",
+    "threshold_pearson_r": 0.9,
+    "stable_bending_pearson_r": 0.7966816153670015,
+    "stable_torsion_pearson_r": 0.9395511780722222,
+    "target_bending_pearson_r": 0.959,
+    "target_torsion_pearson_r": 0.968,
+    "target_bending_mae_mm": 0.224,
+    "target_bending_rmse_mm": 0.297,
+    "target_bending_ratio": 1.268,
+    "target_torsion_ratio": 0.785,
+    "notes": [
+      "Stable regime excludes e4_60rpm (VIV) and e20_320rpm (high-wind unstable).",
+      "Full-regime statistics include all 20 conditions.",
+      "Ratio > 1 means camera reads higher than LDV. Not an accuracy claim.",
+      "Cross-tunnel comparison: camera Tunnel A Oct 2025, LDV Tunnel B Sep 2025."
+    ]
+  },
+  "n_conditions_processed": 20,
+  "output_files": [
+    "results/step10/ldv_comparison_table.csv",
+    "results/step10/ldv_summary.json"
+  ]
+}

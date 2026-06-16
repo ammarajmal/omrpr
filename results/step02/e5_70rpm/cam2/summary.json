@@ -1,0 +1,9 @@
+{
+  "condition": "e5_70rpm",
+  "cam": "cam2",
+  "total_frames": 1828,
+  "detected_frames": 1828,
+  "missed_frames": 0,
+  "detection_rate": 1.0,
+  "max_consecutive_miss": 0
+}

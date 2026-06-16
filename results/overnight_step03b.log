@@ -1,0 +1,190 @@
+Found 21 condition(s) — processing all.
+
+=== QUALITY SCORING: e0_0rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10027.86 min=9590.8 max=10460.1 | low_q=0 | sharpness_mean=39.82 | OK
+  cam2: quality mean=9857.29 min=9378.8 max=10390.09 | low_q=0 | sharpness_mean=42.42 | OK
+  cam3: quality mean=16024.06 min=15614.37 max=16420.19 | low_q=0 | sharpness_mean=35.24 | OK
+
+
+=== QUALITY SCORING: e10_120rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10047.92 min=9577.62 max=10474.96 | low_q=0 | sharpness_mean=40.88 | OK
+  cam2: quality mean=9864.47 min=9394.03 max=10378.56 | low_q=0 | sharpness_mean=41.63 | OK
+  cam3: quality mean=16192.43 min=15686.44 max=16666.28 | low_q=0 | sharpness_mean=34.32 | OK
+
+
+=== QUALITY SCORING: e11_140rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10109.85 min=9433.63 max=10744.43 | low_q=0 | sharpness_mean=40.12 | OK
+  cam2: quality mean=9934.74 min=9289.48 max=10689.37 | low_q=0 | sharpness_mean=41.23 | OK
+  cam3: quality mean=16233.7 min=15699.95 max=16785.3 | low_q=0 | sharpness_mean=34.58 | OK
+
+
+=== QUALITY SCORING: e12_160rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10211.66 min=9464.98 max=10917.39 | low_q=0 | sharpness_mean=39.14 | OK
+  cam2: quality mean=10071.59 min=9249.15 max=10909.31 | low_q=0 | sharpness_mean=40.32 | OK
+  cam3: quality mean=16223.22 min=15680.43 max=16778.82 | low_q=0 | sharpness_mean=34.57 | OK
+
+
+=== QUALITY SCORING: e13_180rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10203.52 min=9162.98 max=10951.11 | low_q=0 | sharpness_mean=38.37 | OK
+  cam2: quality mean=10089.18 min=9191.54 max=10954.41 | low_q=0 | sharpness_mean=39.42 | OK
+  cam3: quality mean=16212.8 min=15491.95 max=16762.77 | low_q=0 | sharpness_mean=34.25 | OK
+
+
+=== QUALITY SCORING: e14_200rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10259.87 min=9514.95 max=10939.5 | low_q=0 | sharpness_mean=38.29 | OK
+  cam2: quality mean=10154.85 min=9302.18 max=10970.65 | low_q=0 | sharpness_mean=39.41 | OK
+  cam3: quality mean=16257.71 min=15632.35 max=16798.26 | low_q=0 | sharpness_mean=33.89 | OK
+
+
+=== QUALITY SCORING: e15_220rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10139.88 min=9272.47 max=10842.9 | low_q=0 | sharpness_mean=39.44 | OK
+  cam2: quality mean=10002.62 min=9226.99 max=10841.41 | low_q=0 | sharpness_mean=40.59 | OK
+  cam3: quality mean=16227.67 min=15616.69 max=16808.67 | low_q=0 | sharpness_mean=34.49 | OK
+
+
+=== QUALITY SCORING: e16_240rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=9999.51 min=9469.51 max=10578.52 | low_q=0 | sharpness_mean=39.73 | OK
+  cam2: quality mean=9834.89 min=9269.35 max=10531.25 | low_q=0 | sharpness_mean=41.78 | OK
+  cam3: quality mean=16246.22 min=15604.53 max=16978.26 | low_q=0 | sharpness_mean=34.36 | OK
+
+
+=== QUALITY SCORING: e17_260rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=9996.26 min=9325.26 max=10535.82 | low_q=0 | sharpness_mean=39.71 | OK
+  cam2: quality mean=9825.03 min=9290.68 max=10426.5 | low_q=0 | sharpness_mean=41.86 | OK
+  cam3: quality mean=16265.02 min=15554.25 max=16883.39 | low_q=0 | sharpness_mean=34.14 | OK
+
+
+=== QUALITY SCORING: e18_280rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10016.69 min=9451.68 max=10673.75 | low_q=0 | sharpness_mean=39.72 | OK
+  cam2: quality mean=9840.79 min=9338.02 max=10594.28 | low_q=0 | sharpness_mean=41.96 | OK
+  cam3: quality mean=16263.36 min=15285.93 max=16956.18 | low_q=0 | sharpness_mean=34.03 | OK
+
+
+=== QUALITY SCORING: e19_300rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10030.29 min=9345.82 max=10665.75 | low_q=0 | sharpness_mean=39.67 | OK
+  cam2: quality mean=9857.44 min=9227.35 max=10662.36 | low_q=0 | sharpness_mean=41.96 | OK
+  cam3: quality mean=16256.43 min=15242.8 max=17040.03 | low_q=0 | sharpness_mean=34.08 | OK
+
+
+=== QUALITY SCORING: e1_20rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10021.9 min=9570.12 max=10419.41 | low_q=0 | sharpness_mean=39.64 | OK
+  cam2: quality mean=9844.24 min=9273.15 max=10245.02 | low_q=0 | sharpness_mean=42.45 | OK
+  cam3: quality mean=16020.39 min=15652.72 max=16396.4 | low_q=0 | sharpness_mean=35.49 | OK
+
+
+=== QUALITY SCORING: e20_320rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10463.14 min=8969.65 max=11388.28 | low_q=0 | sharpness_mean=35.54 | OK
+  cam2: quality mean=10586.89 min=9030.69 max=11465.85 | low_q=0 | sharpness_mean=36.59 | OK
+  cam3: quality mean=16332.89 min=15757.68 max=17031.43 | low_q=0 | sharpness_mean=26.92 | OK
+
+
+=== QUALITY SCORING: e2_40rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10021.3 min=9466.09 max=10440.72 | low_q=0 | sharpness_mean=39.91 | OK
+  cam2: quality mean=9848.85 min=9352.44 max=10347.95 | low_q=0 | sharpness_mean=42.58 | OK
+  cam3: quality mean=16035.91 min=15681.5 max=16411.31 | low_q=0 | sharpness_mean=35.97 | OK
+
+
+=== QUALITY SCORING: e3_50rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10013.61 min=9548.1 max=10425.89 | low_q=0 | sharpness_mean=40.45 | OK
+  cam2: quality mean=9825.79 min=9273.64 max=10384.7 | low_q=0 | sharpness_mean=41.92 | OK
+  cam3: quality mean=16052.2 min=15690.31 max=16551.03 | low_q=0 | sharpness_mean=35.65 | OK
+
+
+=== QUALITY SCORING: e4_60rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=9999.73 min=9557.05 max=10445.74 | low_q=0 | sharpness_mean=41.0 | OK
+  cam2: quality mean=9825.57 min=9103.97 max=10365.88 | low_q=0 | sharpness_mean=41.6 | OK
+  cam3: quality mean=16130.23 min=15676.12 max=16611.74 | low_q=0 | sharpness_mean=33.68 | OK
+
+
+=== QUALITY SCORING: e5_70rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10066.0 min=9308.56 max=10700.0 | low_q=0 | sharpness_mean=39.57 | OK
+  cam2: quality mean=9933.03 min=9231.68 max=10687.04 | low_q=0 | sharpness_mean=41.13 | OK
+  cam3: quality mean=16017.08 min=14684.62 max=17010.08 | low_q=0 | sharpness_mean=31.23 | OK
+
+
+=== QUALITY SCORING: e6_80rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10044.43 min=9375.0 max=10598.94 | low_q=0 | sharpness_mean=40.36 | OK
+  cam2: quality mean=9854.56 min=9335.75 max=10599.12 | low_q=0 | sharpness_mean=41.63 | OK
+  cam3: quality mean=16144.45 min=15177.03 max=17003.02 | low_q=0 | sharpness_mean=33.57 | OK
+
+
+=== QUALITY SCORING: e7_90rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10133.96 min=9339.42 max=10826.87 | low_q=0 | sharpness_mean=39.84 | OK
+  cam2: quality mean=9965.85 min=9310.22 max=10733.8 | low_q=0 | sharpness_mean=41.29 | OK
+  cam3: quality mean=16187.87 min=15586.79 max=16905.59 | low_q=0 | sharpness_mean=34.92 | OK
+
+
+=== QUALITY SCORING: e8_100rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10043.06 min=9585.77 max=10486.71 | low_q=0 | sharpness_mean=40.82 | OK
+  cam2: quality mean=9872.13 min=9412.39 max=10368.85 | low_q=0 | sharpness_mean=41.71 | OK
+  cam3: quality mean=16193.74 min=15654.29 max=16697.27 | low_q=0 | sharpness_mean=34.23 | OK
+
+
+=== QUALITY SCORING: e9_110rpm ===
+
+  Corner sharpness: ON  (11×11 window, Laplacian ksize=3)
+
+  cam1: quality mean=10056.48 min=9553.02 max=10447.87 | low_q=0 | sharpness_mean=41.14 | OK
+  cam2: quality mean=9859.42 min=9385.97 max=10308.49 | low_q=0 | sharpness_mean=41.23 | OK
+  cam3: quality mean=16168.67 min=15677.0 max=16697.79 | low_q=0 | sharpness_mean=34.03 | OK
+

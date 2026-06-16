@@ -1,0 +1,15 @@
+{
+  "condition": "e19_300rpm",
+  "cam": "cam1",
+  "total_frames": 1830,
+  "reproj_err": {
+    "mean": 0.0924,
+    "max": 0.1898,
+    "min": 0.0088,
+    "std": 0.022
+  },
+  "high_reproj_count": 0,
+  "bad_reproj_count": 0,
+  "reproj_warn_thresh": 3.0,
+  "reproj_bad_thresh": 10.0
+}

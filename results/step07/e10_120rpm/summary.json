@@ -1,0 +1,17 @@
+{
+  "condition": "e10_120rpm",
+  "n_frames": 1829,
+  "cam1_cam2_y_corr": 0.999563,
+  "bending_avg_y_mm": {
+    "rms_mm": 0.2431,
+    "std_mm": 0.2431,
+    "peak_mm": 0.8192,
+    "mean_mm": -0.0
+  },
+  "torsion_diff_y_mm": {
+    "rms_mm": 0.1595,
+    "std_mm": 0.1595,
+    "peak_mm": 0.4248,
+    "mean_mm": 0.0
+  }
+}

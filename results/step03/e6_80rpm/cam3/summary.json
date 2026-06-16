@@ -1,0 +1,18 @@
+{
+  "condition": "e6_80rpm",
+  "cam": "cam3",
+  "total_detected": 1831,
+  "low_quality_threshold": 50.0,
+  "low_quality_count": 0,
+  "quality_score": {
+    "mean": 16144.4472,
+    "min": 15177.0281,
+    "max": 17003.0193,
+    "std": 293.9845
+  },
+  "corner_sharpness": {
+    "mean": 33.5696,
+    "min": 28.4959,
+    "max": 41.8223
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "condition": "e18_280rpm",
+  "cam": "cam2",
+  "total_detected": 1829,
+  "low_quality_threshold": 50.0,
+  "low_quality_count": 0,
+  "quality_score": {
+    "mean": 9840.7881,
+    "min": 9338.0233,
+    "max": 10594.2807,
+    "std": 191.8318
+  },
+  "corner_sharpness": {
+    "mean": 41.9616,
+    "min": 35.4298,
+    "max": 48.7273
+  }
+}

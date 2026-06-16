@@ -1,0 +1,55 @@
+{
+  "condition": "e11_140rpm",
+  "n_frames": 1832,
+  "alignment": "full_run_mean_removal",
+  "units_out": "millimetres",
+  "per_camera_means_m": {
+    "cam1": {
+      "x": 0.005585052,
+      "y": -0.005634378,
+      "z": 1.394206154
+    },
+    "cam2": {
+      "x": -0.000737961,
+      "y": -0.00282767,
+      "z": 1.782291843
+    },
+    "cam3": {
+      "x": -0.000585393,
+      "y": 0.001897108,
+      "z": 1.740670141
+    }
+  },
+  "raw_z_disagreement_mm": {
+    "cam1_cam2": 388.09,
+    "cam1_cam3": 346.46,
+    "cam2_cam3": 41.62
+  },
+  "aligned_z_disagreement_mm": {
+    "cam1_cam2": {
+      "std_mm": 2.1264,
+      "mean_mm": -0.0,
+      "max_mm": 4.4765
+    },
+    "cam1_cam3": {
+      "std_mm": 2.5836,
+      "mean_mm": -0.0,
+      "max_mm": 7.4984
+    },
+    "cam2_cam3": {
+      "std_mm": 1.693,
+      "mean_mm": -0.0,
+      "max_mm": 5.9379
+    }
+  },
+  "improvement_factor": {
+    "cam1_cam2": 182.5,
+    "cam1_cam3": 134.1,
+    "cam2_cam3": 24.6
+  },
+  "y_w_std_mm": {
+    "cam1": 1.4156,
+    "cam2": 1.4153,
+    "cam3": 0.1821
+  }
+}

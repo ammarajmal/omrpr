@@ -1,0 +1,172 @@
+Found 21 condition(s) — processing all.
+
+=== MOTION DECOMPOSITION: e0_0rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.831200
+  [WARN] cam1-cam2 correlation below 0.95 — check sign consistency
+
+  bending_avg_y_mm:  RMS=0.0058 mm  peak=0.0351 mm  std=0.0058 mm
+  torsion_diff_y_mm: RMS=0.0052 mm  peak=0.0276 mm  std=0.0052 mm
+
+
+=== MOTION DECOMPOSITION: e10_120rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999563
+
+  bending_avg_y_mm:  RMS=0.2431 mm  peak=0.8192 mm  std=0.2431 mm
+  torsion_diff_y_mm: RMS=0.1595 mm  peak=0.4248 mm  std=0.1595 mm
+
+
+=== MOTION DECOMPOSITION: e11_140rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999190
+
+  bending_avg_y_mm:  RMS=1.4148 mm  peak=2.4534 mm  std=1.4148 mm
+  torsion_diff_y_mm: RMS=1.3409 mm  peak=2.0786 mm  std=1.3409 mm
+
+
+=== MOTION DECOMPOSITION: e12_160rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.998363
+
+  bending_avg_y_mm:  RMS=2.3450 mm  peak=3.9469 mm  std=2.3450 mm
+  torsion_diff_y_mm: RMS=2.2707 mm  peak=3.4302 mm  std=2.2707 mm
+
+
+=== MOTION DECOMPOSITION: e13_180rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999586
+
+  bending_avg_y_mm:  RMS=2.7629 mm  peak=4.6967 mm  std=2.7629 mm
+  torsion_diff_y_mm: RMS=2.6933 mm  peak=4.1505 mm  std=2.6933 mm
+
+
+=== MOTION DECOMPOSITION: e14_200rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999465
+
+  bending_avg_y_mm:  RMS=2.8628 mm  peak=4.8008 mm  std=2.8628 mm
+  torsion_diff_y_mm: RMS=2.8062 mm  peak=4.3546 mm  std=2.8062 mm
+
+
+=== MOTION DECOMPOSITION: e15_220rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999525
+
+  bending_avg_y_mm:  RMS=2.0872 mm  peak=4.1460 mm  std=2.0872 mm
+  torsion_diff_y_mm: RMS=2.0064 mm  peak=3.5681 mm  std=2.0064 mm
+
+
+=== MOTION DECOMPOSITION: e16_240rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999771
+
+  bending_avg_y_mm:  RMS=0.7357 mm  peak=2.1003 mm  std=0.7357 mm
+  torsion_diff_y_mm: RMS=0.4459 mm  peak=1.4946 mm  std=0.4459 mm
+
+
+=== MOTION DECOMPOSITION: e17_260rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999896
+
+  bending_avg_y_mm:  RMS=0.8489 mm  peak=2.2417 mm  std=0.8489 mm
+  torsion_diff_y_mm: RMS=0.5087 mm  peak=1.5989 mm  std=0.5087 mm
+
+
+=== MOTION DECOMPOSITION: e18_280rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999882
+
+  bending_avg_y_mm:  RMS=1.1028 mm  peak=3.5478 mm  std=1.1028 mm
+  torsion_diff_y_mm: RMS=0.6894 mm  peak=2.3508 mm  std=0.6894 mm
+
+
+=== MOTION DECOMPOSITION: e19_300rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999626
+
+  bending_avg_y_mm:  RMS=1.2457 mm  peak=3.5552 mm  std=1.2457 mm
+  torsion_diff_y_mm: RMS=0.7339 mm  peak=2.3931 mm  std=0.7339 mm
+
+
+=== MOTION DECOMPOSITION: e1_20rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.868434
+  [WARN] cam1-cam2 correlation below 0.95 — check sign consistency
+
+  bending_avg_y_mm:  RMS=0.0074 mm  peak=0.0425 mm  std=0.0074 mm
+  torsion_diff_y_mm: RMS=0.0070 mm  peak=0.0383 mm  std=0.0070 mm
+
+
+=== MOTION DECOMPOSITION: e20_320rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.998109
+
+  bending_avg_y_mm:  RMS=9.8430 mm  peak=15.5298 mm  std=9.8430 mm
+  torsion_diff_y_mm: RMS=11.1249 mm  peak=16.7548 mm  std=11.1249 mm
+
+
+=== MOTION DECOMPOSITION: e2_40rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.924365
+  [WARN] cam1-cam2 correlation below 0.95 — check sign consistency
+
+  bending_avg_y_mm:  RMS=0.0107 mm  peak=0.0421 mm  std=0.0107 mm
+  torsion_diff_y_mm: RMS=0.0060 mm  peak=0.0277 mm  std=0.0060 mm
+
+
+=== MOTION DECOMPOSITION: e3_50rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.981461
+
+  bending_avg_y_mm:  RMS=0.0235 mm  peak=0.0881 mm  std=0.0235 mm
+  torsion_diff_y_mm: RMS=0.0074 mm  peak=0.0387 mm  std=0.0074 mm
+
+
+=== MOTION DECOMPOSITION: e4_60rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.998219
+
+  bending_avg_y_mm:  RMS=0.0856 mm  peak=0.1815 mm  std=0.0856 mm
+  torsion_diff_y_mm: RMS=0.0109 mm  peak=0.0511 mm  std=0.0109 mm
+
+
+=== MOTION DECOMPOSITION: e5_70rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999841
+
+  bending_avg_y_mm:  RMS=3.0758 mm  peak=4.8708 mm  std=3.0758 mm
+  torsion_diff_y_mm: RMS=0.2029 mm  peak=0.6591 mm  std=0.2029 mm
+
+
+=== MOTION DECOMPOSITION: e6_80rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999775
+
+  bending_avg_y_mm:  RMS=1.4010 mm  peak=3.0988 mm  std=1.4010 mm
+  torsion_diff_y_mm: RMS=0.1446 mm  peak=0.4559 mm  std=0.1446 mm
+
+
+=== MOTION DECOMPOSITION: e7_90rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999012
+
+  bending_avg_y_mm:  RMS=1.6186 mm  peak=2.6014 mm  std=1.6186 mm
+  torsion_diff_y_mm: RMS=1.6249 mm  peak=2.3510 mm  std=1.6249 mm
+
+
+=== MOTION DECOMPOSITION: e8_100rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.997649
+
+  bending_avg_y_mm:  RMS=0.2460 mm  peak=0.6816 mm  std=0.2460 mm
+  torsion_diff_y_mm: RMS=0.2193 mm  peak=0.4586 mm  std=0.2193 mm
+
+
+=== MOTION DECOMPOSITION: e9_110rpm ===
+
+  cam1 vs cam2 y_w_mm Pearson r = 0.999334
+
+  bending_avg_y_mm:  RMS=0.1747 mm  peak=0.5265 mm  std=0.1747 mm
+  torsion_diff_y_mm: RMS=0.0675 mm  peak=0.2027 mm  std=0.0675 mm
+

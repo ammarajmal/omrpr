@@ -1,0 +1,18 @@
+{
+  "condition": "e9_110rpm",
+  "cam": "cam2",
+  "total_detected": 1829,
+  "low_quality_threshold": 50.0,
+  "low_quality_count": 0,
+  "quality_score": {
+    "mean": 9859.4231,
+    "min": 9385.9711,
+    "max": 10308.4896,
+    "std": 145.3903
+  },
+  "corner_sharpness": {
+    "mean": 41.2344,
+    "min": 35.7231,
+    "max": 47.6116
+  }
+}

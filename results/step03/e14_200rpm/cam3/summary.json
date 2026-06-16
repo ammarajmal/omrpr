@@ -1,0 +1,18 @@
+{
+  "condition": "e14_200rpm",
+  "cam": "cam3",
+  "total_detected": 1829,
+  "low_quality_threshold": 50.0,
+  "low_quality_count": 0,
+  "quality_score": {
+    "mean": 16257.7093,
+    "min": 15632.3467,
+    "max": 16798.2611,
+    "std": 180.0286
+  },
+  "corner_sharpness": {
+    "mean": 33.894,
+    "min": 27.3802,
+    "max": 41.8388
+  }
+}

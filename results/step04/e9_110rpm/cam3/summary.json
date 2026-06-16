@@ -1,0 +1,15 @@
+{
+  "condition": "e9_110rpm",
+  "cam": "cam3",
+  "total_frames": 1831,
+  "reproj_err": {
+    "mean": 0.1564,
+    "max": 0.3106,
+    "min": 0.0051,
+    "std": 0.0463
+  },
+  "high_reproj_count": 0,
+  "bad_reproj_count": 0,
+  "reproj_warn_thresh": 3.0,
+  "reproj_bad_thresh": 10.0
+}

@@ -1,0 +1,145 @@
+
+=== SECTION A: Static Noise Floor ===
+
+  Camera: cam1
+    Processing static_cam1_test1.bag ...
+      n_detected=599/599  y_rms=0.0031 mm  reproj=1.803 px
+    Processing static_cam1_test2.bag ...
+      n_detected=601/601  y_rms=0.0018 mm  reproj=1.803 px
+    Processing static_cam1_test3.bag ...
+      n_detected=591/591  y_rms=0.0019 mm  reproj=1.805 px
+    Processing static_cam1_test4.bag ...
+      n_detected=472/472  y_rms=0.0018 mm  reproj=1.800 px
+    Processing static_cam1_test5.bag ...
+      n_detected=543/543  y_rms=0.0019 mm  reproj=1.803 px
+
+  Camera: cam2
+    Processing static_cam2_test1.bag ...
+      n_detected=591/591  y_rms=0.0013 mm  reproj=2.054 px
+    Processing static_cam2_test2.bag ...
+      n_detected=600/600  y_rms=0.0048 mm  reproj=2.043 px
+    Processing static_cam2_test3.bag ...
+      n_detected=591/591  y_rms=0.0018 mm  reproj=2.016 px
+    Processing static_cam2_test4.bag ...
+      n_detected=594/594  y_rms=0.0012 mm  reproj=2.003 px
+    Processing static_cam2_test5.bag ...
+      n_detected=585/585  y_rms=0.0038 mm  reproj=1.986 px
+
+  Camera: cam3
+    Processing static_cam3_test1.bag ...
+      n_detected=598/598  y_rms=0.0040 mm  reproj=1.509 px
+    Processing static_cam3_test2.bag ...
+      n_detected=599/599  y_rms=0.0015 mm  reproj=1.497 px
+    Processing static_cam3_test3.bag ...
+      n_detected=600/600  y_rms=0.0013 mm  reproj=1.489 px
+    Processing static_cam3_test4.bag ...
+      n_detected=582/582  y_rms=0.0013 mm  reproj=1.481 px
+    Processing static_cam3_test5.bag ...
+      n_detected=585/585  y_rms=0.0014 mm  reproj=1.485 px
+
+  Wrote results/step09/noise_floor/per_camera_per_test.csv
+
+  cam1 noise floor summary:
+    worst-case RMS: 0.0031 mm
+    mean RMS:       0.0021 mm
+    best RMS:       0.0018 mm
+
+  cam2 noise floor summary:
+    worst-case RMS: 0.0049 mm
+    mean RMS:       0.0026 mm
+    best RMS:       0.0012 mm
+
+  cam3 noise floor summary:
+    worst-case RMS: 0.0040 mm
+    mean RMS:       0.0019 mm
+    best RMS:       0.0013 mm
+
+  Derived bending_avg_y_mm bound: 0.0029 mm
+  Derived torsion_diff_y_mm bound: 0.0050 mm
+
+  Gate: bending=PASS  torsion=PASS
+
+=== SECTION B: Camera Agreement ===
+  e0_0rpm               aligned_Z_std=   0.160 mm  [PASS]
+  e1_20rpm              aligned_Z_std=   0.161 mm  [PASS]
+  e2_40rpm              aligned_Z_std=   0.169 mm  [PASS]
+  e3_50rpm              aligned_Z_std=   0.181 mm  [PASS]
+  e4_60rpm              aligned_Z_std=   0.228 mm  [PASS]
+  e5_70rpm              aligned_Z_std=   2.158 mm  [PASS]
+  e6_80rpm              aligned_Z_std=   1.458 mm  [PASS]
+  e7_90rpm              aligned_Z_std=   2.053 mm  [PASS]
+  e8_100rpm             aligned_Z_std=   0.708 mm  [PASS]
+  e9_110rpm             aligned_Z_std=   0.373 mm  [PASS]
+  e10_120rpm            aligned_Z_std=   0.579 mm  [PASS]
+  e11_140rpm            aligned_Z_std=   2.126 mm  [PASS]
+  e12_160rpm            aligned_Z_std=   1.796 mm  [PASS]
+  e13_180rpm            aligned_Z_std=   1.707 mm  [PASS]
+  e14_200rpm            aligned_Z_std=   1.661 mm  [PASS]
+  e15_220rpm            aligned_Z_std=   1.824 mm  [PASS]
+  e16_240rpm            aligned_Z_std=   0.989 mm  [PASS]
+  e17_260rpm            aligned_Z_std=   0.961 mm  [PASS]
+  e18_280rpm            aligned_Z_std=   1.204 mm  [PASS]
+  e19_300rpm            aligned_Z_std=   1.355 mm  [PASS]
+  e20_320rpm            aligned_Z_std=   7.419 mm  [PASS]
+
+  Camera agreement: 21/21 conditions pass (PASS)
+
+=== SECTION C: Bootstrap Confidence Intervals ===
+  e0_0rpm               L= 12  done
+  e1_20rpm              L= 12  done
+  e2_40rpm              L= 12  done
+  e3_50rpm              L= 12  done
+  e4_60rpm              L= 12  done
+  e5_70rpm              L= 12  done
+  e6_80rpm              L= 12  done
+  e7_90rpm              L= 12  done
+  e8_100rpm             L= 12  done
+  e9_110rpm             L= 12  done
+  e10_120rpm            L= 12  done
+  e11_140rpm            L= 12  done
+  e12_160rpm            L= 12  done
+  e13_180rpm            L= 12  done
+  e14_200rpm            L= 12  done
+  e15_220rpm            L= 12  done
+  e16_240rpm            L= 12  done
+  e17_260rpm            L= 12  done
+  e18_280rpm            L= 12  done
+  e19_300rpm            L= 12  done
+  e20_320rpm            L= 12  done
+
+  Bootstrap CI max relative width (stable): 0.200 (PASS)
+
+=== SECTION D: Timing Audit ===
+  e0_0rpm               done
+  e1_20rpm              done
+  e2_40rpm              done
+  e3_50rpm              done
+  e4_60rpm              done
+  e5_70rpm              done
+  e6_80rpm              done
+  e7_90rpm              done
+  e8_100rpm             done
+  e9_110rpm             done
+  e10_120rpm            done
+  e11_140rpm            done
+  e12_160rpm            done
+  e13_180rpm            done
+  e14_200rpm            done
+  e15_220rpm            done
+  e16_240rpm            done
+  e17_260rpm            done
+  e18_280rpm            done
+  e19_300rpm            done
+  e20_320rpm            done
+
+  Overall max pairwise drift: 20.0 ms  (worst case across all conditions)
+
+============================================================
+STEP 09 COMPLETE
+  Section A (noise floor):   PASS
+  Section B (cam agreement): PASS
+  Section C (bootstrap CI):  PASS
+  Section D (timing audit):  PASS (informational)
+  OVERALL GATE: PASS
+
+Results written to: results/step09/

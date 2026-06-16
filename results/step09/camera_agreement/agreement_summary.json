@@ -1,0 +1,13 @@
+{
+  "n_conditions": 21,
+  "n_pass": 21,
+  "n_fail": 0,
+  "threshold_mm": 15.0,
+  "aligned_z_std_mean_mm": 1.3939,
+  "aligned_z_std_max_mm": 7.4188,
+  "raw_z_std_mean_mm": 387.39,
+  "gate": {
+    "min_pass_required": 20,
+    "SECTION_B_PASS": true
+  }
+}

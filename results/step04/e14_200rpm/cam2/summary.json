@@ -1,0 +1,15 @@
+{
+  "condition": "e14_200rpm",
+  "cam": "cam2",
+  "total_frames": 1828,
+  "reproj_err": {
+    "mean": 0.1317,
+    "max": 0.3326,
+    "min": 0.0009,
+    "std": 0.0707
+  },
+  "high_reproj_count": 0,
+  "bad_reproj_count": 0,
+  "reproj_warn_thresh": 3.0,
+  "reproj_bad_thresh": 10.0
+}

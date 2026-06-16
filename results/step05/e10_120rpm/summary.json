@@ -1,0 +1,28 @@
+{
+  "condition": "e10_120rpm",
+  "n_frames_synced": 1829,
+  "t_start_s": 0.015019713,
+  "t_end_s": 30.487375612,
+  "duration_s": 30.472356,
+  "grid_hz": 60,
+  "t_s_max_diff": 0.0,
+  "raw_z_disagreement_mm": {
+    "cam1_cam2": 387.45,
+    "cam1_cam3": 344.81,
+    "cam2_cam3": 42.65
+  },
+  "cameras": {
+    "cam1": {
+      "y_w_std_mm": 0.2437,
+      "z_w_mean_m": 1.39592
+    },
+    "cam2": {
+      "y_w_std_mm": 0.2427,
+      "z_w_mean_m": 1.783372
+    },
+    "cam3": {
+      "y_w_std_mm": 0.1497,
+      "z_w_mean_m": 1.740726
+    }
+  }
+}
