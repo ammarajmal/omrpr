@@ -23,16 +23,16 @@ python src/step00_bag_audit.py --bag data/WTT/e7_90rpm/e7_90rpm_run1.bag
 ```
 
 ## Status
-- [ ] Step 00 — Bag Audit
-- [ ] Step 01 — Frame Export
-- [ ] Step 02 — AprilTag Detection
-- [ ] Step 03 — Quality Scoring
-- [ ] Step 04 — World Transform
-- [ ] Step 05 — Synchronization
-- [ ] Step 06 — Camera Fusion
-- [ ] Step 07 — Motion Decomposition
-- [ ] Step 08 — Frequency Analysis
-- [ ] Step 09 — Uncertainty Quantification
+- [x] Step 00 — Bag Audit
+- [x] Step 01 — Frame Export
+- [x] Step 02 — AprilTag Detection
+- [x] Step 03 — Quality Scoring
+- [x] Step 04 — Camera-Frame Pose Estimation (no extrinsics; IPPE_SQUARE solver)
+- [x] Step 05 — Synchronization
+- [x] Step 06 — Baseline-Aligned Camera Fusion
+- [x] Step 07 — Motion Decomposition
+- [x] Step 08 — Frequency Analysis
+- [x] Step 09 — Uncertainty Quantification
 - [ ] Step 10 — LDV Comparison
 - [ ] Step 11 — RTS Smoothing
 - [ ] Step 12 — Figures and Tables

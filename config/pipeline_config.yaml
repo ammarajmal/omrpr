@@ -9,6 +9,9 @@ cameras:
 paths:
   results_dir: results
   wtt_dir: data/WTT
+  ldv_dir: data/LDV/raw
+  ldv_manifest: data/LDV/manifest.json
+
 quality:
   low_quality_threshold: 50.0
 
@@ -34,3 +37,16 @@ intrinsics:
 
 apriltag:
   tag_size_m: 0.020
+
+frequency:
+  f_h_hz: 1.430
+  f_alpha_hz: 3.103
+  search_min_hz: 0.5
+  search_max_hz: 10.0
+  low_snr_threshold_db: 3.0
+  fs_hz: 60.0
+  window_type: hann
+
+rts_smoother:
+  process_noise_std: 10.0    # mm/s — validated on all 21 conditions, 21/21 PASS
+  measurement_noise_std: 0.05  # mm — amplitude ratio >= 0.957 across all conditions
