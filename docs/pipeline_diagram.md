@@ -29,6 +29,16 @@ Step 02 — AprilTag Detection
                 All 3 cameras detect tag_id=0 in practice; route by camera, not tag ID
         │
         ▼
+Step 02b — Detection Completeness Gate (DCG)
+        Input:  step02 detections.csv + summary.json per camera per condition
+        Output: gate_status.json per condition
+        Accept: r_det ≥ 0.95 AND n_miss_max ≤ 5 AND v_peak < w_cell (all cameras)
+        Note:   v_peak = 2π × f_struct × A_px / 60 (from cy amplitude in detections.csv)
+                w_cell = mean tag side length / 10 (from corner coords, not hardcoded)
+                Conditions that FAIL: excluded from all downstream steps
+                e0–e19: PASS; e20_320rpm: EXCLUDED (cam1: 60.8%, v_peak = 67.8 > w_cell = 29)
+        │
+        ▼
 Step 03 — Quality Scoring
         Input:  detections.csv
         Output: detections_with_quality.csv + quality_summary.json
@@ -49,12 +59,15 @@ Step 04 — Camera-Frame Pose Estimation
                 Always call .flatten() on tvec immediately after solvePnP
         │
         ▼
-Step 05 — Cross-Camera Synchronization
+Step 05 — Cross-Camera Synchronization + Gap Guard
         Input:  world_pose.csv per camera (different timestamps)
         Output: Synchronized multi-camera traces on a common 60 Hz grid
         Accept: Direct common60 resampling; dense1000 gives < 0.08% improvement — skipped
         Note:   Normalize timestamps to bag-start BEFORE any sync analysis
                 Max pairwise drift: 20.0 ms (cam1–cam3)
+                Gap-aware guard: gaps ≤ 3 frames → interpolate (ε = 0.008 mm, 0.46× noise floor)
+                                 gaps > 3 frames → write NaN (not interpolated)
+                MAX_INTERP_GAP = 3 frozen from ε = A(πg/T_h)²/8 at T_h = 0.700s, A = 1.25mm
         │
         ▼
 Step 06 — Baseline-Aligned Fusion
@@ -88,8 +101,9 @@ Step 08 — Frequency Analysis
 Step 09 — Uncertainty Quantification
         Input:  Time series + static bags
         Output: Static noise floor, camera-agreement stats, bootstrap CIs, timing audit
-        Accept: bending static RMS < 0.05 mm (result: 0.017 mm)
-                torsion proxy static RMS < 0.1 mm (result: 0.033 mm)
+        Accept: bending static RMS < 0.05 mm (result: 0.003 mm, worst-case 0.005 mm)
+                torsion proxy static RMS < 0.1 mm (result: 0.005 mm)
+                reproj error < 0.5 px (result: 0.04–0.17 px — confirms correct intrinsics)
                 Bootstrap CI width < 20% relative for stable non-near-floor conditions
         Note:   Moving-block bootstrap (not standard bootstrap — time series)
         │
@@ -99,7 +113,7 @@ Step 10 — LDV Condition-Level Comparison
         Output: Comparison table, Pearson/Spearman, ratio analysis
         Accept: Stable regime Pearson > 0.90 (excluding 60 RPM VIV outlier)
         Note:   LDV raw files in CENTIMETERS — convert explicitly; use _mm_corrected columns
-                LDV comparison is condition-level ONLY (non-simultaneous, cross-tunnel)
+                LDV comparison is condition-level (RMS/peak/freq per condition); simultaneous same-tunnel recording, different sampling rates
         │
         ▼
 Step 11 — Non-Causal RTS Smoothing
@@ -112,9 +126,12 @@ Step 11 — Non-Causal RTS Smoothing
         │
         ▼
 Step 12 — Manuscript Figures and Tables
-        Input:  All result artifacts (Steps 00–11)
+        Input:  All result artifacts (Steps 00–11) + gate_status.json from Step 02b
         Output: 5 publication figures + 2 tables in results/step12/
         Accept: All figures programmatic; claim boundary PASS; captions use required language
+                e20_320rpm: shown as DCG-EXCLUDED (not silently dropped)
+                cam3 2.19mm: shown as separate labelled pre-flutter data point
+                DCG velocity criterion stated in figure caption or table footnote
 ```
 
 ## Key Locked Parameters

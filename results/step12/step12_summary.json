@@ -16,6 +16,7 @@
   "captions_checked": 5,
   "forbidden_found": [],
   "claim_boundary_pass": true,
-  "note_non_simultaneous": "LDV comparison is condition-level only. Camera and LDV recorded at different times in separate tunnel runs.",
+  "note_comparison": "LDV comparison is condition-level (RMS/peak/frequency per condition). Camera and LDV recorded simultaneously in the same Tunnel B 2025 run on separate DAQ systems at different sampling rates (60 Hz vs 360 Hz).",
+  "note_bending_ratio": "Bending cam/LDV ratio = 1.34\u00d7 (stable mean). Two sources are identified from the 9.8\u00b0 inter-camera misalignment: (1) fixed averaging bias of 0.038 mm at 5 mm amplitude (< 6% of LDV RMSE); (2) regime-dependent torsion coupling y_leak \u2248 \u03b1\u00d7sin(9.8\u00b0), which amplifies bending RMS by approximately 2\u00d7 in the torsion-dominated regime (90\u2013220 RPM) where torsion amplitude \u03b1 is large. Bending r = 0.845 reflects this coupling, not sensor noise.",
   "note_torsion_proxy": "torsion_diff_y_mm is a two-point differential displacement proxy, not a validated torsion angle measurement."
 }

@@ -5,9 +5,10 @@ PURPOSE:
     Compares camera-derived bending and torsion RMS values against LDV reference
     measurements at the condition level across 20 matched WTT conditions.
 
-    This is NOT a waveform comparison. LDV and camera data were recorded at
-    different times (LDV: Tunnel B, September 2025; Camera: Tunnel A, October 2025).
-    The comparison is condition-level trend validation only.
+    This is NOT a waveform comparison. LDV (360 Hz) and camera (60 Hz) have different
+    sampling rates and were recorded on separate DAQ systems simultaneously in the same
+    Tunnel B 2025 experimental run. The comparison is condition-level (RMS / peak /
+    dominant frequency per condition) — not point-by-point trace alignment.
 
 INPUTS:
     Camera:  results/step07/{condition}/motion.csv
@@ -287,7 +288,7 @@ def gate_check(stats_full: dict, stats_stable: dict, stats_above_floor_bending: 
             "Stable regime excludes e4_60rpm (VIV) and e20_320rpm (high-wind unstable).",
             "Full-regime statistics include all 20 conditions.",
             "Ratio > 1 means camera reads higher than LDV. Not an accuracy claim.",
-            "Cross-tunnel comparison: camera Tunnel A Oct 2025, LDV Tunnel B Sep 2025.",
+            "Same-tunnel simultaneous recording: camera and LDV both Tunnel B, 2025.",
         ],
     }
 
@@ -552,11 +553,11 @@ def main():
         "n_full":        len(df_full),
         "n_stable":      len(df_stable),
         "excluded_from_stable": [VIV_CONDITION, UNSTABLE_CONDITION],
-        "cross_tunnel_note": (
-            "Camera bags: Tunnel A, October 2025. "
-            "LDV: Tunnel B, September 2025. "
-            "Same facility, same model, same year. "
-            "Comparison is condition-level only — NOT simultaneous validation."
+        "recording_note": (
+            "Camera and LDV recorded simultaneously in the same Tunnel B 2025 run "
+            "on separate DAQ systems (camera 60 Hz, LDV 360 Hz). "
+            "Comparison is condition-level (RMS/peak/frequency per condition), "
+            "not point-by-point, due to different sampling rates."
         ),
         "claim_boundary": (
             "The ratio (camera/LDV) is NOT an accuracy claim. "

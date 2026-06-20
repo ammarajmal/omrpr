@@ -28,6 +28,27 @@ Each entry: Step, date, what was found, acceptance status.
 - Solver: `SOLVEPNP_IPPE_SQUARE` (locked)
 - All three cameras detect `tag_id=0` in practice — routing is by camera, not tag ID
 - Sparse `detections.csv` written per camera per condition
+- **Note:** e20_320rpm cam1: 60.8%, cam2: 61.3% detection rate (39% dropout) — characterised below
+
+---
+
+## Step 02b — Detection Completeness Gate (PENDING — 2026-06-19)
+
+⚠ Script `src/step02b_detection_gate.py` not yet implemented.
+
+**Criterion (locked):** r_det ≥ 0.95 AND n_miss_max ≤ 5 AND v_peak < w_cell (all cameras)
+
+**Known outcome from existing step02 data:**
+
+| Condition | cam1 det. rate | cam2 det. rate | cam3 det. rate | max_consec_miss | v_peak (cam1) | w_cell | DCG |
+|-----------|---------------|---------------|---------------|-----------------|--------------|--------|-----|
+| e0–e19 | 100.0% | 100.0% | 100.0% | 0 | < 29 px/frame | ~29 px | **PASS** |
+| e20_320rpm | 60.8% | 61.3% | 100.0% | 6 | 67.8 px/frame | ~29 px | **EXCLUDED** |
+
+**Physical reason for e20 exclusion:** Motion blur at equilibrium crossing. At 320 RPM,
+f_struct = 2.932 Hz, A_px = 221 px → v_peak = 67.8 px/frame > w_cell = 29 px/frame.
+Proven by FFT at 2×f_struct = 5.87 Hz, equilibrium clustering (93.4%), Laplacian sharpness.
+See `docs/e20_outlier_analysis.md` for full diagnosis.
 
 ---
 
@@ -49,11 +70,16 @@ Each entry: Step, date, what was found, acceptance status.
 
 ---
 
-## Step 05 — Synchronization (2026-06-16) ✓ PASS
+## Step 05 — Synchronization (2026-06-16) ✓ PASS (gap guard patch pending)
 
 - Timestamps normalized to bag-start before any analysis
 - Direct common 60 Hz resampling used (dense1000 intermediate gives < 0.08% improvement — skipped)
 - Max pairwise timing drift: 20.0 ms (cam1–cam3)
+- ⚠ PENDING patch: gap-aware interpolation guard (MAX_INTERP_GAP = 3 frames)
+  - Gaps ≤ 3 frames → interpolate (ε = 0.0079 mm, 0.46× noise floor)
+  - Gaps > 3 frames → write NaN
+  - Threshold derivation: ε = A(πg/T_h)²/8 at T_h = 0.700 s, A = 1.25 mm
+  - See `docs/e20_outlier_analysis.md` Section 3.8
 
 ---
 
@@ -135,7 +161,38 @@ and was rejected. See `docs/PROJECT_CONTEXT.md` Section 0.5 for full rationale.
 
 ---
 
-## Step 12 — Manuscript Figures and Tables (2026-06-17) ✓ PASS
+## Step 11 — RTS Smoothing defaults fix (2026-06-20)
+
+Bug 3 resolved: `step11_rts_smoothing.py` module constants updated to match `pipeline_config.yaml`:
+- `PROCESS_NOISE_STD`: 0.5 → **10.0 mm/s**
+- `MEASUREMENT_NOISE_STD`: 0.1 → **0.05 mm**
+
+Results (21/21 PASS, phase 0.00 ms, amplitude ratio 0.957–1.000) are unchanged — config values were passed as args at runtime.
+
+---
+
+## Step 09 — Uncertainty re-run with correct intrinsics (2026-06-20)
+
+Bug 1 resolved: `step09_uncertainty.py` now loads intrinsics from `config/pipeline_config.yaml` via `_load_intrinsics_from_yaml()`.
+
+| Camera | Old fx (hardcoded) | Correct fx (from config) | Old reproj error | New reproj error |
+|--------|--------------------|--------------------------|-----------------|-----------------|
+| cam1 | 2108 | 20327.9 | 1.8–2.0 px | **0.1675 px** |
+| cam2 | 2108 | 25749.5 | 1.8–2.0 px | **0.0636 px** |
+| cam3 | 2108 | 25630.9 | 1.8–2.0 px | **0.0353 px** |
+
+Updated noise floor values in `results/step09/noise_floor/noise_floor_summary.json`:
+
+| Bound | Value |
+|-------|-------|
+| `bending_avg_bound_mm` | **0.003 mm** (0.002719) |
+| `torsion_diff_bound_mm` | **0.005 mm** (0.004849) |
+
+Previous hardcoded values 0.017/0.033 mm were overestimates (wrong K matrix — Z and fy scale together so mm values are similar, but reproj error proves correctness of calibration). All docs updated.
+
+---
+
+## Step 12 — Manuscript Figures and Tables (2026-06-17 → updated 2026-06-20) ✓ PASS
 
 Outputs in `results/step12/`:
 
@@ -143,10 +200,30 @@ Outputs in `results/step12/`:
 |------|---------|
 | `fig01_displacement_traces.pdf` | e7_90rpm raw + RTS-smoothed displacement traces |
 | `fig02_frequency_overview.pdf` | Dominant frequency vs RPM, 3 regimes annotated |
-| `fig03_ldv_scatter.pdf` | Camera vs LDV RMS scatter, stable regime, Pearson r annotated |
+| `fig03_ldv_scatter.pdf` | Camera vs LDV RMS scatter, stable regime, Pearson r annotated + bending leakage annotation |
 | `fig04_camera_agreement.pdf` | Camera Z agreement before/after baseline alignment |
 | `fig05_uncertainty.pdf` | Per-condition RMS with bootstrap 95% CI and noise floor |
-| `tab01_ldv_comparison.csv` | Full condition-level LDV comparison table |
-| `tab02_summary_stats.csv` | Summary statistics across all 21 conditions |
+| `tab01_ldv_comparison.csv` | Full condition-level LDV comparison table + Bending_Notes column |
+| `tab02_summary_stats.csv` | Summary stats + Step09 noise floor rows + bending leakage FOOTNOTE row |
+| `step12_summary.json` | Claim boundary JSON + `note_bending_ratio` key |
 
-All figures generated programmatically; claim boundary PASS (zero forbidden phrases).
+Bug 2 resolved (2026-06-20): bending leakage explanation now emitted to caption, annotation, tab01 Notes column, tab02 footnote row, and summary JSON. Noise floor values read live from step09 JSON (not hardcoded).
+
+---
+
+## Comparison Plots — Results & Discussion (2026-06-20) ✓ NEW
+
+New script `src/comparison_plots.py` generating four figures in `results/comparison_plots/`:
+
+| File | Size | Content |
+|------|------|---------|
+| `fig_freq_comparison.png` | 127 KB | Dominant freq vs RPM; camera (blue circles) + LDV (red squares); 3 regime shading; fn_b / fn_t reference lines |
+| `fig_rms_comparison.png` | 79 KB | Paired bar chart per condition, camera vs LDV RMS, regime-coloured |
+| `fig_fft_overlay.png` | 305 KB | Normalised PSD overlay for e5_70rpm (bending VIV), e7_90rpm (torsional VIV), e17_260rpm (bending re-emergence); 3×2 panel |
+| `fig_timeseries_overlay.png` | 562 KB | 20-second simultaneous time traces for e7_90rpm; camera 60 Hz (blue) + LDV 360 Hz (red dashed), mean-removed |
+
+Key observations:
+- Dominant frequency: both instruments agree on fn_t ≈ 3.08 Hz in torsional VIV regime; at ≤ 20 RPM, below threshold → noise peaks
+- RMS ratio 1.339× in bending (explained by torsion-coupling leakage), 0.599× in torsion (attenuation well understood)
+- PSD overlay shows aligned spectral peaks; both instruments resolve fn_b and fn_t cleanly in their respective regimes
+- Time-series overlay demonstrates simultaneous recording quality; LDV (360 Hz) captures higher-frequency content

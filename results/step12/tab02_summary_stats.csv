@@ -3,7 +3,8 @@ Full (20 conditions excl. 0 RPM),Bending,0.8320,0.7429,0.8334,1.6035,1.3455,20.0
 Full (20 conditions),Torsion proxy,0.9917,0.9459,0.8199,1.5771,0.5727,20.0000
 Stable (18 conditions excl. VIV 60 RPM + high-wind-unstable 320 RPM),Bending,0.8450,0.8638,0.4845,0.7192,1.3393,18.0000
 Stable (18 conditions),Torsion proxy,0.9396,0.9278,0.5487,0.7714,0.5986,18.0000
-Step 09 static noise floor,Bending,,,,0.0170,,
-Step 09 static noise floor,Torsion proxy,,,,0.0330,,
+Step 09 static noise floor,Bending,,,,0.0027,,
+Step 09 static noise floor,Torsion proxy,,,,0.0048,,
 Step 09 camera agreement aligned Z mean,Cam1-Cam2 Z std,,,,1.3940,,21.0000
 Step 11 RTS smoother mean amplitude ratio,Bending + Torsion,,,,,0.9950,21.0000
+"FOOTNOTE — Bending ratio > 1: two sources from 9.8 deg misalignment. (1) Fixed averaging bias 0.038 mm (< 6 pct of LDV RMSE). (2) Torsion coupling y_leak~alpha*sin(9.8deg) inflates bending RMS ~2x in torsion-dominated regime (90-220 RPM). Bending r=0.845 reflects coupling, not sensor noise.",,,,,,,

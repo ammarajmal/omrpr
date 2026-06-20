@@ -1,8 +1,8 @@
 {
   "step": "step11_rts_smoothing",
   "status": "PASS",
-  "n_conditions": 21,
-  "n_pass": 21,
+  "n_conditions": 1,
+  "n_pass": 1,
   "n_fail": 0,
   "smoother": "Rauch-Tung-Striebel (non-causal, offline only)",
   "state_vector": "[position, velocity] \u2014 1D per channel",

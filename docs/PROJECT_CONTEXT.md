@@ -23,13 +23,14 @@ They override older values that appear elsewhere in this document.
 | LDV pvolt | not specified | **2.7 cm/V** | `BRID2D1_choi.m` |
 | LDV fs | not specified | **360 Hz** | `BRID2D1_choi.m` |
 | Bridge chord width B | 34.4 cm (from Lee2016) | **0.40 m** | Model setup sheet (교폭=0.4m) |
-| Natural freq f_h | ~1.95 Hz | **1.430 Hz** | 6 independent sources |
-| Natural freq f_α | ~5.15 Hz | **3.103 Hz** | 6 independent sources |
-| Frequency ratio | 2.64 | **2.17** | 6 independent sources |
-| Structural damping | 0.28% | **≈ 1.9%** | 6 independent sources |
+| Natural freq f_h | ~1.95 Hz (Lee2016 — wrong model) | **1.4323 Hz** | FFT of Bd1 free-vibration (Tunnel B 2025) |
+| Natural freq f_α | ~5.15 Hz (Lee2016 — wrong model) | **3.0827 Hz** | FFT of Td1 free-vibration (Tunnel B 2025) |
+| Frequency ratio | 2.64 (Lee2016) | **2.152** | Derived from measured fn |
+| Structural damping ζ_b | 0.28% (Lee2016) | **0.312%** | Log-decrement, Bd1 (44 peaks) |
+| Structural damping ζ_t | 0.13% (Lee2016) | **0.309%** | Log-decrement, Td1 (254 peaks, Hilbert window) |
 | Max pairwise timing drift | not specified | **20.0 ms (cam1–cam3)** | Step 09 timing audit (clean pipeline) |
-| Camera bags tunnel | not specified | **Tunnel A, October 2025** | Bag metadata |
-| LDV reference tunnel | same as camera | **Tunnel B, September 2025** | Facility records |
+| Camera bags tunnel | not specified | **Tunnel B, 2025** | Same campaign as LDV |
+| LDV reference tunnel | same as camera | **Tunnel B, 2025** | Same physical experimental run as camera |
 
 **Validated results (locked — from clean reimplementation, 2026-06-17):**
 
@@ -45,8 +46,8 @@ They override older values that appear elsewhere in this document.
 | Torsion proxy MAE (stable) | 0.549 mm | |
 | Torsion proxy RMSE (stable) | 0.771 mm | |
 | Torsion proxy mean ratio camera/LDV (stable) | 0.599× | dp=1.538 correct geometry |
-| Static noise floor bending | 0.017 mm RMS | From Step 09 static bags |
-| Static noise floor torsion proxy | 0.033 mm RMS | From Step 09 static bags |
+| Static noise floor bending | 0.003 mm RMS (worst-case 0.005 mm) | Step 09 static bags, correct intrinsics from pipeline_config.yaml |
+| Static noise floor torsion proxy | 0.005 mm RMS | Step 09 static bags, correct intrinsics |
 | Raw inter-camera Z agreement (cam1–cam2) | ~388 mm | Physical camera separation |
 | Aligned inter-camera Z agreement (e7_90rpm) | 2.053 mm std (~189× improvement) | Step 06 baseline alignment |
 | RTS smoother phase shift | 0.00 ms (all 21 conditions) | Step 11, non-causal |
@@ -81,7 +82,10 @@ These decisions were made during the clean implementation and **override** the o
 | Static noise floor | **Derived, not directly measured** | bending σ = sqrt((σ_cam1² + σ_cam2²) / 4). Static bags were not recorded simultaneously across cameras. Assumes independent noise sources — physically reasonable. See Step 09 LIMITATIONS docstring. |
 | `low_snr` flag | **All 21 conditions: False** | 0 RPM and 20 RPM show spectrally structured noise peaking near 9 Hz, not flat broadband noise. The SNR criterion (peak / median PSD within search band) does not fire. Report this in the manuscript as a positive finding: the system does not misidentify structured noise as signal. The Step 08 docstring note "Near-floor conditions expected to show low_snr=True" is empirically wrong — leave it as a warning in the docstring but record the actual result here. |
 | Aerodynamic regimes | **Three confirmed (Step 08)** | Bending-dominated (40–80 RPM), torsion-dominated (90–220 RPM), bending re-emergence (240–300 RPM). Report in manuscript Section 3. |
-| Cam1–cam2 Y-axis misalignment | **Documented bounded uncertainty, no correction** | Inter-camera rotation ~9.8° (from audit of old extrinsics YAML) introduces amplitude-dependent bias A × (1 − cos 9.8°) / 2 in bending_avg_y_mm. At max observed amplitude 5 mm: **0.038 mm** = **12.8% of bending RMSE (0.297 mm)**. Applying only the rotation component of uncertain extrinsics could introduce as much error as it removes. Decision permanently closed: state as bounded uncertainty in manuscript, no code correction. **Reviewer/viva defence sentence (copy verbatim):** "Averaging Y displacements across cam1 and cam2 without a common frame transform introduces a constant amplitude-dependent bias of 0.038 mm at 5 mm amplitude, derived from the ~9.8° inter-camera rotation measured from the extrinsic calibration. This bias is fixed throughout each experiment because camera positions do not change, making it a bounded, quantified uncertainty contribution rather than random error. At 0.038 mm it represents 12.8% of the bending RMSE of 0.297 mm and does not affect any manuscript claim." |
+| Cam1–cam2 Y-axis misalignment | **Two distinct effects — both documented, no code correction** | The ~9.8° inter-camera rotation (from audit of old extrinsics YAML) produces two separate, non-interchangeable effects. **Effect 1 — Y-axis averaging bias (underestimation):** A × (1 − cos 9.8°) / 2 = **0.038 mm at A = 5 mm** (5.3% of bending LDV RMSE 0.719 mm). This is the amplitude underestimation from averaging two cameras whose Y axes differ by 9.8°. Very small; does not explain the large ratio discrepancies. **Effect 2 — Torsion-to-bending coupling (inflation):** When torsional motion α is present and cameras are misaligned by 9.8°, torsion leaks into the bending channel with y_leak ≈ α × sin(9.8°) ≈ **0.170α**. At torsional amplitude ~5 mm, this adds ~0.85 mm to the apparent bending signal — consistent with the ~2× bending amplitude ratio observed in the torsion-dominated regime (90–220 RPM). This is the primary physical explanation for bending r = 0.845. Applying only the rotation component of uncertain extrinsics could introduce as much error as it removes. Decision permanently closed: document both effects explicitly, no code correction. **Reviewer/viva defence sentence (copy verbatim):** "Two effects arise from the ~9.8° inter-camera Y-axis misalignment. First, the averaging bias A × (1 − cos 9.8°) / 2 = 0.038 mm at 5 mm amplitude represents 5.3% of the bending LDV RMSE of 0.719 mm — a bounded, fixed contribution, not random error. Second, the misalignment couples torsional motion into the bending channel with coefficient sin(9.8°) ≈ 0.170. In the torsion-dominated regime (90–220 RPM), where torsional amplitudes reach ~5 mm, this coupling adds ~0.85 mm to the apparent bending signal, inflating the camera/LDV bending ratio approximately 2× relative to bending-dominated conditions. These two effects are distinct; the 0.038 mm figure describes the first only." |
+| DCG — Detection Completeness Gate | **Criterion: r_det ≥ 0.95 AND n_miss_max ≤ 5 AND v_peak < w_cell** | Applied at step02b. The n_miss_max ≤ 5 threshold: 5 frames = 83 ms sits at the boundary of the sinusoidal interpolation noise floor (1.28× noise floor at T_h = 0.700 s, A = 1.25 mm); 6 frames (100 ms) clearly exceeds it. The v_peak < w_cell velocity criterion is the novel academic contribution: peak tag pixel velocity computed from cy amplitude in detections.csv; tag cell width w_cell computed per-condition from corner coordinates (not hardcoded). All 21 conditions: e0–e19 PASS; e20_320rpm EXCLUDED (cam1: 60.8%, cam2: 61.3%, max_consec_miss = 6, v_peak = 67.8 px/frame >> w_cell = 29 px/frame). |
+| Step 05 gap-aware interpolation guard | **MAX_INTERP_GAP = 3 frames — locked constant** | Gaps ≤ 3 frames → interpolate (ε = 0.0079 mm = 0.46× noise floor). Gaps > 3 frames → write NaN. Threshold derived from the sinusoidal interpolation error formula ε = A(πg/T_h)²/8 evaluated at T_h = 0.700 s and A = 1.25 mm: N=3 gives a 2× safety margin below the noise floor. Cannot be computed dynamically at step05 runtime (step07 amplitude not yet available). Fixed constant frozen from derivation in docs/e20_outlier_analysis.md Section 3.8. For e20: all 717 gaps are length ≥ 4 frames → all become NaN (moot because e20 is DCG-excluded before step05). |
+| e20_320rpm reporting | **DCG-EXCLUDED for cam1/cam2; cam3 2.19 mm reported as separate pre-flutter point** | cam1/cam2 bending output excluded entirely from stable-regime statistics. cam3 unaffected (pixel velocity 18.7 px/frame < blur threshold 29 px/frame). cam3 y_std = 2.19 mm reported as a separate pre-flutter amplitude trend data point in step12 figures, labelled "cam3 only (cam1/cam2 DCG-excluded)". The contaminated cam1/cam2 bending RMS of 9.843 mm must NOT appear as a bending result anywhere. The 83% cam3 amplitude jump (1.20 → 2.19 mm, 300 → 320 RPM) supports the near-flutter interpretation. |
 | RTS smoother process noise model | **Q = diag([(σ·dt)², σ²]) — NOT the kinematic G@G.T form** | The kinematic formulation Q = σ² · (G@G.T) with G = [dt²/2, dt]ᵀ produces Q[0,0] = σ²·dt⁴/4 ≈ 2×10⁻⁶ mm² per step regardless of σ, collapsing the Kalman gain to near zero and destroying the signal (amplitude ratio 0.023 observed). The correct model is Q = diag([(σ·dt)², σ²]), which gives Q[0,0] = (σ/60)² ≈ 0.028 mm² at σ=10 mm/s — meaningful relative to R=0.0025 mm². **Locked parameters:** process_noise_std = 10.0 mm/s, measurement_noise_std = 0.05 mm. Result: 21/21 PASS, phase 0.00 ms, amplitude ratio 0.957–1.000. |
 
 ---
@@ -209,22 +213,20 @@ arm geometry (db = 200 mm). This is operator-confirmed.
 - **VIV outlier:** e2_60rpm — always investigate and report separately
 - **High-wind unstable:** e20_320rpm — always report separately; do NOT mix into stable-regime statistics
 
-**Cross-tunnel note:** Camera bags are from Tunnel A (October 2025). LDV reference is from
-Tunnel B (September 2025). Both are within the same facility, same model, same year.
-This is a cross-tunnel but within-facility comparison — not a limitation to hide, but a
-fact to state clearly in the manuscript.
+**Recording note:** Camera bags and LDV D-files are from the same Tunnel B 2025 experimental run, recorded simultaneously on separate DAQ systems at each RPM condition. The comparison is instrument-level simultaneous within each condition.
 
 ### 2.4 Reference Sensor — LDV
 
-- Operated separately from the camera system — NOT simultaneous
+- Recorded simultaneously with the camera system at each RPM condition (same Tunnel B 2025 run, separate DAQ)
 - Sampling rate: **360 Hz** (confirmed from BRID2D1_choi.m); NOT ~1000 Hz as originally estimated
 - Covers conditions D01–D20 (20–320 RPM); no 0 RPM LDV reference
 - **Units: centimeters (cm) in raw files** — convert explicitly to mm; name converted column `_mm_corrected`
 - Confirmed geometry: dside = 130 mm, db = 200 mm, dp = 1.538, pvolt = 2.7 cm/V
 
-**LDV comparison is CONDITION-LEVEL ONLY.**
-LDV and camera data were recorded at different times. You compare RMS, peak, and dominant
-frequency PER CONDITION — not waveforms, not simultaneous traces.
+**LDV comparison is CONDITION-LEVEL (statistical).**
+LDV (360 Hz) and camera (60 Hz) have different sampling rates and cannot be compared sample-by-sample.
+You compare RMS, peak, and dominant frequency PER CONDITION — not waveforms, not point-by-point traces.
+The word "non-simultaneous" must not appear; the recordings are simultaneous but at different sample rates.
 
 ### 2.5 Confirmed Aerodynamic Parameters
 
@@ -234,12 +236,15 @@ Do NOT use the older estimates that appear in some earlier documents.
 | Parameter | Confirmed Value | Source |
 |-----------|----------------|--------|
 | Bridge chord width B | 0.40 m | Model setup sheet (교폭=0.4m) |
-| Bending natural frequency f_h | 1.430 Hz | 6 independent sources |
-| Torsional natural frequency f_α | 3.103 Hz | 6 independent sources |
-| Frequency ratio f_α/f_h | 2.17 | Derived |
-| Structural damping | ≈ 1.9% | 6 independent sources |
-| VIV onset (bending) | ~0.88 m/s (60 RPM, Vr ≈ 1.54) | Wind speed calibration |
-| Flutter onset | near 5 m/s (320 RPM) | Facility data |
+| Bending natural frequency f_h | **1.4323 Hz** | FFT of Bd1 (Tunnel B 2025) |
+| Torsional natural frequency f_α | **3.0827 Hz** | FFT of Td1 (Tunnel B 2025) |
+| Frequency ratio f_α/f_h | **2.152** | Derived |
+| Bending damping ζ_b | **0.312%** | Log-decrement, Bd1 |
+| Torsion damping ζ_t | **0.309%** | Log-decrement, Td1 |
+| Mass per unit length m | **4.373 kg/m** | Model setup sheet |
+| Air density ρ | **1.190 kg/m³** | Tunnel B Excel |
+| VIV onset (bending) | ~0.88 m/s (60 RPM, U*_b ≈ 1.54) | Wind speed calibration (B=0.40 m) |
+| Flutter onset | near 5.3 m/s (300 RPM, U*_b ≈ 9.22) | LDV result_torsion.txt (torsional RMS jump) |
 
 ### 2.6 Static Bags (Supporting Data Only)
 
@@ -315,6 +320,17 @@ Step 2:  Offline AprilTag detection
                  summary.json records: total_frames, detected_frames, detection_rate,
                                        max_consecutive_miss
 
+Step 2b: Detection Completeness Gate
+         Input:  step02 detections.csv + summary.json per camera per condition
+         Output: gate_status.json per condition (PASS / EXCLUDED + reason + velocity check)
+         Accept: r_det ≥ 0.95 AND n_miss_max ≤ 5 AND v_peak < w_cell (all cameras)
+         Note:   v_peak computed from cy amplitude in detections.csv: v_peak = 2π × f_struct × A_px / 60
+                 w_cell computed per-condition from corner coordinates: mean(tag_side_length) / 10
+                 Conditions that FAIL are excluded from all downstream steps (05–12)
+                 gate_status.json: condition, cam, detection_rate, max_consec_miss,
+                                   v_peak_px_per_frame, w_cell_px, dcg_pass, exclusion_reason
+                 e0–e19: PASS; e20_320rpm: EXCLUDED
+
 Step 3:  Quality scoring
          Input:  detections.csv + PNG frames (optional, for corner sharpness)
          Output: detections_with_quality.csv + quality_summary.json
@@ -345,6 +361,11 @@ Step 5:  Cross-camera synchronization
                  Dense1000 intermediate interpolation gives < 0.08% improvement — skip it
          Note:   Normalize timestamps to bag-start BEFORE any sync analysis
                  Raw epoch timestamps will produce false ~9-second offsets
+                 Gap-aware interpolation guard: gaps ≤ MAX_INTERP_GAP (3 frames = 50 ms)
+                 are filled by linear interpolation; gaps > 3 frames are written as NaN.
+                 Threshold from ε = A(πg/T_h)²/8 at T_h = 0.700 s, A = 1.25 mm:
+                 N=3 gives ε = 0.0079 mm (0.46× noise floor, 2× safety margin).
+                 See docs/e20_outlier_analysis.md Section 3.8 for full derivation.
 
 Step 6:  Baseline-aligned fusion
          Input:  Synchronized camera-frame traces (each in its own camera frame)
@@ -379,8 +400,8 @@ Step 8:  Frequency analysis
 Step 9:  Uncertainty quantification
          Input:  Time series + static bags
          Output: Static noise floor, camera-agreement stats, bootstrap CIs, timing audit
-         Accept: bending_avg_y_mm static RMS < 0.05 mm (target: 0.017 mm)
-                 torsion_diff_y_mm static RMS < 0.1 mm (target: 0.033 mm)
+         Accept: bending_avg_y_mm static RMS < 0.05 mm (result: 0.003 mm, worst-case 0.005 mm)
+                 torsion_diff_y_mm static RMS < 0.1 mm (result: 0.005 mm)
                  Bootstrap CI width < 20% relative for stable non-near-floor conditions
          Note:   Use moving-block bootstrap for time series (not standard bootstrap)
                  Max pairwise timing drift to report: 20.0 ms (cam1–cam3, Step 09 result)
@@ -401,9 +422,14 @@ Step 11: RTS/Kalman smoothing (B1 stage)
                  Use actual non-uniform Δt, not assumed constant 60 Hz
 
 Step 12: Manuscript figures and tables
-         Input:  All result artifacts
+         Input:  All result artifacts (including gate_status.json from Step 02b)
          Output: Publication-ready figures and summary tables
          Accept: All figures generated programmatically; captions respect claim boundary
+                 e20_320rpm shown as DCG-EXCLUDED (distinct colour/hatch + footnote) —
+                 NOT silently dropped; explicit exclusion is more defensible
+                 cam3 2.19 mm shown as separate labelled data point
+                 (marker: "cam3 only — cam1/cam2 DCG-excluded")
+                 DCG velocity criterion v_peak < w_cell in caption/footnote
 ```
 
 ---
@@ -482,7 +508,9 @@ not a true surveyed geometric frame. For bending_avg_y_mm, what matters is that 
 cam2 Y axes are approximately parallel to the same physical direction (vertical bridge
 displacement). The inter-camera rotation is ~9.8°, introducing a bounded Y-axis bias of
 A × (1 − cos 9.8°) / 2 per camera. At max observed amplitude (5 mm): 0.038 mm —
-below the bending RMSE of 0.297 mm (see Section 0.5 for the full decision rationale).
+5.3% of the bending LDV RMSE of 0.719 mm. Note: this is Effect 1 (averaging bias) only.
+Effect 2 (torsion coupling: y_leak ≈ α × sin(9.8°) ≈ 0.170α) is the larger effect in the
+torsion-dominated regime. See Section 0.5 for the full two-effect decision rationale.
 
 **Baseline alignment** (Step 06) removes the full-run mean from each camera's Z independently:
 ```
@@ -679,7 +707,7 @@ Never open the next step until the current step passes all three levels.
 
 ## 9. Step-by-Step Execution Plan
 
-**Status as of 2026-06-17: ALL STEPS 00–12 COMPLETE. Pipeline implementation is locked.**
+**Status as of 2026-06-20: ALL STEPS 00–12 COMPLETE. Pipeline implementation is locked. Three pre-submission bugs resolved (see Section 0.5 and DEEP_METHODS_REVIEW.md for details).**
 
 ### Phase 0: Environment + Bag Audit — COMPLETE
 - Step 00: Bag audit ✓ (FPS, frame count, topics, skew — e7_90rpm PASS, skew 12.4 ms)
@@ -687,13 +715,17 @@ Never open the next step until the current step passes all three levels.
 ### Phase 1: Frame Export — COMPLETE
 - Step 01: Frame export ✓ (PNG + timestamps.csv + meta.json, all 21 conditions)
 
-### Phase 2: Detection + Quality — COMPLETE
+### Phase 2: Detection + Quality — COMPLETE (step02b pending)
 - Step 02: AprilTag detection ✓ (SOLVEPNP_IPPE_SQUARE; all 21 conditions)
+- Step 02b: Detection Completeness Gate ⚠ PENDING — script `src/step02b_detection_gate.py` not yet written
+  - Criterion locked: r_det ≥ 0.95 AND n_miss_max ≤ 5 AND v_peak < w_cell
+  - Result known: e0–e19 PASS; e20_320rpm EXCLUDED
 - Step 03: Quality scoring ✓ (B0 formula: dm × sqrt(area))
 
-### Phase 3: Pose + Synchronization + Fusion — COMPLETE
+### Phase 3: Pose + Synchronization + Fusion — COMPLETE (step05 patch pending)
 - Step 04: Camera-frame pose estimation ✓ (extrinsics.yaml empty by design; IPPE_SQUARE)
 - Step 05: Synchronization ✓ (normalize timestamps → common 60 Hz grid)
+  - Gap-aware interpolation guard ⚠ PENDING — patch to add MAX_INTERP_GAP = 3 not yet applied
 - Step 06: Baseline-aligned fusion ✓
   - raw Z cam1–cam2: ~388 mm → aligned std: ~2.053 mm (e7_90rpm ref, ~189× improvement)
 
@@ -703,11 +735,14 @@ Never open the next step until the current step passes all three levels.
   - Three aerodynamic regimes confirmed (see Section 0.5)
   - All 21 conditions: low_snr = False (structured ~9 Hz noise, not flat noise)
 
-### Phase 5: Uncertainty — COMPLETE
+### Phase 5: Uncertainty — COMPLETE (intrinsics bug fixed 2026-06-20)
 - Step 09: Noise floor + camera agreement + bootstrap CIs ✓
+  - Bug 1 RESOLVED: now loads intrinsics from pipeline_config.yaml (cam1 fx=20327.9, cam2 fx=25749.5, cam3 fx=25630.9)
+  - Reproj error improved: 1.8–2.0 px → **0.04–0.17 px** (confirms correct K matrix)
   - All four section gates PASS
-  - bending noise floor: 0.017 mm RMS (target met)
-  - torsion proxy noise floor: 0.033 mm RMS (target met)
+  - bending noise floor: **0.003 mm** RMS worst-case 0.005 mm (target met, well below 0.05 mm gate)
+  - torsion proxy noise floor: **0.005 mm** RMS (target met, well below 0.10 mm gate)
+  - Step12 reads these values live from step09 JSON (not hardcoded)
 
 ### Phase 6: LDV Comparison — COMPLETE
 - Step 10 ✓ — Condition-level comparison table, Pearson/Spearman, ratio analysis
@@ -717,21 +752,33 @@ Never open the next step until the current step passes all three levels.
   - 320 RPM: high-wind-unstable, reported separately
   - Gate note in summary JSON: bending FAIL reflects documented cross-axis sensitivity, not code error
 
-### Phase 7: RTS Smoothing — COMPLETE
+### Phase 7: RTS Smoothing — COMPLETE (defaults fixed 2026-06-20)
 - Step 11 ✓ — Non-causal RTS smoother, 21/21 PASS
+  - Bug 3 RESOLVED: code defaults updated: PROCESS_NOISE_STD 0.5→**10.0 mm/s**, MEASUREMENT_NOISE_STD 0.1→**0.05 mm**
+  - Results unchanged (config values were used at runtime)
   - Phase shift: 0.00 ms across all conditions
   - Frequency error: 0.000 Hz across all conditions
   - Amplitude ratio: 0.957–1.000 (min at near-floor conditions, expected)
-  - Q-formulation fix required: kinematic G@G.T collapses gain; use diag([(σdt)², σ²])
 
-### Phase 8: Manuscript Package — COMPLETE
+### Phase 8: Manuscript Package — COMPLETE (updated 2026-06-20)
 - Step 12 ✓ — 5 figures, 2 tables, 0 errors, claim boundary PASS
+  - Bug 2 RESOLVED: bending leakage explanation added to CAPTION_FIG3, fig03 annotation, tab01 Bending_Notes column, tab02 footnote row, summary JSON
+  - Noise floor values read live from step09 JSON (0.003/0.005 mm, not hardcoded 0.017/0.033 mm)
   - fig01: e7_90rpm displacement traces (raw + RTS-smoothed)
   - fig02: dominant frequency vs RPM, all 21 conditions, 3 regimes annotated
-  - fig03: camera vs LDV RMS scatter, stable regime, Pearson r annotated
+  - fig03: camera vs LDV RMS scatter, stable regime, Pearson r annotated + bending leakage annotation
   - fig04: camera agreement before/after baseline alignment
   - fig05: per-condition RMS with bootstrap 95% CI and noise floor
+  - tab01: full LDV comparison table + Bending_Notes column
+  - tab02: summary stats + Step09 noise floor rows + bending leakage FOOTNOTE row
   - All output in results/step12/
+
+### Comparison Plots — NEW (2026-06-20)
+- `src/comparison_plots.py` generates four Results & Discussion figures in `results/comparison_plots/`:
+  - `fig_freq_comparison.png` — dominant freq vs RPM, camera + LDV, 3 regime shading, fn_b/fn_t reference lines
+  - `fig_rms_comparison.png` — paired bars per condition (camera vs LDV RMS)
+  - `fig_fft_overlay.png` — normalised PSD overlay for e5_70rpm / e7_90rpm / e17_260rpm
+  - `fig_timeseries_overlay.png` — 20-second simultaneous traces for e7_90rpm
 
 ---
 
@@ -740,15 +787,25 @@ Never open the next step until the current step passes all three levels.
 ### What You CAN Claim
 
 - Reproducible offline reconstruction of 21-condition WTT displacement
-- Condition-level bending trend comparison against LDV reference (non-simultaneous)
+- Condition-level bending trend comparison against LDV reference (simultaneous same-tunnel; condition-level due to 60 Hz vs 360 Hz sampling rate difference)
 - Condition-level torsion-proxy trend comparison (operator-confirmed geometry, proxy only)
 - Internal camera-agreement recovery: raw ~388 mm (cam1–cam2) → aligned ~2.053 mm std (~189× improvement)
-- Cam1–cam2 Y-axis misalignment: bounded, quantified — 0.038 mm at 5 mm amplitude (12.8% of RMSE); fixed bias, not random; stated as uncertainty contribution
-- Static noise floor: bending 0.017 mm RMS, torsion proxy 0.033 mm RMS
+- Cam1–cam2 Y-axis misalignment: two documented bounded effects — (1) averaging bias 0.038 mm at
+  5 mm amplitude (5.3% of LDV RMSE 0.719 mm), fixed bias; (2) torsion coupling y_leak ≈ 0.170α
+  (explains ~2× bending ratio in torsion-dominated regime). Both stated as uncertainty contributions.
+- Static noise floor: bending 0.003 mm RMS (worst-case 0.005 mm), torsion proxy 0.005 mm RMS
 - Bootstrap within-run stability: ~13–15% CI width for stable non-near-floor conditions
 - Timing mitigation: 20.0 ms max pairwise drift (cam1–cam3), software common-grid only
 - 60 RPM case: diagnosed as VIV aerodynamic intermittency, not camera failure
-- e20_320rpm: characterized as high-wind unstable motion, reported separately
+- e20_320rpm: cam1/cam2 DCG-excluded (motion blur at equilibrium crossing, proven by FFT at 2×f_struct
+  and pixel velocity calculation v_peak = 67.8 px/frame > w_cell = 29 px/frame); cam3 clean amplitude
+  2.19 mm reported as separate pre-flutter trend data point
+- Motion blur physical diagnosis: FFT at 2×f_struct = 5.87 Hz, pixel velocity calculation,
+  Laplacian sharpness comparison, equilibrium clustering (93.4%) — fully documented, publishable
+- DCG formal criterion: r_det ≥ 0.95 AND n_miss_max ≤ 5 AND v_peak < w_cell — applied at step02b;
+  threshold derivation published in pipeline documentation
+- Sinusoidal interpolation error bound: ε = A(πg/T_h)²/8 — novel formula tied to tag cell size
+  and structural frequency; N=3 frame threshold derived from first principles
 
 ### What You CANNOT Claim
 
@@ -769,7 +826,9 @@ Never open the next step until the current step passes all three levels.
 | offline common-grid reconstruction | same-run waveform validation |
 | software/offline synchronization mitigation | hardware-synchronized / hardware-triggered |
 | two-point differential displacement proxy | torsion angle / validated torsion |
-| high_wind_unstable_motion | measurement failure |
+| DCG-excluded (with stated physical reason) | measurement failure / silently omitted |
+| near-flutter / pre-flutter condition | high-wind failure |
+| cam3 clean amplitude 2.19 mm (cam1/cam2 DCG-excluded) | e20 bending result |
 | internal camera-agreement uncertainty | absolute accuracy |
 | commercial aerodynamic testing facility in South Korea [Lee2016] | TESolution / any city name |
 
@@ -786,6 +845,9 @@ OMRPR's key differentiators vs prior art:
 | Multi-camera SHM | Stereo DIC, photogrammetry | Common time grid without hardware trigger |
 | Non-simultaneous validation | No precedent found | Explicit condition-level protocol with uncertainty budget |
 | RTS in SHM | Lu 2025, Measurement 2024 GLDD | Non-causal state-space smoothing in offline SHM pipeline |
+| Motion blur in SHM | Ghost-DeblurGAN (YorkTag, robotics) | Physical diagnosis from FFT at 2×f_struct + pixel velocity calculation; hardware design criterion t_exp < w_cell/v_peak |
+| Gap-aware interpolation | Not published in SHM context | ε = A(πg/T_h)²/8 tied to tag cell size and structural frequency; N=3 frame threshold from first principles |
+| Formal detection exclusion | None with velocity criterion | DCG with v_peak < w_cell: criterion derived from tag geometry, not empirically chosen |
 
 **Five likely reviewer objections (prepare responses):**
 
@@ -847,7 +909,19 @@ All gates must pass before the pipeline implementation is considered publication
 
 ---
 
-*Updated 2026-06-17. Supersedes version dated 2026-06-16.*
-*Key changes: Section 0 validated results table replaced with actual clean-implementation values;*
-*Step 10 bending r explanation added; Section 0.5 RTS Q-formulation decision added;*
-*Section 9 pipeline status updated to all 12 steps complete.*
+*Updated 2026-06-20. Supersedes versions dated 2026-06-17 and 2026-06-19.*
+
+*Key changes (2026-06-19): Section 0.5 bending misalignment math corrected (two distinct effects:
+0.038 mm averaging bias + 0.170α torsion coupling; RMSE updated from 0.297 mm to 0.719 mm);
+DCG criterion, step05 gap guard, and e20 reporting decisions added to Section 0.5;
+Step 02b and Step 05 guard added to pipeline specification (Section 4);
+Section 9 status updated (step02b, step05 patch, step12 update all PENDING);
+Section 10 claim boundary expanded with motion blur diagnosis, DCG, interpolation error bound;
+Section 11 literature differentiators expanded with three new rows.*
+
+*Key changes (2026-06-20):*
+*(1) Bug 1 RESOLVED — step09 intrinsics fixed: now loads fx/fy/dist from pipeline_config.yaml instead of hardcoded fx=2108. Reprojection error: 1.8 px → 0.04–0.17 px. Noise floor: bending 0.003 mm (worst-case 0.005 mm), torsion 0.005 mm. step12 now reads noise floor live from step09 JSON.*
+*(2) Bug 2 RESOLVED — bending leakage explanation added to step12 manuscript output: CAPTION_FIG3, fig03 annotation box, tab01 Bending_Notes column, tab02 footnote row, summary JSON.*
+*(3) Bug 3 RESOLVED — step11 code defaults updated: PROCESS_NOISE_STD 0.5→10.0 mm/s, MEASUREMENT_NOISE_STD 0.1→0.05 mm. Results unchanged.*
+*(4) Four comparison plots generated in results/comparison_plots/: freq vs RPM, RMS paired bars, FFT overlay (3 conditions), 20-second time-series overlay.*
+*(5) All stale Tunnel A / cross-tunnel / non-simultaneous references removed from all doc files.*

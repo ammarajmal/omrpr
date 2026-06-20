@@ -57,6 +57,7 @@ import warnings
 from pathlib import Path
 
 import cv2
+import yaml
 import numpy as np
 import pandas as pd
 from rosbags.rosbag1 import Reader
@@ -81,22 +82,9 @@ CONFIG = {
     # solvePnP
     "solver": cv2.SOLVEPNP_IPPE_SQUARE,
 
-    # Camera intrinsics — from pipeline_config.yaml
-    # These must match the values used in Step 04
-    "intrinsics": {
-        "cam1": {
-            "fx": 2108.0, "fy": 2108.0, "cx": 960.0, "cy": 540.0,
-            "dist": [0.0, 0.0, 0.0, 0.0, 0.0],
-        },
-        "cam2": {
-            "fx": 2108.0, "fy": 2108.0, "cx": 960.0, "cy": 540.0,
-            "dist": [0.0, 0.0, 0.0, 0.0, 0.0],
-        },
-        "cam3": {
-            "fx": 2108.0, "fy": 2108.0, "cx": 960.0, "cy": 540.0,
-            "dist": [0.0, 0.0, 0.0, 0.0, 0.0],
-        },
-    },
+    # Camera intrinsics — loaded from config/pipeline_config.yaml at runtime.
+    # Placeholder; overwritten by _load_intrinsics_from_yaml() below CONFIG.
+    "intrinsics": {},
 
     # Static bag configuration
     "static_bags": {
@@ -146,13 +134,36 @@ CONFIG = {
     "bootstrap_block_length_rule": "cube_root",  # L = int(N^(1/3))
     "random_seed": 42,
 
-    # Gate thresholds
-    "noise_floor_bending_max_mm": 0.05,    # cam1/cam2 per-camera worst-case
-    "noise_floor_torsion_max_mm": 0.10,    # cam3 worst-case
+    # Gate thresholds — worst-case per-camera; bending = cam1/cam2, torsion = cam3
+    "noise_floor_bending_max_mm": 0.05,
+    "noise_floor_torsion_max_mm": 0.10,
     "camera_agreement_max_mm": 15.0,       # aligned Z std per condition
     "camera_agreement_min_pass": 20,       # out of 21 conditions
     "bootstrap_ci_max_relative_width": 0.20,  # for stable non-near-floor
 }
+
+
+def _load_intrinsics_from_yaml(yaml_path: Path) -> dict:
+    """Load camera intrinsics from pipeline_config.yaml, matching Step 04."""
+    with open(yaml_path) as f:
+        cfg = yaml.safe_load(f)
+    raw = cfg.get("intrinsics", {})
+    result = {}
+    for cam in ("cam1", "cam2", "cam3"):
+        c = raw.get(cam, {})
+        result[cam] = {
+            "fx":   float(c["fx"]),
+            "fy":   float(c["fy"]),
+            "cx":   float(c["cx"]),
+            "cy":   float(c["cy"]),
+            "dist": [float(v) for v in c["dist"]],
+        }
+    return result
+
+
+_PIPELINE_CONFIG_PATH = Path("config/pipeline_config.yaml")
+CONFIG["intrinsics"] = _load_intrinsics_from_yaml(_PIPELINE_CONFIG_PATH)
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # UTILITIES

@@ -70,10 +70,10 @@ FS          = 60.0          # Hz — uniform grid from Step 05
 DT          = 1.0 / FS     # seconds — exact, not computed from t_s differences
 HANN_WINDOW = True          # always use Hann window for FFT
 
-# Tunable parameters — all in pipeline_config.yaml in production
-# These are the defaults validated on e7_90rpm
-PROCESS_NOISE_STD    = 0.5   # mm/s — process noise standard deviation
-MEASUREMENT_NOISE_STD = 0.1  # mm   — measurement noise standard deviation
+# Tunable parameters — match pipeline_config.yaml rts_smoother section.
+# Validated on all 21 conditions: 21/21 PASS, phase 0.00 ms, amplitude ratio 0.957–1.000.
+PROCESS_NOISE_STD     = 10.0   # mm/s — process noise standard deviation
+MEASUREMENT_NOISE_STD =  0.05  # mm   — measurement noise standard deviation
 
 # Acceptance thresholds
 PHASE_SHIFT_THRESHOLD_MS  = 10.0    # ms

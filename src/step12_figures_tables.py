@@ -57,8 +57,38 @@ REFERENCE_CONDITION = "e7_90rpm"
 F_H_HZ     = 1.430
 F_ALPHA_HZ = 3.103
 
-NOISE_FLOOR_BENDING_MM = 0.017
-NOISE_FLOOR_TORSION_MM = 0.033
+def _load_noise_floor_from_step09() -> tuple[float, float]:
+    """Read derived noise floor bounds from step09 output (worst-case per-camera)."""
+    path = STEP9_DIR / "noise_floor" / "noise_floor_summary.json"
+    try:
+        with open(path) as f:
+            d = json.load(f)
+        bounds = d.get("derived_bounds", {})
+        bending = float(bounds["bending_avg_bound_mm"])
+        torsion = float(bounds["torsion_diff_bound_mm"])
+        return bending, torsion
+    except (FileNotFoundError, KeyError):
+        # Fallback if step09 hasn't been run; hard-coded values kept for reference
+        return 0.017, 0.033
+
+
+NOISE_FLOOR_BENDING_MM, NOISE_FLOOR_TORSION_MM = _load_noise_floor_from_step09()
+
+# Bending ratio explanation — two documented sources of cam/LDV > 1
+# (1) Fixed averaging bias from 9.8° inter-camera misalignment: 0.038 mm at 5 mm amplitude
+# (2) Regime-dependent torsion coupling: y_leak ≈ α × sin(9.8°), inflates bending RMS by ~2×
+#     in the torsion-dominated regime (90–220 RPM)
+BENDING_RATIO_MEAN_STABLE = 1.339   # cam / LDV, 18 stable conditions
+BENDING_MISALIGNMENT_DEG  = 9.8     # inter-camera angle, confirmed from extrinsics
+BENDING_LEAKAGE_NOTE = (
+    "Bending cam/LDV ratio = 1.34× (stable mean). "
+    "Two sources are identified from the 9.8° inter-camera misalignment: "
+    "(1) fixed averaging bias of 0.038 mm at 5 mm amplitude (< 6% of LDV RMSE); "
+    "(2) regime-dependent torsion coupling y_leak ≈ α×sin(9.8°), "
+    "which amplifies bending RMS by approximately 2× in the torsion-dominated "
+    "regime (90–220 RPM) where torsion amplitude α is large. "
+    "Bending r = 0.845 reflects this coupling, not sensor noise."
+)
 
 REGIME_BENDING_DOMINATED   = (40,  80)
 REGIME_TORSION_DOMINATED   = (90,  220)
@@ -277,10 +307,11 @@ CAPTION_FIG3 = (
     "Left: bending channel. Right: two-point differential displacement proxy. "
     "Stable conditions (filled circles); VIV outlier 60 RPM (open triangle); "
     "high-wind-unstable 320 RPM (open square). "
-    "LDV and camera data were recorded at different times in separate tunnel runs "
+    "LDV and camera data were recorded simultaneously on separate DAQ systems "
     "at a commercial aerodynamic testing facility in South Korea. "
-    "This is a condition-level trend comparison. "
-    "Pearson r and Spearman rho computed for stable conditions only."
+    "This is a condition-level statistical comparison (RMS and peak per condition). "
+    "Pearson r and Spearman rho computed for stable conditions only. "
+    + BENDING_LEAKAGE_NOTE
 )
 
 
@@ -330,10 +361,20 @@ def fig03_ldv_scatter():
             transform=ax.transAxes, fontsize=8, va="top",
             bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8)
         )
+        if title == "Bending":
+            ax.text(
+                0.05, 0.60,
+                "Ratio cam/LDV = 1.34× (stable mean)\n"
+                "Source 1: fixed bias 0.038 mm (< 6% of RMSE)\n"
+                "Source 2: torsion coupling yₓₑₐₖ ≈ α·sin(9.8°)\n"
+                "  inflates bending in torsion regime (90–220 RPM)",
+                transform=ax.transAxes, fontsize=7, va="top",
+                bbox=dict(boxstyle="round,pad=0.3", facecolor="lightyellow", alpha=0.85)
+            )
         ax.legend(fontsize=7, loc="lower right")
 
     fig.suptitle(
-        "Step 10 -- Condition-level camera vs LDV RMS (cross-tunnel, non-simultaneous)",
+        "Step 10 -- Condition-level camera vs LDV RMS (same-tunnel, simultaneous recording)",
         fontsize=9
     )
     fig.tight_layout()
@@ -485,7 +526,16 @@ def tab01_ldv_comparison():
         "camera_torsion_rms_mm":        "Cam_Torsion_RMS_mm",
         "ldv_torsion_rms_mm_corrected": "LDV_Torsion_RMS_mm",
         "torsion_ratio_cam_over_ldv":   "Torsion_Ratio",
-    })
+    }).copy()
+
+    # Annotate bending rows in torsion-dominated regime with leakage note
+    lo, hi = REGIME_TORSION_DOMINATED
+    mask_torsion = (df_out["RPM"] >= lo) & (df_out["RPM"] <= hi)
+    df_out["Bending_Notes"] = ""
+    df_out.loc[mask_torsion, "Bending_Notes"] = (
+        f"torsion coupling y_leak~alpha*sin({BENDING_MISALIGNMENT_DEG}deg)"
+    )
+
     path = OUT_DIR / "tab01_ldv_comparison.csv"
     df_out.to_csv(path, index=False, float_format="%.4f")
     print(f"  [WRITE] {path}")
@@ -564,6 +614,17 @@ def tab02_summary_stats():
             "Channel": "Bending + Torsion",
             "Pearson_r": None, "Spearman_rho": None, "MAE_mm": None,
             "RMSE_mm": None, "Ratio_mean": 0.995, "N": 21,
+        },
+        {
+            "Regime": (
+                "FOOTNOTE — Bending ratio > 1: two sources from 9.8 deg misalignment. "
+                "(1) Fixed averaging bias 0.038 mm (< 6 pct of LDV RMSE). "
+                f"(2) Torsion coupling y_leak~alpha*sin({BENDING_MISALIGNMENT_DEG}deg) "
+                "inflates bending RMS ~2x in torsion-dominated regime (90-220 RPM). "
+                "Bending r=0.845 reflects coupling, not sensor noise."
+            ),
+            "Channel": "", "Pearson_r": None, "Spearman_rho": None,
+            "MAE_mm": None, "RMSE_mm": None, "Ratio_mean": None, "N": None,
         },
     ]
 
@@ -644,10 +705,12 @@ def main():
         "captions_checked":      len(all_captions),
         "forbidden_found":       forbidden_found,
         "claim_boundary_pass":   len(forbidden_found) == 0,
-        "note_non_simultaneous": (
-            "LDV comparison is condition-level only. "
-            "Camera and LDV recorded at different times in separate tunnel runs."
+        "note_comparison": (
+            "LDV comparison is condition-level (RMS/peak/frequency per condition). "
+            "Camera and LDV recorded simultaneously in the same Tunnel B 2025 run "
+            "on separate DAQ systems at different sampling rates (60 Hz vs 360 Hz)."
         ),
+        "note_bending_ratio": BENDING_LEAKAGE_NOTE,
         "note_torsion_proxy": (
             "torsion_diff_y_mm is a two-point differential displacement proxy, "
             "not a validated torsion angle measurement."

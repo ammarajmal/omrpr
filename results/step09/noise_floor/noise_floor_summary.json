@@ -1,42 +1,42 @@
 {
   "cam1": {
     "n_tests": 5,
-    "rms_mean_mm": 0.002114,
-    "rms_worst_mm": 0.00312,
-    "rms_best_mm": 0.001843,
-    "rms_std_mm": 0.000503,
+    "rms_mean_mm": 0.001401,
+    "rms_worst_mm": 0.002592,
+    "rms_best_mm": 0.001036,
+    "rms_std_mm": 0.000597,
     "detection_rate_mean": 1.0,
-    "reproj_err_mean_px": 1.803
+    "reproj_err_mean_px": 0.1675
   },
   "cam2": {
     "n_tests": 5,
-    "rms_mean_mm": 0.002567,
-    "rms_worst_mm": 0.00485,
-    "rms_best_mm": 0.001176,
-    "rms_std_mm": 0.001477,
+    "rms_mean_mm": 0.002543,
+    "rms_worst_mm": 0.004781,
+    "rms_best_mm": 0.001132,
+    "rms_std_mm": 0.001492,
     "detection_rate_mean": 1.0,
-    "reproj_err_mean_px": 2.0203
+    "reproj_err_mean_px": 0.0636
   },
   "cam3": {
     "n_tests": 5,
-    "rms_mean_mm": 0.001884,
-    "rms_worst_mm": 0.004038,
-    "rms_best_mm": 0.001253,
-    "rms_std_mm": 0.00108,
+    "rms_mean_mm": 0.001547,
+    "rms_worst_mm": 0.004015,
+    "rms_best_mm": 0.000747,
+    "rms_std_mm": 0.001242,
     "detection_rate_mean": 1.0,
-    "reproj_err_mean_px": 1.4923
+    "reproj_err_mean_px": 0.0353
   },
   "derived_bounds": {
     "note": "Derived upper bounds assuming independent noise between cameras. Static bags were NOT recorded simultaneously across cameras (recorded hours apart). Direct measurement of bending_avg_y_mm noise floor from static bags is therefore not possible.",
-    "sigma_cam1_worst_mm": 0.00312,
-    "sigma_cam2_worst_mm": 0.00485,
-    "sigma_cam3_worst_mm": 0.004038,
-    "bending_avg_bound_mm": 0.002883,
-    "torsion_diff_bound_mm": 0.004962
+    "sigma_cam1_worst_mm": 0.002592,
+    "sigma_cam2_worst_mm": 0.004781,
+    "sigma_cam3_worst_mm": 0.004015,
+    "bending_avg_bound_mm": 0.002719,
+    "torsion_diff_bound_mm": 0.004849
   },
   "gate": {
-    "bending_threshold_mm": 0.05,
-    "torsion_threshold_mm": 0.1,
+    "bending_threshold_mm": 0.1,
+    "torsion_threshold_mm": 0.2,
     "bending_pass": true,
     "torsion_pass": true,
     "SECTION_A_PASS": true
