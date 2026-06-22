@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs ls -lh)",
+      "Bash(python3)",
+      "Read(//home/ammar/data/**)",
+      "Read(//home/ammar/data/DEV/shm-displacement-project/data/WTT/**)",
+      "Bash(awk '{print $5, $9}')",
+      "Bash(awk '{print $6, $7, $9}')",
+      "Bash(xargs -I{} basename {})",
+      "Bash(ls /home/ammar/.claude/projects/-home-ammar-data-DEV-shm-displacement-project/memory/)",
+      "Read(//home/ammar/.claude/projects/-home-ammar-data-DEV-shm-displacement-project/memory/**)"
+    ]
+  }
+}

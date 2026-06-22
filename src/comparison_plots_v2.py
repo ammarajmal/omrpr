@@ -117,13 +117,15 @@ def load_ldv_timeseries(d_path: Path, bias: np.ndarray):
 
 def ldv_stats(b_mm: np.ndarray, t_mm: np.ndarray):
     """Return (b_mean, b_rms, b_peak, t_mean, t_rms, t_peak) all in mm."""
+    b_dem = b_mm - np.mean(b_mm)
+    t_dem = t_mm - np.mean(t_mm)
     return (
         float(np.mean(b_mm)),
         float(np.std(b_mm)),          # std ≡ rms after mean removal
-        float(np.max(np.abs(b_mm))),
+        float(np.max(np.abs(b_dem))), # peak of oscillatory component (mean-removed)
         float(np.mean(t_mm)),
         float(np.std(t_mm)),
-        float(np.max(np.abs(t_mm))),
+        float(np.max(np.abs(t_dem))),
     )
 
 
@@ -380,12 +382,25 @@ def fig_A_full(df: pd.DataFrame, x_col: str, x_label: str,
             ax.plot(x, ldv_peak, "--^",  ms=4.5, lw=1.1, color=C_LDV,
                     label="LDV Peak", alpha=0.65, zorder=3)
 
-            # Camera
-            valid = ~np.isnan(cam_rms)
-            ax.plot(x[valid], cam_rms[valid],  "-o", ms=6, lw=2.2,
+            # Camera — exclude ALL DCG-contaminated camera metrics from continuous line
+            # (both RMS and Peak are corrupted by the interpolation artifact for e20)
+            dcg_mask = data["flag"].values == "DCG_excluded"
+            valid     = ~np.isnan(cam_rms)
+            valid_cam = valid & ~dcg_mask   # exclude contaminated point from line
+
+            ax.plot(x[valid_cam], cam_rms[valid_cam],  "-o", ms=6, lw=2.2,
                     color=C_CAM, label="Camera RMS", zorder=6)
-            ax.plot(x[valid], cam_peak[valid], "--v", ms=4, lw=1.0,
+            ax.plot(x[valid_cam], cam_peak[valid_cam], "--v", ms=4, lw=1.0,
                     color=C_CAM, label="Camera Peak", alpha=0.6, zorder=3)
+            # Mark contaminated camera point as isolated × markers
+            if np.any(dcg_mask & valid):
+                xv_dcg = x[dcg_mask & valid]
+                ax.scatter(xv_dcg, cam_rms[dcg_mask & valid],
+                           marker="x", s=55, color=C_CAM, lw=1.8,
+                           zorder=5, alpha=0.55, label="Camera (DCG artifact)")
+                ax.scatter(xv_dcg, cam_peak[dcg_mask & valid],
+                           marker="x", s=55, color=C_CAM, lw=1.8,
+                           zorder=5, alpha=0.55)
 
             # Annotation for VIV condition
             for _, r in data.iterrows():
@@ -412,7 +427,7 @@ def fig_A_full(df: pd.DataFrame, x_col: str, x_label: str,
     # Add DCG exclusion note for top row
     axes_top_right = fig.get_axes()[1]
     axes_top_right.text(0.98, 0.97,
-                        "e20 (320 RPM) included\n(camera values contaminated\nby interpolation artifact)",
+                        "e20 (320 RPM) included\nCamera Peak excluded from line\n(× marker = contaminated artifact)",
                         transform=axes_top_right.transAxes,
                         fontsize=6.5, ha="right", va="top",
                         bbox=dict(boxstyle="round,pad=0.3", fc="lightyellow",
