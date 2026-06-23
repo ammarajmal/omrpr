@@ -6,8 +6,9 @@ PURPOSE:
     measurements at the condition level across 20 matched WTT conditions.
 
     This is NOT a waveform comparison. LDV (360 Hz) and camera (60 Hz) have different
-    sampling rates and were recorded on separate DAQ systems simultaneously in the same
-    Tunnel B 2025 experimental run. The comparison is condition-level (RMS / peak /
+    sampling rates. Both were recorded in Tunnel B 2025 with the same structural model
+    and matched RPM conditions, on separate DAQ systems in separate sessions (LDV:
+    September 2025, camera: October 2025). The comparison is condition-level (RMS / peak /
     dominant frequency per condition) — not point-by-point trace alignment.
 
 INPUTS:
@@ -42,19 +43,26 @@ CRITICAL RULES (from guideline Section 6):
     6. No LDV-equivalent accuracy claim. The ratio is NOT a validated accuracy number.
 
 ACCEPTANCE CRITERIA:
-    Stable regime Pearson r (bending)  > 0.90  (excluding 60 RPM and 320 RPM)
-    Stable regime Pearson r (torsion)  > 0.90  (excluding 60 RPM and 320 RPM)
-    Target (from confirmed validated results):
-        Bending Pearson r  ≈ 0.959
-        Torsion Pearson r  ≈ 0.968
-        Bending MAE        ≈ 0.224 mm
-        Bending RMSE       ≈ 0.297 mm
-        Bending ratio      ≈ 1.268×
-        Torsion ratio      ≈ 0.785×
+    Stable regime Pearson r (bending) > 0.90  (excluding 60 RPM VIV and 320 RPM DCG)
+    Stable regime Pearson r (torsion) > 0.90  (excluding 60 RPM and 320 RPM)
+    Target (canonical — 18 stable conditions, no near-floor exclusion):
+        Bending Pearson r  ≈ 0.845
+        Bending Spearman ρ ≈ 0.864
+        Bending MAE        ≈ 0.485 mm
+        Bending RMSE       ≈ 0.719 mm
+        Bending ratio      ≈ 1.339×
+        Torsion Pearson r  ≈ 0.940
+        Torsion ratio      ≈ 0.599×
+
+    Near-floor exclusion REMOVED — rationale:
+        (a) With correct intrinsics, e1/e2/e3 are 2.5-9x above true noise floor (0.0027 mm)
+        (b) Exclusion threshold is arbitrary and not reviewer-defensible
+        (c) Physically justified exclusions are VIV (60 RPM) and DCG (320 RPM) only
+        (d) 18 stable conditions with no ad-hoc exclusion is the cleanest claim
 
 KNOWN BUGS AVOIDED:
     - LDV unit confusion (Bug 7.2): raw files are cm, converted explicitly to mm
-    - dp=2.0 error: correct value is 1.538 (dside=130mm not 100mm)
+    - dp=2.0 error: correct value is 1.538; sensor gap (센서간격) = 130 mm total between sensors (not 100 mm); formula is (ch2-ch1) * dp where dp = db/sensor_gap = 200/130
     - result_bending.txt NOT used: we recompute from raw files with correct geometry
 """
 
@@ -117,7 +125,7 @@ def process_ldv_condition(d_path: Path, bias: np.ndarray) -> dict:
         debiased  — subtract D00 mean per channel
         calibrated — multiply by pvolt = 2.7 → units now cm
         bending   — (ch1_cal + ch2_cal) / 2  → cm
-        torsion   — (ch2_cal - ch1_cal) * dp → cm  (dp = 1.538)
+        torsion   — (ch2_cal - ch1_cal) * dp → cm  (dp = 1.538; sensor gap = 13 cm total, dp = db/gap = 20/13)
         convert   — multiply by 10 → mm  (_mm_corrected)
         rms       — std() of the mm time series
 
@@ -230,7 +238,7 @@ def compute_comparison_stats(
     }
 def identify_near_floor_conditions(
     df: pd.DataFrame,
-    camera_noise_floor_mm: float = 0.017,
+    camera_noise_floor_mm: float = 0.003,
     near_floor_multiplier: float = 2.0,
 ) -> pd.Series:
     """
@@ -260,7 +268,7 @@ def gate_check(stats_full: dict, stats_stable: dict, stats_above_floor_bending: 
     """
     Evaluate acceptance criteria against confirmed targets.
     Stable regime excludes 60 RPM (VIV) and 320 RPM (high-wind unstable).
-    Bending gate uses above-floor subset (a priori noise-floor criterion from Step 09).
+    Canonical bending gate uses all 18 stable conditions (no near-floor exclusion).
     """
     b_r = stats_above_floor_bending.get(
         "above_floor_bending_pearson_r", 0.0)
@@ -278,17 +286,17 @@ def gate_check(stats_full: dict, stats_stable: dict, stats_above_floor_bending: 
         "threshold_pearson_r":  PEARSON_THRESHOLD,
         "stable_bending_pearson_r":  b_r,
         "stable_torsion_pearson_r":  t_r,
-        "target_bending_pearson_r":  0.959,
-        "target_torsion_pearson_r":  0.968,
-        "target_bending_mae_mm":     0.224,
-        "target_bending_rmse_mm":    0.297,
-        "target_bending_ratio":      1.268,
-        "target_torsion_ratio":      0.785,
+        "target_bending_pearson_r":  0.845,
+        "target_torsion_pearson_r":  0.940,
+        "target_bending_mae_mm":     0.485,
+        "target_bending_rmse_mm":    0.719,
+        "target_bending_ratio":      1.339,
+        "target_torsion_ratio":      0.599,
         "notes": [
             "Stable regime excludes e4_60rpm (VIV) and e20_320rpm (high-wind unstable).",
             "Full-regime statistics include all 20 conditions.",
             "Ratio > 1 means camera reads higher than LDV. Not an accuracy claim.",
-            "Same-tunnel simultaneous recording: camera and LDV both Tunnel B, 2025.",
+            "Same-tunnel (Tunnel B) condition-matched comparison. Sessions are 10 days apart — NOT simultaneous.",
         ],
     }
 
@@ -437,22 +445,21 @@ def main():
     # Stable regime: exclude VIV and high-wind unstable
     df_stable = df[df["flag"] == ""].copy()
 
-    # Identify near-floor bending conditions (a priori criterion from Step 09)
-    CAMERA_NOISE_FLOOR_MM = 0.017   # from Step 09 static bags
-    NEAR_FLOOR_MULTIPLIER = 2.0     # threshold = 2 × noise floor = 0.034 mm
-    near_floor_mask = identify_near_floor_conditions(
-        df_stable, CAMERA_NOISE_FLOOR_MM, NEAR_FLOOR_MULTIPLIER
-    )
-    df_stable_above_floor = df_stable[~near_floor_mask].copy()
-    near_floor_conditions = df_stable[near_floor_mask]["wtt_condition"].tolist()
-
-    print(f"\n[NEAR-FLOOR] Camera bending threshold: "
-          f"{NEAR_FLOOR_MULTIPLIER} × {CAMERA_NOISE_FLOOR_MM} mm "
-          f"= {NEAR_FLOOR_MULTIPLIER * CAMERA_NOISE_FLOOR_MM:.3f} mm")
-    print(f"[NEAR-FLOOR] Excluded from bending correlation: "
-          f"{near_floor_conditions}")
-    print(f"[NEAR-FLOOR] Remaining for bending Pearson r: "
-          f"{len(df_stable_above_floor)} conditions")
+    # Near-floor reporting note (informational only — not used as exclusion gate).
+    # With correct intrinsics, static bending noise bound = ~0.0027 mm.
+    # e1/e2/e3 bending RMS (0.007-0.024 mm) are 2.5-9x above floor.
+    # Canonical reporting uses all 18 stable conditions (no near-floor exclusion).
+    # The physically justified exclusions are VIV (60 RPM) and DCG (320 RPM) only.
+    _nf_path = results_dir / "step09" / "noise_floor" / "noise_floor_summary.json"
+    if _nf_path.exists():
+        with open(_nf_path) as _f:
+            _nf_data = json.load(_f)
+        _derived_nf = _nf_data["derived_bounds"]["bending_avg_bound_mm"]
+        print(f"[INFO] Derived static bending noise floor: {_derived_nf:.6f} mm "
+              f"(informational — not used as exclusion gate)")
+    # No near-floor exclusion — use full stable subset (18 conditions)
+    df_stable_above_floor = df_stable.copy()
+    near_floor_conditions = []
 
     print(f"\n[STATS] Full regime: {len(df_full)} conditions")
     print(f"[STATS] Stable regime: {len(df_stable)} conditions "
@@ -489,42 +496,39 @@ def main():
 
     # ── Print summary ──────────────────────────────────────────────────────
     print("\n" + "─" * 60)
-    print("BENDING (full regime)")
-    print(f"  Pearson r  = {stats_full['bending_pearson_r']:.4f}  "
-          f"(target ≈ 0.959)")
-    print(f"  Spearman ρ = {stats_full['bending_spearman_rho']:.4f}  "
-          f"(target ≈ 0.944)")
-    print(f"  MAE        = {stats_full['bending_mae_mm']:.4f} mm  "
-          f"(target ≈ 0.224 mm)")
-    print(f"  RMSE       = {stats_full['bending_rmse_mm']:.4f} mm  "
-          f"(target ≈ 0.297 mm)")
-    print(f"  Ratio mean = {stats_full['bending_ratio_mean']:.4f}×  "
-          f"(target ≈ 1.268×)")
+    print("BENDING (full regime — all 20 conditions)")
+    print(f"  Pearson r  = {stats_full['bending_pearson_r']:.4f}")
+    print(f"  Spearman ρ = {stats_full['bending_spearman_rho']:.4f}")
+    print(f"  MAE        = {stats_full['bending_mae_mm']:.4f} mm")
+    print(f"  RMSE       = {stats_full['bending_rmse_mm']:.4f} mm")
+    print(f"  Ratio mean = {stats_full['bending_ratio_mean']:.4f}×")
 
-    print("\nTORSION (full regime)")
-    print(f"  Pearson r  = {stats_full['torsion_pearson_r']:.4f}  "
-          f"(target ≈ 0.968)")
-    print(f"  Spearman ρ = {stats_full['torsion_spearman_rho']:.4f}  "
-          f"(target ≈ 0.953)")
-    print(f"  Ratio mean = {stats_full['torsion_ratio_mean']:.4f}×  "
-          f"(target ≈ 0.785×)")
+    print("\nTORSION (full regime — all 20 conditions)")
+    print(f"  Pearson r  = {stats_full['torsion_pearson_r']:.4f}")
+    print(f"  Spearman ρ = {stats_full['torsion_spearman_rho']:.4f}")
+    print(f"  Ratio mean = {stats_full['torsion_ratio_mean']:.4f}×")
 
     print("\nSTABLE REGIME ONLY (excl. 60 RPM, 320 RPM)")
     print(f"  Bending Pearson r = {stats_stable['stable_bending_pearson_r']:.4f}")
     print(f"  Torsion Pearson r = {stats_stable['stable_torsion_pearson_r']:.4f}")
 
-    print(f"\nBENDING (stable, above camera noise floor — "
-          f"{len(df_stable_above_floor)} conditions)")
+    print(f"\nBENDING (stable regime — {len(df_stable_above_floor)} conditions, "
+          f"no near-floor exclusion)")
     print(f"  Pearson r  = "
-          f"{stats_above_floor_bending['above_floor_bending_pearson_r']:.4f}")
+          f"{stats_above_floor_bending['above_floor_bending_pearson_r']:.4f}  "
+          f"(target ≈ 0.845)")
     print(f"  Spearman ρ = "
-          f"{stats_above_floor_bending['above_floor_bending_spearman_rho']:.4f}")
+          f"{stats_above_floor_bending['above_floor_bending_spearman_rho']:.4f}  "
+          f"(target ≈ 0.864)")
     print(f"  MAE        = "
-          f"{stats_above_floor_bending['above_floor_bending_mae_mm']:.4f} mm")
+          f"{stats_above_floor_bending['above_floor_bending_mae_mm']:.4f} mm  "
+          f"(target ≈ 0.485 mm)")
     print(f"  RMSE       = "
-          f"{stats_above_floor_bending['above_floor_bending_rmse_mm']:.4f} mm")
+          f"{stats_above_floor_bending['above_floor_bending_rmse_mm']:.4f} mm  "
+          f"(target ≈ 0.719 mm)")
     print(f"  Ratio mean = "
-          f"{stats_above_floor_bending['above_floor_bending_ratio_mean']:.4f}×")
+          f"{stats_above_floor_bending['above_floor_bending_ratio_mean']:.4f}×  "
+          f"(target ≈ 1.339×)")
 
     # ── Gate check ─────────────────────────────────────────────────────────
     gate = gate_check(stats_full, stats_stable, stats_above_floor_bending)
@@ -545,19 +549,23 @@ def main():
             "dp":       round(DP, 6),
             "fs_hz":    FS_LDV,
             "bias_file": "D00",
-            "note_dp": "dp=1.538 NOT 2.0; MATLAB script had wrong dside=10cm, "
-                       "confirmed value is dside=130mm from facility document",
+            "note_dp": "dp=1.538 NOT 2.0; MATLAB script had wrong sensor gap=10cm, "
+                       "confirmed sensor gap=130mm (센서간격) from facility document; "
+                       "formula is (ch2-ch1) * dp where dp = db/sensor_gap = 200mm/130mm",
         },
         "full_regime":   stats_full,
         "stable_regime": stats_stable,
+        "above_floor_regime": stats_above_floor_bending,
         "n_full":        len(df_full),
         "n_stable":      len(df_stable),
+        "n_above_floor": len(df_stable_above_floor),
         "excluded_from_stable": [VIV_CONDITION, UNSTABLE_CONDITION],
+        "excluded_from_above_floor": near_floor_conditions,
         "recording_note": (
-            "Camera and LDV recorded simultaneously in the same Tunnel B 2025 run "
-            "on separate DAQ systems (camera 60 Hz, LDV 360 Hz). "
-            "Comparison is condition-level (RMS/peak/frequency per condition), "
-            "not point-by-point, due to different sampling rates."
+            "Camera (Tunnel B, October 2025) and LDV (Tunnel B, September 2025) — same facility, "
+            "same structural model, matched RPM conditions. Sessions are 10 days apart — "
+            "NOT simultaneous. Comparison is condition-level: RMS, peak, and dominant frequency "
+            "per RPM condition."
         ),
         "claim_boundary": (
             "The ratio (camera/LDV) is NOT an accuracy claim. "

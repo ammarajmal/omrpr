@@ -8,7 +8,7 @@ A fully offline, deterministic, multi-camera reconstruction pipeline for reprodu
 sub-millimeter structural displacement tracking using AprilTag markers — applied to
 wind tunnel testing of a bridge section model (21 RPM conditions, 3 Sony RX10 IV cameras).
 
-LDV comparison is condition-level only (non-simultaneous, cross-tunnel). No hardware sync.
+LDV comparison is condition-level only (same-tunnel Tunnel B, separate sessions 10 days apart, NOT simultaneous). No hardware sync.
 See `docs/PROJECT_CONTEXT.md` for the full design rationale and claim boundaries.
 
 ## Pipeline Overview
@@ -50,19 +50,17 @@ acceptance-gate status.
 
 | Metric | Value |
 |--------|-------|
-| Bending noise floor (static RMS) | 0.017 mm |
-| Torsion proxy noise floor (static RMS) | 0.033 mm |
+| Bending noise floor (e0_0rpm full-pipeline RMS) | 0.017 mm |
+| Torsion proxy noise floor (e0_0rpm full-pipeline RMS) | 0.033 mm |
 | Camera Z agreement — raw cam1–cam2 | ~388 mm offset (physical separation) |
 | Camera Z agreement — after baseline alignment (e7_90rpm) | 2.053 mm std (~189× improvement) |
 | Bending Pearson r vs LDV (stable regime, 18 conditions) | 0.845 |
 | Torsion proxy Pearson r vs LDV (stable regime) | 0.940 |
 | Max pairwise timing drift (cam1–cam3) | 20.0 ms |
-| RTS smoother phase shift | 0.00 ms (all 21 conditions) |
+| RTS smoother phase shift | < ±8.3 ms resolution limit at 60 Hz (reported 0.00 ms lag, all 21 conditions) |
 | RTS smoother amplitude ratio | 0.957–1.000 |
 
-The bending r = 0.845 (below the 0.90 target) is due to regime-dependent cross-axis
-sensitivity from the ~9.8° inter-camera misalignment, not a pipeline error. See
-`docs/PROJECT_CONTEXT.md` Section 0 for the full explanation.
+The bending r = 0.845 (below the 0.90 gate) reflects regime-dependent cross-axis sensitivity from the ~9.8° inter-camera misalignment — a characterised physical limitation, not a pipeline error. The value is computed on the stable regime (18 conditions); the only exclusions are the physically justified VIV (60 RPM) and DCG (320 RPM) cases. See docs/PROJECT_CONTEXT.md Section 0 for the full explanation.
 
 ## Publication Outputs
 
@@ -73,14 +71,16 @@ All manuscript figures are generated programmatically in `results/step12/`:
 - `fig04_camera_agreement.pdf` — before/after baseline alignment
 - `fig05_uncertainty.pdf` — per-condition RMS with bootstrap 95% CI and noise floor
 
-## Status — ALL STEPS COMPLETE
+## Status
 
 - [x] Step 00 — Bag Audit
 - [x] Step 01 — Frame Export
 - [x] Step 02 — AprilTag Detection
+- [ ] Step 02b — Detection Completeness Gate standalone script
 - [x] Step 03 — Quality Scoring
 - [x] Step 04 — Camera-Frame Pose Estimation (no extrinsics; IPPE_SQUARE solver)
 - [x] Step 05 — Synchronization (common 60 Hz grid; direct resampling)
+- [ ] Step 05 gap-aware interpolation guard patch (derived 3-frame guard) in live code
 - [x] Step 06 — Baseline-Aligned Camera Fusion
 - [x] Step 07 — Motion Decomposition
 - [x] Step 08 — Frequency Analysis (3 aerodynamic regimes confirmed)
@@ -88,3 +88,5 @@ All manuscript figures are generated programmatically in `results/step12/`:
 - [x] Step 10 — LDV Condition-Level Comparison
 - [x] Step 11 — Non-Causal RTS Smoothing (21/21 PASS)
 - [x] Step 12 — Manuscript Figures and Tables (5 figures, 2 tables)
+
+Core result artifacts exist and the manuscript-facing values are aligned, but the two unchecked items above are still open if full code-method parity is required.

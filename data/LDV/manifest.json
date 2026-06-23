@@ -1,5 +1,5 @@
 {
-  "description": "Maps LDV D-label filenames to WTT condition labels and RPM values. LDV raw files are in centimetres (cm). Step 10 converts to mm and stores in _mm_corrected columns. LDV was recorded in Tunnel B, September 2025. WTT camera bags were recorded in Tunnel A, October 2025. Comparison is condition-level only — NOT simultaneous.",
+  "description": "Maps LDV D-label filenames to WTT condition labels and RPM values. LDV raw files are in centimetres (cm). Step 10 converts to mm and stores in _mm_corrected columns. LDV (Tunnel B, September 2025) and camera bags (Tunnel B, October 2025) were both recorded in the same facility with the same structural model under matched RPM conditions. Sessions are 10 days apart — NOT simultaneous. Comparison is condition-level only: RMS, peak displacement, and dominant frequency per RPM condition.",
   "units_raw": "cm",
   "units_converted": "mm",
   "fs_hz": 360,

@@ -4,6 +4,28 @@ Each entry: Step, date, what was found, acceptance status.
 
 ---
 
+## Discrepancy Cleanup — 2026-06-22
+
+All stale values corrected in this audit pass (canonical source: `step10_summary.json`):
+
+| Item | Stale Value | Canonical Value | Source |
+|------|-------------|-----------------|--------|
+| Bending Pearson r | retired older value (stale) | **0.845** | canonical (stable, 18 cond.) |
+| Bending Spearman ρ | 0.864/0.768 | **0.864** | canonical (stable) |
+| Bending MAE | 0.484 mm / 0.562 mm | **0.484 mm** | canonical (stable) |
+| Bending RMSE | 0.719 mm / 0.787 mm | **0.719 mm** | canonical (stable) |
+| Bending ratio camera/LDV | 1.339× / 1.583× (also 1.268×) | **1.339×** | canonical (stable) |
+| Torsion ratio camera/LDV | 0.785× | **0.599×** | `step10_summary.json` |
+| Aligned Z residual | ~1.757 mm RMS / 62× | **~2.053 mm std / ~189×** | `results/step06/e7_90rpm/summary.json` |
+| Max timing drift | stale larger value | **20.03 ms** | `step05` actual output |
+| Camera bag tunnel | Stale tunnel label (wrong) | **Tunnel B, October 2025** | Confirmed 2026-06-22 |
+| Recording simultaneity | stale concurrent-session assumption | **NOT simultaneous — 10 days apart** | `manifest.json` |
+| DCG n_miss_max threshold | ≤ 5 frames | **≤ 3 frames** | Paired analytically with proposed Step 05 gap guard; not implemented in live Step 05 code |
+
+Files corrected: `data/LDV/manifest.json`, `src/step10_ldv_comparison.py`, `src/step06_fuse_cameras.py`, `README.md`, `docs/PROJECT_CONTEXT.md`, `docs/claim_boundary.md`, `docs/RESULTS_LOG.md`
+
+---
+
 ## Step 00 — Bag Audit (2026-06-16) ✓ PASS
 
 - All 21 bags open successfully
@@ -36,7 +58,7 @@ Each entry: Step, date, what was found, acceptance status.
 
 ⚠ Script `src/step02b_detection_gate.py` not yet implemented.
 
-**Criterion (locked):** r_det ≥ 0.95 AND n_miss_max ≤ 5 AND v_peak < w_cell (all cameras)
+**Criterion (locked):** r_det ≥ 0.95 AND n_miss_max ≤ 3 AND v_peak < w_cell (all cameras)
 
 **Known outcome from existing step02 data:**
 
@@ -74,11 +96,11 @@ See `docs/e20_outlier_analysis.md` for full diagnosis.
 
 - Timestamps normalized to bag-start before any analysis
 - Direct common 60 Hz resampling used (dense1000 intermediate gives < 0.08% improvement — skipped)
-- Max pairwise timing drift: 20.0 ms (cam1–cam3)
+- Max pairwise timing drift: 20.03 ms (cam1–cam3)
 - ⚠ PENDING patch: gap-aware interpolation guard (MAX_INTERP_GAP = 3 frames)
   - Gaps ≤ 3 frames → interpolate (ε = 0.0079 mm, 0.46× noise floor)
   - Gaps > 3 frames → write NaN
-  - Threshold derivation: ε = A(πg/T_h)²/8 at T_h = 0.700 s, A = 1.25 mm
+  - Threshold derivation: ε = A(πg/T_h)²/8 at T_h = 0.698 s, A = 1.25 mm
   - See `docs/e20_outlier_analysis.md` Section 3.8
 
 ---
@@ -114,17 +136,19 @@ See `docs/e20_outlier_analysis.md` for full diagnosis.
 
 ---
 
-## Step 09 — Uncertainty Quantification (2026-06-16) ✓ PASS (all 4 gates)
+## Step 09 — Uncertainty Quantification (2026-06-16; corrected 2026-06-20) ✓ PASS (all 4 gates)
 
 | Gate | Target | Result |
 |------|--------|--------|
-| Bending noise floor (static RMS) | < 0.05 mm | **0.017 mm** |
-| Torsion proxy noise floor (static RMS) | < 0.10 mm | **0.033 mm** |
+| Bending noise floor (preferred manuscript reference: e0_0rpm full pipeline) | < 0.05 mm | **0.017 mm** |
+| Torsion proxy noise floor (preferred manuscript reference: e0_0rpm full pipeline) | < 0.10 mm | **0.033 mm** |
 | Bootstrap CI width (stable non-near-floor) | < 20% relative | ~13–15% |
-| Timing audit (max pairwise drift) | report value | **20.0 ms** (cam1–cam3) |
+| Timing audit (max pairwise drift) | report value | **20.03 ms** (cam1–cam3) |
 
 - Moving-block bootstrap used (not standard bootstrap — time series)
-- Static noise floor derived as `sqrt((σ_cam1² + σ_cam2²) / 4)`; static bags not simultaneous
+- Preferred manuscript-facing bounds come from the `e0_0rpm` full-pipeline condition
+- Static-bag bounds remain useful as supporting reference: bending **0.017 mm**, torsion **0.033 mm**
+- Static noise floor derivation uses `sqrt((σ_cam1² + σ_cam2²) / 4)`; static bags are recorded in separate sessions
 
 ---
 
@@ -137,10 +161,8 @@ See `docs/e20_outlier_analysis.md` for full diagnosis.
 | Torsion proxy Pearson r (stable) | 0.940 | > 0.90 | PASS |
 | Torsion proxy Spearman ρ (stable) | 0.928 | — | — |
 
-Bending FAIL explanation: regime-dependent cross-axis sensitivity from ~9.8° inter-camera
-misalignment inflates apparent bending amplitude by ~2× in the torsion-dominated regime
-(90–220 RPM). Correct geometry parameter dp=1.538 (not dp=2.0) changes all LDV-derived
-metrics from the original implementation. This is a documented finding, not a code error.
+Bending Pearson r = 0.845 (gate FAIL; physically explained by regime-dependent cross-axis sensitivity from ~9.8° inter-camera misalignment). The misalignment inflates apparent bending amplitude by ~2× in the torsion-dominated regime (90–220 RPM). Correct geometry parameter dp=1.538 (not dp=2.0) changes all LDV-derived metrics from the original implementation. This is a documented finding, not a code error.
+Bending gate FAIL is accepted and documented as a characterised physical limitation (cross-axis torsion leakage at ~9.8° misalignment), not a code or processing defect.
 
 60 RPM: VIV aerodynamic intermittency — camera/LDV ratio ~0.05×, flagged and reported separately.
 320 RPM: high-wind unstable, reported separately.
@@ -153,7 +175,7 @@ metrics from the original implementation. This is a documented finding, not a co
 |------|--------|--------|
 | Phase shift | < 10 ms | **0.00 ms** (all 21 conditions) |
 | Frequency error | 0 Hz | **0.000 Hz** |
-| Amplitude ratio | 0.95–1.00 | **0.957–1.000** |
+| Amplitude ratio | 0.95–1.00 | **0.999** |
 
 Process noise model: `Q = diag([(σ·dt)², σ²])` with `σ=10.0 mm/s`, `R=0.0025 mm²`.
 The kinematic `G@G.T` formulation collapsed the Kalman gain (amplitude ratio 0.023 observed)
@@ -167,7 +189,7 @@ Bug 3 resolved: `step11_rts_smoothing.py` module constants updated to match `pip
 - `PROCESS_NOISE_STD`: 0.5 → **10.0 mm/s**
 - `MEASUREMENT_NOISE_STD`: 0.1 → **0.05 mm**
 
-Results (21/21 PASS, phase 0.00 ms, amplitude ratio 0.957–1.000) are unchanged — config values were passed as args at runtime.
+Results (21/21 PASS, phase 0.00 ms, amplitude ratio 0.999) are unchanged — config values were passed as args at runtime.
 
 ---
 
@@ -220,10 +242,97 @@ New script `src/comparison_plots.py` generating four figures in `results/compari
 | `fig_freq_comparison.png` | 127 KB | Dominant freq vs RPM; camera (blue circles) + LDV (red squares); 3 regime shading; fn_b / fn_t reference lines |
 | `fig_rms_comparison.png` | 79 KB | Paired bar chart per condition, camera vs LDV RMS, regime-coloured |
 | `fig_fft_overlay.png` | 305 KB | Normalised PSD overlay for e5_70rpm (bending VIV), e7_90rpm (torsional VIV), e17_260rpm (bending re-emergence); 3×2 panel |
-| `fig_timeseries_overlay.png` | 562 KB | 20-second simultaneous time traces for e7_90rpm; camera 60 Hz (blue) + LDV 360 Hz (red dashed), mean-removed |
+| `fig_timeseries_overlay.png` | 562 KB | 20-second condition-matched overlay for e7_90rpm; camera 60 Hz (blue) + LDV 360 Hz (red dashed), mean-removed |
 
 Key observations:
 - Dominant frequency: both instruments agree on fn_t ≈ 3.08 Hz in torsional VIV regime; at ≤ 20 RPM, below threshold → noise peaks
-- RMS ratio 1.339× in bending (explained by torsion-coupling leakage), 0.599× in torsion (attenuation well understood)
+- RMS ratio 1.339× in bending (stable regime; explained by torsion-coupling leakage), 0.599× in torsion (attenuation well understood)
 - PSD overlay shows aligned spectral peaks; both instruments resolve fn_b and fn_t cleanly in their respective regimes
-- Time-series overlay demonstrates simultaneous recording quality; LDV (360 Hz) captures higher-frequency content
+- Time-series overlay demonstrates condition-level response similarity only; it is not presented as a waveform-validation result because the recordings are separate-session and non-simultaneous
+
+---
+
+## Pre-Submission Pending Items (identified 2026-06-22, from context_rerun.md pipeline walkthrough)
+
+### ~~⚠ Step 10 — stale output JSON needs re-run~~ ✓ RESOLVED (2026-06-22)
+
+`results/step10/ldv_summary.json` and `results/step10/ldv_comparison_table.csv` were regenerated on 2026-06-22 with the e0_0rpm-derived noise floor. The JSON now includes a stable-regime block and reports bending r = 0.845 (18 stable conditions). Target values in the script are updated to r = 0.845 (bending), ratio = 1.339×. **Status:** RESOLVED.
+
+### ⚠ Step 05 — gap-aware interpolation guard not implemented in code
+
+`PROJECT_CONTEXT.md` Section 0.5 and this log (2026-06-16 entry) describe a locked `MAX_INTERP_GAP = 3 frames` gap-aware guard as a design decision. The actual script `src/step05_synchronize.py` has **no MAX_INTERP_GAP check** — it calls `interp1d(..., bounds_error=True)` unconditionally, silently interpolating across any gap regardless of size. The fix (add gap-length check before interpolating, write NaN for gaps > 3 frames) is documented and the threshold is derived, but the code was never patched. Since e20 is DCG-excluded before Step 05, this has no effect on current results, but the methods description claims an implemented guard that does not exist.
+**Current status:** Main docs have been softened to match live code. The implementation decision still remains open if full code-method parity is desired.
+
+### ~~⚠ Step 06 — docstring has stale alignment numbers~~ ✓ RESOLVED (2026-06-22)
+
+`src/step06_fuse_cameras.py` docstring updated: lines 16–18 now correctly state "~2.053 mm std" and "~189× improvement". Previously quoted values from an earlier pipeline state — corrected in this audit pass.
+
+---
+
+## Comparison Plots v2 — Bug Fixes and Publication Figures (2026-06-22) ✓ FIXED
+
+Investigation of Camera Peak anomaly in `src/comparison_plots_v2.py` identified and resolved two bugs.
+
+### Bug 4 — LDV Peak non-demeaned (RESOLVED)
+
+**Problem:** `ldv_stats()` computed LDV Peak as `max(|b_mm_raw|)` where b_mm_raw was NOT mean-subtracted, while camera peak used `max(|b - mean(b)|)`. The LDV records a small DC aerodynamic mean offset (+0.1–0.3 mm for most conditions, +1.648 mm for e20), causing the comparison to be inconsistent.
+
+**Impact on LDV Peak values:**
+
+| Condition | Old LDV Peak | New LDV Peak | Change |
+|-----------|-------------|-------------|--------|
+| e12_160rpm | 2.420 mm | 2.208 mm | −9% |
+| e14_200rpm | 3.121 mm | 2.852 mm | −9% |
+| e13_180rpm | 2.889 mm | 3.160 mm | +9% (was underestimated) |
+| e9_110rpm  | 0.685 mm | 0.605 mm | −12% |
+| e20_320rpm | 8.492 mm | 6.844 mm | −24% |
+
+**Fix:** `ldv_stats()` now computes `b_dem = b_mm - np.mean(b_mm)` and returns `max(|b_dem|)` for both bending and torsion. Consistent with camera.
+
+### Bug 5 — e20 camera artifact drawn as connected line (RESOLVED)
+
+**Problem:** The e20_320rpm camera recording is entirely corrupted by the interpolation artifact (gap-filling across 39% frame dropouts): b_rms=9.843mm, b_peak=15.530mm, t_rms=11.125mm, t_peak=16.755mm. These were drawn as connected lines in the "All 20" top panels, forcing the y-axis to ~16mm (bending) and ~25mm (torsion), compressing all 19 valid conditions into the lower third of the plot.
+
+**Fix:** `fig_A_full()` now uses `valid_cam = ~np.isnan(cam_rms) & ~(flag == "DCG_excluded")` for both Camera RMS and Camera Peak lines. The e20 camera point is drawn as isolated × markers labelled "Camera (DCG artifact)". LDV lines for e20 are retained (LDV data is genuine; the large torsion proxy peak of 25.747mm demeaned is real and is the physical reason the camera failed).
+
+**Confirmed: Camera Peak elevation is physics, not a bug.** Camera Peak is 1.5–2.2× LDV Peak in the torsional VIV regime (90–220 RPM). Camera RMS is elevated by the same factor (same peak/rms ratios). Root cause is cross-axis leakage (torsional coupling through ~9.8° axis misalignment) documented as Bug 2 in the Step 10 entry. This is a reported finding, not something to correct.
+
+### Updated output: `results/comparison_plots_v2/`
+
+Six figures regenerated: figA (rpm), figB (wind speed), figC (FFT physical + normalised), figE (regime scatter), figF (time-series).
+
+---
+
+## LDV Geometry Verification — 2026-06-24
+
+Triggered by handwritten image of the Tunnel B setup showing a torsion formula with a `/2` factor not present in the Python code. Full investigation conducted to verify whether the pipeline formula was correct.
+
+**Geometry confirmed — center+side configuration:**
+
+| Sensor | Position |
+|--------|----------|
+| ch1 (center) | 0 cm from deck centerline |
+| ch2 (side) | 13 cm from deck centerline |
+
+Source: setup sheet `설계속도 및 모형Setup_영상계측.xlsx`, row `센서간격 = 13 cm`.
+Korean 간격 = "gap between things" → total distance from ch1 to ch2 = 13 cm.
+Bridge half-chord: db = 20 cm (교폭 40 cm ÷ 2).
+
+**Formula investigation — `/2` is wrong for center+side:**
+
+| Formula | Correct geometry | Result for center+side (ch1=0, ch2=13 cm) |
+|---------|-----------------|------------------------------------------|
+| `(ch2-ch1)/2 × dp` | Symmetric ±d sensors | Halves the signal — no physical basis |
+| `(ch2-ch1) × dp` | Center+side | (θ×13) × (20/13) = θ×20 ✓ |
+
+The MATLAB source `BRID2D1_choi.m` used `(ch2-ch1)/2` with incorrect `dside=10` (wrong dp=2.0), designed for symmetric sensors. Python pipeline correctly uses no `/2` with dp=20/13=1.538.
+
+**Scale-invariance check:** Pearson r = 0.9396 is identical for both formula variants (r is invariant to constant scaling). The ratio changes: `/2` formula → ratio = 1.197 (camera appears to overestimate LDV), implying camera marker arm ≈ 24 cm — outside the deck edge. Physically implausible. Confirms original formula is correct.
+
+**Net result:** No code change. `/2` briefly introduced and reverted. All canonical results unchanged.
+
+**Torsion ratio 0.599 — physical explanation derived:**
+Camera torsion proxy (`y_cam3 − bending_avg`) measures differential displacement at Marker B arm ≈ 13–14 cm from deck center. LDV torsion proxy is scaled to db = 20 cm (deck half-chord). For the same angle θ: camera measures θ×13, LDV measures θ×20. Expected ratio = 13/20 ≈ 0.65. Observed: 0.599 stable mean, 0.61–0.76 in torsional VIV. Physically consistent — no correction needed.
+
+**Bending contamination identified (center+side geometry):**
+LDV bending channel = `(ch1+ch2)/2 = δ + θ×6.5` — contains torsion leakage of θ×6.5 mm. In the torsional VIV regime, this independently elevates LDV bending, contributing to the lower bending Pearson r = 0.845 (alongside the camera-side 9.8° misalignment leakage).

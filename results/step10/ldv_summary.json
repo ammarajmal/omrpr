@@ -6,7 +6,7 @@
     "dp": 1.538462,
     "fs_hz": 360,
     "bias_file": "D00",
-    "note_dp": "dp=1.538 NOT 2.0; MATLAB script had wrong dside=10cm, confirmed value is dside=130mm from facility document"
+    "note_dp": "dp=1.538 NOT 2.0; MATLAB script had wrong sensor gap=10cm, confirmed sensor gap=130mm (\uc13c\uc11c\uac04\uaca9) from facility document; formula is (ch2-ch1) * dp where dp = db/sensor_gap = 200mm/130mm"
   },
   "full_regime": {
     "bending_pearson_r": 0.8319825450401166,
@@ -48,12 +48,25 @@
     "stable_torsion_ratio_std": 0.4117484509826192,
     "stable_torsion_n_conditions": 18
   },
+  "above_floor_regime": {
+    "above_floor_bending_pearson_r": 0.8450431987291208,
+    "above_floor_bending_pearson_p": 1.0156235951085658e-05,
+    "above_floor_bending_spearman_rho": 0.8637770897832818,
+    "above_floor_bending_spearman_p": 3.854410891744889e-06,
+    "above_floor_bending_mae_mm": 0.48446706926883437,
+    "above_floor_bending_rmse_mm": 0.7192052367676631,
+    "above_floor_bending_ratio_mean": 1.3393326567728938,
+    "above_floor_bending_ratio_std": 0.7344159463040194,
+    "above_floor_bending_n_conditions": 18
+  },
   "n_full": 20,
   "n_stable": 18,
+  "n_above_floor": 18,
   "excluded_from_stable": [
     "e4_60rpm",
     "e20_320rpm"
   ],
-  "cross_tunnel_note": "Camera bags: Tunnel A, October 2025. LDV: Tunnel B, September 2025. Same facility, same model, same year. Comparison is condition-level only \u2014 NOT simultaneous validation.",
+  "excluded_from_above_floor": [],
+  "recording_note": "Camera (Tunnel B, October 2025) and LDV (Tunnel B, September 2025) \u2014 same facility, same structural model, matched RPM conditions. Sessions are 10 days apart \u2014 NOT simultaneous. Comparison is condition-level: RMS, peak, and dominant frequency per RPM condition.",
   "claim_boundary": "The ratio (camera/LDV) is NOT an accuracy claim. Sources of ratio deviation have not been independently decomposed."
 }

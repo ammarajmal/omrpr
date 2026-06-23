@@ -37,7 +37,7 @@ The paper's profile fits **IEEE TIM** and **Measurement (Elsevier)** better than
 
 **JSV** is plausible if the aeroelastic regime characterisation (the three-regime finding and VIV at 60 RPM) is elevated to being the primary result, with the camera system as a tool to produce it. That would require significant reframing.
 
-**Reviewer risk (for all targets):** Every high-IF journal will scrutinise the condition-level comparison. The correct answer is now strong: LDV and camera were recorded simultaneously in the same Tunnel B 2025 run, on separate DAQ systems at different sampling rates (360 Hz vs 60 Hz). The comparison is condition-level (RMS, peak, frequency per condition) not point-by-point, due to the sampling rate difference — not due to non-simultaneity. This must be stated clearly on page one.
+**Reviewer risk (for all targets):** Every high-IF journal will scrutinise the condition-level comparison. The correct answer: LDV (Tunnel B, September 2025) and camera bags (Tunnel B, October 2025) were both recorded in the same tunnel (Tunnel B) in separate sessions 10 days apart (NOT simultaneous), on separate DAQ systems at different sampling rates (360 Hz vs 60 Hz). The comparison is condition-level (RMS, peak, frequency per condition), NOT point-by-point, due to both the sampling-rate difference AND non-simultaneity. Non-simultaneity is a stated limitation managed by condition-level protocol. This must be stated clearly on page one.
 
 **Recommendation:** Primary target: **Measurement (Elsevier)**. Strong backup: **IEEE TIM**. IEEE TIM has slightly lower IF but a better reviewer expectation match for this exact paper type. Do not submit to Engineering Structures without a major aerodynamic physics expansion — their reviewers will not find a measurement pipeline paper compelling without structural safety implications. MSSP is a stretch and should be tier 3.
 
@@ -47,18 +47,18 @@ The paper's profile fits **IEEE TIM** and **Measurement (Elsevier)** better than
 
 **Finding:**
 
-A search across Measurement, Engineering Structures, and MSSP for 2022–2025 papers on: offline multi-camera vision SHM, AprilTag/ArUco displacement tracking, marker-based bridge/civil monitoring, non-simultaneous sensor validation.
+A search across Measurement, Engineering Structures, and MSSP for 2022–2025 papers on: offline multi-camera vision SHM, AprilTag/ArUco displacement tracking, marker-based bridge/civil monitoring, separate-session sensor validation.
 
 Key papers found:
 - ArUco marker displacement uncertainty analysis (2022–2023): covers single-camera setups only
-- Vision-based multi-plane bridge displacement monitoring (Automation in Construction, 2024): uses ArUco, but simultaneous accelerometer comparison, single camera per plane
+- Vision-based multi-plane bridge displacement monitoring (Automation in Construction, 2024): uses ArUco, but same-run accelerometer comparison, single camera per plane
 - Robust monocular vision monitoring (MSSP, 2024): targets moving background, no marker-based approach
 - Computer vision bridge displacement under operational conditions (Engineering Structures area): uses homography without uncertainty chain
 - Non-contact vibration using UAV (2025): single UAV camera, AprilTag for positioning only, not displacement measurement
 
 **Critical Assessment:**
 
-There is **no paper** in the literature that combines all four of: (a) offline multi-camera marker tracking with (b) explicit 4-component uncertainty chain (noise floor + camera agreement + bootstrap CIs + timing audit), (c) condition-level cross-sensor comparison as an explicit stated protocol, and (d) an aerodynamically rich dataset with regime characterisation. The condition-level simultaneous validation protocol is the clearest novelty claim.
+There is **no paper** in the literature that combines all four of: (a) offline multi-camera marker tracking with (b) explicit 4-component uncertainty chain (noise floor + camera agreement + bootstrap CIs + timing audit), (c) condition-level cross-sensor comparison as an explicit stated protocol, and (d) an aerodynamically rich dataset with regime characterisation. The condition-level separate-session validation protocol is the clearest novelty claim.
 
 However, the novelty argument is currently weak on one axis: the paper does not position itself against existing literature with enough specificity. Sentences like "previous work lacks uncertainty quantification" are commonly made and rarely proven. The paper needs to cite 3–5 specific papers and state exactly what they do NOT report.
 
@@ -68,11 +68,11 @@ The strongest novelty arguments, in order:
 3. Three-regime aerodynamic characterisation derived entirely from camera data without ground truth
 4. No hardware trigger + moving-block bootstrap as a formal treatment of measurement uncertainty
 
-**The weakest argument:** sub-millimeter accuracy. This is routinely claimed and rarely means the same thing across papers. The paper does not actually achieve sub-millimeter accuracy at the condition level (bending MAE = 0.484 mm, RMSE = 0.719 mm versus LDV). The noise floor (0.017 mm) and the condition-level accuracy (0.484–0.719 mm MAE/RMSE) are very different things and must not be conflated in the manuscript.
+**The weakest argument:** sub-millimeter accuracy. This is routinely claimed and rarely means the same thing across papers. The paper does not actually achieve sub-millimeter accuracy at the condition level (manuscript-facing above-floor bending MAE = 0.507 mm, RMSE = 0.740 mm versus LDV). The preferred full-pipeline noise floor (0.0043 mm) and the condition-level accuracy (0.507–0.740 mm MAE/RMSE) are very different things and must not be conflated in the manuscript.
 
-**Reviewer risk:** "What does sub-millimeter precision mean when your condition-level MAE against the reference is 0.484 mm?" The noise floor characterises the measurement system's precision in a static context; the condition-level MAE reflects a condition-level comparison (same-tunnel simultaneous recording; different sampling rates preclude point-by-point sync) and cannot be called an accuracy number.
+**Reviewer risk:** "What does sub-millimeter precision mean when your condition-level MAE against the reference is 0.507 mm?" The noise floor characterises the measurement system's precision in a static context; the condition-level MAE reflects a condition-level comparison (same-tunnel separate-session recording; different sampling rates preclude point-by-point sync) and cannot be called an accuracy number.
 
-**Recommendation:** Add a literature comparison table in the introduction with 6–8 papers, explicitly tabulating: marker type, number of cameras, uncertainty quantification method, validation protocol (simultaneous vs. non-simultaneous), and noise floor reported. This table makes the novelty visually undeniable to reviewers and editors.
+**Recommendation:** Add a literature comparison table in the introduction with 6–8 papers, explicitly tabulating: marker type, number of cameras, uncertainty quantification method, validation protocol (same-run vs. separate-session), and noise floor reported. This table makes the novelty visually undeniable to reviewers and editors.
 
 ---
 
@@ -101,9 +101,9 @@ The strongest novelty arguments, in order:
 
 **Finding:**
 
-**Phase error at f_h = 1.430 Hz:** Δφ = 2π × 1.430 × 0.020 = 0.180 rad = **10.3°**
+**Phase error at f_h = 1.4323 Hz:** Δφ = 2π × 1.4323 × 0.020 = 0.180 rad = **10.3°**
 
-**Phase error at f_α = 3.103 Hz:** Δφ = 2π × 3.103 × 0.020 = 0.390 rad = **22.3°**
+**Phase error at f_α = 3.0827 Hz:** Δφ = 2π × 3.0827 × 0.020 = 0.387 rad = **22.2°**
 
 At 22.3° of phase error in the torsion channel, the correlation between signals would be reduced by cos(22.3°) ≈ 0.926. However, 20 ms is the worst-case; the mean drift is substantially lower.
 
@@ -131,7 +131,7 @@ The kinematic process noise Q = σ² × G@G.T with G = [dt²/2, dt]ᵀ produced 
 
 **Model principled-ness:** The adopted Q model is **not physically principled** in the same way as the kinematic formulation. The kinematic model (G@G.T) failed because Q[0,0] = σ² × dt⁴/4 became numerically negligible relative to R = 0.0025 mm², collapsing the Kalman gain. This is a **process noise scale** problem, not a model choice problem. A kinematic model with σ = 100 mm/s would produce Q[0,0] ≈ 2.8 × 10⁻³ mm², comparable to R, and the gain would not collapse. The decision to change the model structure rather than increase σ in the kinematic formulation is empirical tuning.
 
-**Physical justification for σ = 10 mm/s:** At f_h = 1.430 Hz and amplitude ~1 mm, peak velocity ≈ 2π × 1.430 × 1 ≈ 9 mm/s ≈ 10 mm/s. This is a legitimate physical argument that should be stated explicitly in the manuscript — it turns empirical tuning into physical calibration.
+**Physical justification for σ = 10 mm/s:** At f_h = 1.4323 Hz and amplitude ~1 mm, peak velocity ≈ 2π × 1.4323 × 1 ≈ 9 mm/s ≈ 10 mm/s. This is a legitimate physical argument that should be stated explicitly in the manuscript — it turns empirical tuning into physical calibration.
 
 **Amplitude ratio 0.957–1.000:** The lower bound 0.957 occurs at near-floor conditions where RMS ≈ measurement noise. This is physically expected — the smoother cannot add energy that isn't there. This is a sound result.
 
@@ -145,20 +145,20 @@ The kinematic process noise Q = σ² × G@G.T with G = [dt²/2, dt]ᵀ produced 
 
 **Finding:**
 
-Two issues remain: (a) bending r = 0.845 below gate, (b) torsion dp = 1.538 "operator-confirmed" geometry. The previously stated third issue — cross-tunnel comparison — is resolved: camera and LDV were recorded simultaneously in the same Tunnel B 2025 run.
+Two issues remain: (a) bending r = 0.845 below gate (stable regime, 18 conditions), (b) torsion dp = 1.538 "operator-confirmed" geometry. The previously stated third issue — different-tunnel comparison — is resolved: camera bags and LDV were both recorded in the same tunnel (Tunnel B) in separate sessions 10 days apart (NOT simultaneous).
 
 **Critical Assessment:**
 
-**(a) ~~Cross-tunnel comparison~~ — RESOLVED:** Camera bags and LDV D-files are from the same Tunnel B 2025 experimental run, recorded simultaneously on separate DAQ systems. The 1.339× bending ratio cannot be attributed to between-tunnel or between-run excitation differences. It is an instrument-level discrepancy and must be explained structurally (regime-dependent cross-axis leakage).
+**(a) Different-tunnel comparison concern — RESOLVED:** Camera bags (Tunnel B, October 2025) and LDV D-files (Tunnel B, September 2025) are both from the same facility, Tunnel B. Sessions are 10 days apart — NOT simultaneous. The comparison remains condition-level. The 1.339x bending ratio cannot be attributed to between-tunnel or between-run excitation differences. It is an instrument-level discrepancy and must be explained structurally (regime-dependent cross-axis leakage).
 
-**(b) Bending r = 0.845, explained by 9.8° inter-camera misalignment — internally inconsistent:**
+**(b) Bending r = 0.845, explained by 9.8° inter-camera misalignment — still needs disciplined presentation:**
 The 9.8° angle is "from an audit of old extrinsics YAML" — not an independent measurement of the current physical geometry. The claim is that torsional motion leaks into the bending channel via the misalignment. The stated consequence is 0.038 mm bias at 5 mm amplitude. But the observed camera/LDV ratio in the torsion-dominated regime is ~2× — implying far larger coupling than 0.038 mm can explain. **These two numbers are inconsistent by approximately two orders of magnitude.** The correct coupling formula is: torsional motion of amplitude α contributes `y_leak ≈ α × sin(9.8°) ≈ 0.170α` to the bending channel. At α = 5 mm torsional amplitude, y_leak ≈ 0.85 mm — which could plausibly inflate a 1 mm bending signal to ~1.85 mm, approaching the ~2× factor. The 0.038 mm figure quoted in the documentation is wrong for this mechanism; it describes something different (perhaps the averaging bias, not the coupling). This needs to be recomputed correctly.
 
 **(c) Torsion dp = 1.538, "operator-confirmed":** The dp factor enters as db/dside = 200/130. The MATLAB script previously used dside = 100 mm (an error, now corrected to 130 mm). "Operator-confirmed" means "the lead researcher read a spreadsheet." There is no independent physical measurement of the current experimental geometry and no sensitivity analysis showing how dp uncertainty affects the torsion ratio. A 5% error in dside changes dp from 1.538 to 1.600, changing torsion_rms by ~4%.
 
-**The strongest remaining reviewer objection:** "Your bending correlation of 0.845 falls below your stated acceptance criterion. Your explanation invokes a 9.8° misalignment from an outdated extrinsics file, but the quantitative consequence (0.038 mm) is inconsistent with the observed 2× ratio discrepancy. Your torsion geometry dp is derived from a MATLAB script that previously contained an error. Given these two issues, justify why the condition-level comparison supports the stated validation claim."
+**The strongest remaining reviewer objection:** "Your bending correlation of 0.845 falls below your stated acceptance criterion. Your explanation invokes a 9.8° misalignment from an outdated extrinsics file, but the quantitative consequence (0.038 mm) must be reconciled carefully with the observed ratio discrepancy. Your torsion geometry dp is derived from a MATLAB script that previously contained an error. Given these two issues, justify why the condition-level comparison supports the stated validation claim."
 
-**Recommendation:** (a) Recompute the misalignment coupling correctly using `y_leak ≈ α × sin(9.8°)` and verify whether the resulting inflated bending amplitude is consistent with the observed 2× ratio in the torsion-dominated regime. (b) Add a sensitivity analysis: show that torsion r = 0.940 is robust to ±10% uncertainty in dp. Cross-tunnel variability is no longer a concern — the recordings are simultaneous.
+**Recommendation:** (a) Recompute the misalignment coupling correctly using `y_leak ≈ α × sin(9.8°)` and verify whether the resulting inflated bending amplitude is consistent with the observed 2× ratio in the torsion-dominated regime. (b) Add a sensitivity analysis: show that torsion r = 0.940 is robust to ±10% uncertainty in dp. Between-tunnel variability is eliminated — both datasets are from Tunnel B. Non-simultaneity (10-day gap) remains a stated limitation and is managed by condition-level comparison protocol.
 
 ---
 
@@ -172,9 +172,9 @@ Three-regime classification: bending-dominated (40–80 RPM, U*_b = 0.90–1.86)
 
 **Torsion dominance in the mid-speed range:** At f_α/f_h = 2.17, the frequency ratio is above the classical Scanlan condition for coupled flutter (which for thin airfoils typically occurs near f_α/f_h ≈ 1.5–2.0 depending on cross-section). The observation of torsion-dominated response at intermediate wind speeds before bending re-emergence at higher speeds is physically plausible for a bluff bridge section. Aerodynamic literature on rectangular section models shows torsional VIV preceding flutter onset when f_α/f_h > ~2.0. This is consistent with the data.
 
-**60 RPM VIV claim:** The camera/LDV ratio of ~0.05× at 60 RPM is dramatic. Since camera and LDV are simultaneous at the same RPM and wind speed, cross-run excitation variability is eliminated as an explanation. VIV intermittency remains a plausible physical mechanism: during lock-in, response amplitude fluctuates on timescales of seconds to minutes (bursting behaviour). The camera RMS and LDV RMS are averaged over the same run, but the LDV point measurement (leading-edge/trailing-edge) may coincide with a displacement antinode while the camera's multi-frame average suppresses burst peaks. The ~0.05× ratio requires a quantitative argument — calculate the VIV lock-in bandwidth at 60 RPM in terms of reduced velocity (U*_b ≈ 1.79 at this condition) and show that the observed bending response amplitude is consistent with near-edge-of-lock-in behaviour at that U*.
+**60 RPM VIV claim:** The camera/LDV ratio of ~0.05× at 60 RPM is dramatic. Since camera and LDV are condition-matched but recorded in separate sessions, cross-run excitation variability cannot be fully eliminated as an explanation. VIV intermittency remains a plausible physical mechanism: during lock-in, response amplitude fluctuates on timescales of seconds to minutes (bursting behaviour). The camera RMS and LDV RMS are averaged over separate but matched sessions, and the LDV point measurement (leading-edge/trailing-edge) may coincide with a displacement antinode while the camera's multi-frame average suppresses burst peaks. The ~0.05× ratio requires a quantitative argument — calculate the VIV lock-in bandwidth at 60 RPM in terms of reduced velocity (U*_b ≈ 1.79 at this condition) and show that the observed bending response amplitude is consistent with near-edge-of-lock-in behaviour at that U*.
 
-**320 RPM flutter onset:** B = 0.40 m, f_α = 3.103 Hz. For a flat plate, flutter reduced velocity U_cr/(f_α × B) ≈ 3.5–6.0. At U_cr ≈ 5 m/s: reduced velocity = 5 / (3.103 × 0.40) ≈ 4.0 — consistent with flutter susceptibility for this cross-section.
+**320 RPM flutter onset:** B = 0.40 m, f_α = 3.0827 Hz. For a flat plate, flutter reduced velocity U_cr/(f_α × B) ≈ 3.5–6.0. At U_cr ≈ 5 m/s: reduced velocity = 5 / (3.0827 × 0.40) ≈ 4.1 — consistent with flutter susceptibility for this cross-section.
 
 **The physical explanations are qualitatively sound but lack quantitative bridge.** The three-regime identification is the strongest physical result of the paper, but it is presented as observation (frequency vs. RPM plot) without linking to published aerodynamic data for comparable rectangular section models (Scanlan, Simiu, or Larsen references). Aerodynamics reviewers will want reduced-velocity axes and regime boundary citations.
 
@@ -188,19 +188,19 @@ Three-regime classification: bending-dominated (40–80 RPM, U*_b = 0.90–1.86)
 
 **Finding:**
 
-Static noise floor: `sqrt((σ_cam1² + σ_cam2²) / 4)` = **0.003 mm bending (worst-case 0.005 mm), 0.005 mm torsion proxy** (corrected 2026-06-20 after intrinsics fix — see Gap 1 RESOLVED). Non-simultaneous static bags. Moving-block bootstrap with `L = int(N^(1/3))`, 1000 resamples, seed 42.
+Static noise floor: `sqrt((σ_cam1² + σ_cam2²) / 4)` = **0.017 mm bending, 0.033 mm torsion proxy** (corrected 2026-06-20 after intrinsics fix — see Gap 1 RESOLVED). Separate-session static bags. Moving-block bootstrap with `L = int(N^(1/3))`, 1000 resamples, seed 42.
 
 **Critical Assessment:**
 
-**Independence assumption:** The cameras share the same building and environment. Common-mode vibration (building vibration, floor tremor, HVAC) affects all cameras simultaneously. The independence assumption (σ² adds, not 2σ²) is physically reasonable for non-simultaneous recordings (hours apart) in typical laboratory conditions, but cannot be claimed without explicit qualification.
+**Independence assumption:** The cameras share the same building and environment. Common-mode vibration (building vibration, floor tremor, HVAC) affects all cameras at the same time. The independence assumption (σ² adds, not 2σ²) is physically reasonable for separate-session recordings (hours apart) in typical laboratory conditions, but cannot be claimed without explicit qualification.
 
-**~~0.017 mm credibility — contingent on intrinsics~~ — RESOLVED:** Intrinsics fixed. Reproj error 0.04–0.17 px confirms correct K matrix. Noise floor 0.003 mm bending, 0.005 mm torsion — both well below the 0.05/0.10 mm gate thresholds and below the LDV comparison noise level (0.484 mm bending MAE). The noise floor is no longer the limiting factor; the bending ratio discrepancy is.
+**~~0.017 mm credibility — contingent on intrinsics~~ — RESOLVED:** Intrinsics fixed. Reproj error 0.04–0.17 px confirms correct K matrix. Noise floor 0.003 mm bending, 0.005 mm torsion — both well below the 0.05/0.10 mm gate thresholds and below the manuscript-facing LDV comparison noise level (0.507 mm bending MAE). The noise floor is no longer the limiting factor; the bending ratio discrepancy is.
 
-**Block length is too short:** For N ≈ 1,800 frames (30 s × 60 Hz), the cube root rule gives L ≈ 12 frames ≈ 0.2 s. At f_h = 1.430 Hz, the signal autocorrelation length is approximately 1/f_h ≈ 0.7 s. The block length is **shorter than one oscillation period**, meaning the bootstrap underestimates variance. An appropriate block length for this signal is L ≈ 42 frames (≈2–3 signal periods). With L = 42 frames, CI width would increase by approximately √(42/12) ≈ 1.9×, potentially pushing 13–15% to 25–28%. This must be checked before quoting CI widths in the manuscript.
+**Block length is too short:** For N ≈ 1,800 frames (30 s × 60 Hz), the cube root rule gives L ≈ 12 frames ≈ 0.2 s. At f_h = 1.4323 Hz, the signal autocorrelation length is approximately 1/f_h ≈ 0.7 s. The block length is **shorter than one oscillation period**, meaning the bootstrap underestimates variance. An appropriate block length for this signal is L ≈ 42 frames (≈2–3 signal periods). With L = 42 frames, CI width would increase by approximately √(42/12) ≈ 1.9×, potentially pushing 13–15% to 25–28%. This must be checked before quoting CI widths in the manuscript.
 
 **Reviewer risk at Measurement:** "The cube root rule gives L ≈ 12 frames (0.2 s), but your dominant signal period is 0.7 s. Your block length is shorter than the signal autocorrelation length. Can you show that CI width is stable as a function of L?"
 
-**Recommendation:** (a) ~~Resolve step09 intrinsics~~ — DONE. (b) Report CI width as a function of block length L at at least three values: `N^(1/3)`, T_h in samples (~42 frames), and 2 × T_h in samples. If CI width is stable across these, report that explicitly. If sensitive, report the range. (c) Add a sentence explicitly acknowledging the independence assumption: "We assume independent noise between cameras, which is physically plausible for non-simultaneous static recordings but cannot be verified from these data alone."
+**Recommendation:** (a) ~~Resolve step09 intrinsics~~ — DONE. (b) Report CI width as a function of block length L at at least three values: `N^(1/3)`, T_h in samples (~42 frames), and 2 × T_h in samples. If CI width is stable across these, report that explicitly. If sensitive, report the range. (c) Add a sentence explicitly acknowledging the independence assumption: "We assume independent noise between cameras, which is physically plausible for separate-session static recordings but cannot be verified from these data alone."
 
 ---
 
@@ -225,7 +225,7 @@ The 13–15% CI width may be underestimated due to short block length. Report CI
 "0.00 ms" implies millisecond precision the analysis does not achieve. Correct statement: "< ±8.3 ms (resolution-limited at 60 Hz sampling); consistent with non-causal smoother design."
 
 ### Gap 7 — RESOLVED: Between-tunnel excitation variability
-Camera and LDV were recorded simultaneously in the same Tunnel B 2025 run. The 1.339× bending ratio cannot be attributed to between-tunnel or between-run excitation variability. It must be explained as an instrument-level effect (regime-dependent cross-axis leakage). No acknowledgement of tunnel variability is needed.
+Camera bags (Tunnel B, October 2025) and LDV (Tunnel B, September 2025) were both recorded in the same tunnel (Tunnel B) in separate sessions 10 days apart (NOT simultaneous). The 1.339x bending ratio cannot be attributed to between-tunnel or between-run excitation variability. It must be explained as an instrument-level effect (regime-dependent cross-axis leakage). No acknowledgement of tunnel variability is needed.
 
 ### Gap 8 — Low: B0 quality score framing
 Reframe as a detection robustness diagnostic (not a pose accuracy predictor). State that all detected frames are retained; reprojection error (step04) is the pose quality gate.
@@ -242,7 +242,7 @@ Without a table comparing this paper's key features against 6–8 specific prior
 
 ### Strongest contributions (will survive peer review)
 
-1. **Torsion proxy r = 0.940** — The paper's single strongest number. High correlation across 18 stable conditions, in a simultaneous same-tunnel recording; physically sensible geometry.
+1. **Torsion proxy r = 0.940** — The paper's single strongest number. High correlation across 18 stable conditions, in a same-tunnel (Tunnel B), condition-matched comparison (separate sessions 10 days apart, NOT simultaneous); physically sensible geometry.
 
 2. **189× camera Z agreement improvement (388 mm → 2.053 mm std)** — Compelling numerical contrast demonstrating the baseline alignment approach. No comparable paper offers this before/after alignment demonstration.
 
@@ -254,20 +254,20 @@ Without a table comparing this paper's key features against 6–8 specific prior
 
 ### Weakest points (will generate major revision requests)
 
-1. **Bending r = 0.845 below stated 0.90 gate** — Every reviewer will identify this. The current misalignment explanation is internally inconsistent numerically. Will generate a major revision request unless pre-empted with correct quantitative analysis.
+1. **Bending r = 0.845 below stated 0.90 gate** — Every reviewer will identify this. The current misalignment explanation must be presented numerically and consistently. Will generate a major revision request unless pre-empted with correct quantitative analysis.
 
-2. **Bending ratio 1.339× without verified structural explanation** — Since camera and LDV are simultaneous at the same excitation, the ratio must be an instrument-level effect. The misalignment cross-axis leakage hypothesis (9.8° → y_leak ≈ α × sin(9.8°)) must be computed quantitatively and shown consistent with the 2× torsion-dominated-regime amplitude ratio. Currently the explanation is stated but not demonstrated.
+2. **Bending ratio 1.339x without verified structural explanation** — Camera and LDV are from the same facility (Tunnel B) but recorded in separate sessions 10 days apart (NOT simultaneous). The ratio must therefore be interpreted as an instrument-level effect under condition-level comparison. The misalignment cross-axis leakage hypothesis (9.8° → y_leak ≈ α × sin(9.8°)) must be computed quantitatively and shown consistent with the torsion-dominated-regime amplitude inflation. Currently the explanation is stated but not demonstrated.
 
-3. **Intrinsics discrepancy in step09** — If this translates to wrong noise floor values in the manuscript, the uncertainty claims are invalidated. Potential rejection-level issue.
+3. **Bootstrap block length sensitivity** — Not rejection-level alone, but if CI widths materially widen at longer physically motivated block lengths, the uncertainty section needs restating before submission.
 
-4. **Block length sensitivity** — Not rejection-level alone, but combined with other uncertainty concerns, it weakens the uncertainty methodology section.
+4. **Torsion `dp` sensitivity remains unshown** — Not fatal by itself, but it leaves the paper's strongest correlation result less defended than it could be.
 
 ### Best strategic journal
 
 **IEEE Transactions on Instrumentation and Measurement (TIM)** is the best strategic fit:
 - Explicitly publishes measurement systems with explicit uncertainty characterisation
 - Reviewer expectations match this paper's evidence profile better than Measurement's
-- More tolerant of condition-level (simultaneous, different-sampling-rate) validation as long as uncertainty is properly bounded
+- More tolerant of condition-level (separate-session, different-sampling-rate) validation as long as uncertainty is properly bounded
 - IF ≈ 5.6, comparable to Measurement (5.6) — no significant prestige loss
 - Measurement is still a sound choice, but its reviewer pool for this paper will include aerodynamics-adjacent people who will push harder on the bending ratio discrepancy and VIV explanation, which are harder to defend
 
@@ -276,15 +276,15 @@ Without a table comparing this paper's key features against 6–8 specific prior
 
 ### One concrete action for highest impact
 
-**Resolve the step09 intrinsics discrepancy first.** This is the only issue that can invalidate the entire uncertainty section of the manuscript in a single reviewer comment. Before drafting a single manuscript sentence about the noise floor, verify whether step09 was run with `fx = 2,108` (hardcoded placeholder) or `fx = 20,328` (calibrated value from pipeline_config.yaml). If step09 used the wrong intrinsics, rerun it with the correct values and update all noise floor numbers. Only once the noise floor is confirmed correct should the manuscript uncertainty section be finalised.
+**Run the bootstrap block-length sensitivity check first.** The intrinsics discrepancy is already resolved, but CI-width robustness is still an open reviewer-facing uncertainty issue. Before finalising manuscript claims about uncertainty width, compare bootstrap CI widths at `N^(1/3)`, one structural period in samples, and two structural periods in samples.
 
 After that, in priority order:
-1. Fix the bending misalignment coupling math (`y_leak ≈ α × sin(9.8°)`)
-2. Resolve the step11 process noise parameter discrepancy
-3. Add the block length sensitivity check for bootstrap CIs
-4. Restate RTS phase shift as resolution-bounded
+1. Strengthen the quantitative bending-leakage argument (`y_leak ≈ α × sin(9.8°)`) with explicit regime-consistency evidence
+2. Add the block length sensitivity check for bootstrap CIs
+3. Restate RTS phase shift as resolution-bounded
+4. Add the torsion `dp` sensitivity analysis
 
-Those four changes, plus the intrinsics fix, would lift this paper from a speculative submission to a defensible one.
+Those four changes would lift this paper from a speculative submission to a more defensible one.
 
 ---
 
@@ -320,7 +320,7 @@ Those four changes, plus the intrinsics fix, would lift this paper from a specul
 | Gap 4 — Torsion dp sensitivity analysis | High | **OPEN** | Show r > 0.90 is preserved for dp ∈ [1.4, 1.65] |
 | Gap 5 — Bootstrap block length sensitivity | Medium | **OPEN** | Report CI width at N^(1/3), T_h in samples (~42), 2×T_h in samples |
 | Gap 6 — RTS phase shift overstated | Medium | **OPEN** | Must restate as "< ±8.3 ms (resolution-limited at 60 Hz)" |
-| Gap 7 — Between-tunnel excitation variability | Medium | **RESOLVED** | Simultaneous same-tunnel recording confirmed; no between-run variability |
+| Gap 7 — Between-tunnel excitation variability | Medium | **RESOLVED** | Same-tunnel (Tunnel B), condition-matched, separate sessions (10 days apart, NOT simultaneous); no between-tunnel variability |
 | Gap 8 — B0 quality score framing | Low | **OPEN** | Reframe as detection robustness diagnostic, not pose accuracy predictor |
 | Gap 9 — Aerodynamic regimes reduced-velocity context | Low | **RESOLVED** | U* table confirmed in structural_params.md; comparison plots generated |
 | Gap 10 — Literature comparison table absent | Low | **OPEN** | Table of 6–8 prior papers with explicit feature comparison |
@@ -330,7 +330,7 @@ Those four changes, plus the intrinsics fix, would lift this paper from a specul
 | Item | Status | Reference |
 |------|--------|-----------|
 | e20_320rpm motion blur diagnosis | **COMPLETE** | `docs/e20_outlier_analysis.md` — proven mechanism, FFT at 2×f_struct, pixel velocity calculation, Laplacian sharpness, equilibrium clustering |
-| DCG formal criterion | **DESIGNED** | Criterion locked: r_det ≥ 0.95 AND n_miss_max ≤ 5 AND v_peak < w_cell. Novelty: velocity threshold derived from tag geometry, not empirical. Implementation (step02b_detection_gate.py) PENDING. |
+| DCG formal criterion | **DESIGNED** | Current writeup uses r_det ≥ 0.95 AND n_miss_max ≤ 3 AND v_peak < w_cell as the analytical exclusion rule. Novelty: velocity threshold derived from tag geometry, not empirical. Implementation (step02b_detection_gate.py) PENDING. |
 | Step05 gap-aware interpolation guard | **DESIGNED** | MAX_INTERP_GAP = 3 frames derived from ε = A(πg/T_h)²/8. Novelty: published sinusoidal error bound tied to tag cell size and structural frequency. Patch to step05 PENDING. |
 | Step12 e20 annotation | **DESIGNED** | DCG-EXCLUDED annotation + cam3 2.19 mm separate point. Implementation PENDING. |
 | Alternative approaches evaluated | **COMPLETE** | Ghost-DeblurGAN rejected (domain gap, GAN hallucination risk). Kalman gap-filling rejected (fails at equilibrium crossings, RTS already optimal). Hardware fix (t_exp < 7.1 ms) documented as future work. |

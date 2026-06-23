@@ -31,10 +31,12 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from matplotlib.lines import Line2D
 import matplotlib.gridspec as gridspec
 import numpy as np
 import pandas as pd
 from scipy import signal as sp_signal
+from scipy.stats import pearsonr, spearmanr
 
 # ─── Paths ───────────────────────────────────────────────────────────────────
 RESULTS_DIR = Path("results")
@@ -66,6 +68,7 @@ C_CAM    = "#1f77b4"   # blue   — camera
 C_LDV    = "#d62728"   # red    — LDV
 C_PEAK   = "#ff7f0e"   # orange — peak values
 C_MEAN   = "#2ca02c"   # green  — mean values
+C_SMOOTH = "#2ca02c"   # green  — Step 11 smoothed camera RMS
 
 C_REG_B  = "#aec7e8"   # bending VIV regime
 C_REG_T  = "#ffbb78"   # torsional VIV regime
@@ -141,6 +144,14 @@ def load_camera_timeseries(condition: str):
     return b, t, ts
 
 
+def load_step11_smoothing_diagnostics(condition: str):
+    path = RESULTS_DIR / "step11" / condition / "smoothing_diagnostics.json"
+    if not path.exists():
+        return None
+    with open(path) as f:
+        return json.load(f)
+
+
 def camera_stats(b_mm, t_mm):
     """Return (b_mean, b_rms, b_peak, t_mean, t_rms, t_peak)."""
     return (
@@ -203,6 +214,7 @@ def build_full_dataset():
             cm, cr, cp, ctm, ctr, ctp = (np.nan,)*6
         else:
             cm, cr, cp, ctm, ctr, ctp = camera_stats(b_cam, t_cam)
+        smooth = load_step11_smoothing_diagnostics(cond) or {}
 
         flag = ""
         if cond == DCG_EXCLUDED:
@@ -216,6 +228,8 @@ def build_full_dataset():
             "ldv_t_mean": ltm, "ldv_t_rms": ltr, "ldv_t_peak": ltp,
             "cam_b_mean": cm,  "cam_b_rms": cr,  "cam_b_peak": cp,
             "cam_t_mean": ctm, "cam_t_rms": ctr, "cam_t_peak": ctp,
+            "cam_b_rms_smoothed": smooth.get("bending_smoothed_rms_mm", np.nan),
+            "cam_t_rms_smoothed": smooth.get("torsion_smoothed_rms_mm", np.nan),
         })
 
     df = pd.DataFrame(rows).sort_values("rpm").reset_index(drop=True)
@@ -265,7 +279,7 @@ def fig_A_rpm(df: pd.DataFrame):
     fig, axes = plt.subplots(2, 2, figsize=(14, 9))
     fig.suptitle(
         "Camera vs LDV: Mean / RMS / Peak Displacement vs Fan Speed\n"
-        f"LDV @ 360 Hz  |  Camera @ 60 Hz  |  Simultaneous same-tunnel recording",
+        "Condition-matched same-facility comparison across separate recording sessions",
         fontsize=11, fontweight="bold"
     )
 
@@ -435,7 +449,7 @@ def fig_A_full(df: pd.DataFrame, x_col: str, x_label: str,
 
     fig.suptitle(
         f"Camera vs LDV — Mean / RMS / Peak vs {x_label}\n"
-        "Simultaneous same-tunnel recording | "
+        "Condition-matched same-facility comparison across separate recording sessions | "
         "Regime shading: blue=Bending VIV, orange=Torsional VIV, green=Bending re-emergence",
         fontsize=11, fontweight="bold"
     )
@@ -451,6 +465,117 @@ def fig_A_full(df: pd.DataFrame, x_col: str, x_label: str,
         fig.savefig(path, dpi=DPI, bbox_inches="tight")
         print(f"  [WRITE] {path}")
     plt.close(fig)
+
+
+def fig_A_rms_variants(df: pd.DataFrame, x_col: str, x_label: str,
+                       shade_fn, fname_stem: str):
+    """
+    RMS-only Figure A candidates for paper selection.
+    Creates three variants:
+      - raw_only: LDV RMS + Camera raw RMS
+      - raw_plus_smoothed: LDV RMS + Camera raw RMS + Camera Step 11 smoothed RMS
+      - smoothed_only: LDV RMS + Camera Step 11 smoothed RMS
+    """
+    variants = [
+        ("raw_only", "LDV RMS + Camera raw RMS", ["ldv", "cam_raw"]),
+        ("raw_plus_smoothed", "LDV RMS + Camera raw RMS + Camera smoothed RMS",
+         ["ldv", "cam_raw", "cam_smooth"]),
+        ("smoothed_only", "LDV RMS + Camera smoothed RMS", ["ldv", "cam_smooth"]),
+    ]
+
+    for variant_key, variant_title, series in variants:
+        fig = plt.figure(figsize=(15, 10))
+        gs = gridspec.GridSpec(2, 2, figure=fig, hspace=0.42, wspace=0.32)
+
+        df_all = df.copy()
+        df_stable = df[df["flag"] != "DCG_excluded"].copy()
+        datasets = [(df_all, "All 20 conditions"), (df_stable, "e20 DCG-excluded")]
+
+        for row_idx, (data, row_title) in enumerate(datasets):
+            for col_idx, b_or_t, ch_label, y_label in [
+                (0, "b", "Bending", "Bending RMS (mm)"),
+                (1, "t", "Torsion proxy", "Two-point differential RMS (mm)"),
+            ]:
+                ax = fig.add_subplot(gs[row_idx, col_idx])
+                shade_fn(ax)
+
+                x = data[x_col].values
+                ldv_rms = data[f"ldv_{b_or_t}_rms"].values
+                cam_raw = data[f"cam_{b_or_t}_rms"].values
+                cam_smooth = data[f"cam_{b_or_t}_rms_smoothed"].values
+                dcg_mask = data["flag"].values == "DCG_excluded"
+
+                ax.plot(x, ldv_rms, "-s", ms=5.5, lw=1.9, color=C_LDV,
+                        label="LDV RMS", zorder=5)
+
+                if "cam_raw" in series:
+                    valid_raw = ~np.isnan(cam_raw) & ~dcg_mask
+                    ax.plot(x[valid_raw], cam_raw[valid_raw], "-o", ms=6, lw=2.2,
+                            color=C_CAM, label="Camera raw RMS", zorder=6)
+                    if np.any(~np.isnan(cam_raw) & dcg_mask):
+                        xv = x[~np.isnan(cam_raw) & dcg_mask]
+                        yv = cam_raw[~np.isnan(cam_raw) & dcg_mask]
+                        ax.scatter(xv, yv, marker="x", s=55, color=C_CAM, lw=1.8,
+                                   zorder=5, alpha=0.55, label="Camera raw (DCG artifact)")
+
+                if "cam_smooth" in series:
+                    valid_s = ~np.isnan(cam_smooth) & ~dcg_mask
+                    ax.plot(x[valid_s], cam_smooth[valid_s], "--D", ms=4.8, lw=1.6,
+                            color=C_SMOOTH, label="Camera smoothed RMS", zorder=6)
+                    if np.any(~np.isnan(cam_smooth) & dcg_mask):
+                        xv = x[~np.isnan(cam_smooth) & dcg_mask]
+                        yv = cam_smooth[~np.isnan(cam_smooth) & dcg_mask]
+                        ax.scatter(xv, yv, marker="x", s=45, color=C_SMOOTH, lw=1.6,
+                                   zorder=5, alpha=0.55,
+                                   label="Camera smoothed (DCG artifact)")
+
+                for _, r in data.iterrows():
+                    xv = r[x_col]
+                    if r["flag"] == "VIV":
+                        ax.annotate("VIV\n(60 RPM)",
+                                    xy=(xv, r[f"ldv_{b_or_t}_rms"]),
+                                    xytext=(xv + (0.2 if x_col == "windspeed" else 8),
+                                            r[f"ldv_{b_or_t}_rms"] * 0.6),
+                                    fontsize=6.5, color="purple",
+                                    arrowprops=dict(arrowstyle="->", lw=0.7,
+                                                    color="purple"))
+
+                ax.set_xlabel(x_label, fontsize=10)
+                ax.set_ylabel(y_label, fontsize=10)
+                ax.set_title(f"{ch_label} — {row_title}", fontsize=9.5)
+                ax.set_ylim(bottom=0)
+
+                if row_idx == 0 and col_idx == 0:
+                    handles, labels = ax.get_legend_handles_labels()
+                    ax.legend(handles, labels, fontsize=7.5, loc="upper left",
+                              ncol=2, framealpha=0.85)
+
+        axes_top_right = fig.get_axes()[1]
+        axes_top_right.text(
+            0.98, 0.97,
+            "e20 (320 RPM) included\ncamera RMS shown as isolated × marker\nwhen DCG-contaminated",
+            transform=axes_top_right.transAxes,
+            fontsize=6.5, ha="right", va="top",
+            bbox=dict(boxstyle="round,pad=0.3", fc="lightyellow",
+                      ec="gray", alpha=0.85)
+        )
+
+        fig.suptitle(
+            f"Camera vs LDV — RMS-only comparison vs {x_label}\n"
+            f"{variant_title} | Condition-matched same-facility comparison across separate recording sessions",
+            fontsize=11, fontweight="bold"
+        )
+
+        patches = regime_legend_patches()
+        fig.legend(handles=patches, loc="lower center", ncol=3, fontsize=9,
+                   bbox_to_anchor=(0.5, -0.01), frameon=True)
+
+        fig.tight_layout(rect=[0, 0.035, 1, 1])
+        for ext in ["pdf", "png"]:
+            path = OUT_DIR / f"{fname_stem}_{variant_key}.{ext}"
+            fig.savefig(path, dpi=DPI, bbox_inches="tight")
+            print(f"  [WRITE] {path}")
+        plt.close(fig)
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -560,6 +685,102 @@ def fig_fft_physical_and_normalised(df: pd.DataFrame):
         plt.close(fig)
 
 
+def fig_C_paper(df: pd.DataFrame):
+    """
+    Paper-ready normalized PSD comparison only.
+    Keeps the strongest regime-identification story while reducing panel clutter.
+    """
+    bias = load_ldv_bias()
+    rep = [
+        ("e5_70rpm",   "D05", "Bending VIV", "70 RPM"),
+        ("e7_90rpm",   "D07", "Torsional VIV", "90 RPM"),
+        ("e17_260rpm", "D17", "Bending Re-emergence", "260 RPM"),
+    ]
+
+    fig, axes = plt.subplots(3, 2, figsize=(12, 11), sharex=True)
+    fig.suptitle(
+        "Spectral Comparison Across Three Aerodynamic Regimes",
+        fontsize=13, fontweight="bold", y=0.985
+    )
+    fig.text(
+        0.5, 0.958,
+        "Normalized PSD shape only; condition-matched same-facility comparison across separate recording sessions",
+        ha="center", fontsize=10
+    )
+
+    panel_labels = ["(a)", "(b)", "(c)", "(d)", "(e)", "(f)"]
+    panel_i = 0
+
+    for row_idx, (cond, d_label, regime_name, rpm_label) in enumerate(rep):
+        d_path = LDV_DIR / d_label
+        b_ldv, t_ldv = load_ldv_timeseries(d_path, bias)
+        b_ldv -= np.mean(b_ldv)
+        t_ldv -= np.mean(t_ldv)
+
+        b_cam, t_cam, _ = load_camera_timeseries(cond)
+        if b_cam is None:
+            continue
+        b_cam -= np.mean(b_cam)
+        t_cam -= np.mean(t_cam)
+
+        for col_idx, (sig_cam, sig_ldv, ch_label) in enumerate([
+            (b_cam, b_ldv, "Bending"),
+            (t_cam, t_ldv, "Torsion proxy"),
+        ]):
+            ax = axes[row_idx, col_idx]
+            f_cam, p_cam = compute_psd(sig_cam, FS_CAM)
+            f_ldv, p_ldv = compute_psd(sig_ldv, FS_LDV)
+            p_cam = p_cam / max(p_cam.max(), 1e-12)
+            p_ldv = p_ldv / max(p_ldv.max(), 1e-12)
+
+            ax.semilogy(f_cam, p_cam, lw=1.6, color=C_CAM, zorder=5)
+            ax.semilogy(f_ldv, p_ldv, lw=1.2, color=C_LDV, ls="--", alpha=0.9, zorder=4)
+            ax.axvline(FN_B, color="0.35", ls=":", lw=1.0)
+            ax.axvline(FN_T, color="0.55", ls="-.", lw=1.0)
+            ax.set_xlim(0, 10)
+            ax.set_ylim(1e-5, 2)
+            ax.grid(True, which="both", alpha=0.18)
+            ax.set_ylabel("Normalized PSD")
+            if row_idx == 2:
+                ax.set_xlabel("Frequency (Hz)")
+
+            ax.text(0.02, 0.95, panel_labels[panel_i], transform=ax.transAxes,
+                    va="top", ha="left", fontsize=10, fontweight="bold")
+            panel_i += 1
+
+            title = f"{regime_name} | {rpm_label} | {ch_label}"
+            ax.set_title(title, fontsize=9.5)
+
+            f_search = (f_cam >= 0.5) & (f_cam <= 10)
+            if np.any(f_search):
+                pk_f = float(f_cam[f_search][np.argmax(p_cam[f_search])])
+                pk_v = float(p_cam[f_search].max())
+                ax.annotate(
+                    f"{pk_f:.2f} Hz",
+                    xy=(pk_f, pk_v),
+                    xytext=(pk_f + 0.45, min(pk_v * 2.5, 1.5)),
+                    fontsize=7.5, color=C_CAM,
+                    arrowprops=dict(arrowstyle="->", lw=0.7, color=C_CAM),
+                )
+
+    legend_handles = [
+        Line2D([0], [0], color=C_CAM, lw=1.6, label=f"Camera ({FS_CAM:.0f} Hz)"),
+        Line2D([0], [0], color=C_LDV, lw=1.2, ls="--", label=f"LDV ({FS_LDV:.0f} Hz)"),
+        Line2D([0], [0], color="0.35", lw=1.0, ls=":", label=f"$f_{{n,b}}$ = {FN_B:.3f} Hz"),
+        Line2D([0], [0], color="0.55", lw=1.0, ls="-.", label=f"$f_{{n,t}}$ = {FN_T:.3f} Hz"),
+    ]
+    fig.legend(
+        handles=legend_handles, loc="upper center", ncol=4, frameon=True,
+        bbox_to_anchor=(0.5, 0.935), fontsize=8.5
+    )
+    fig.tight_layout(rect=[0, 0, 1, 0.93])
+    for ext in ["pdf", "png"]:
+        path = OUT_DIR / f"figC_fft_overlay_normalised_paper.{ext}"
+        fig.savefig(path, dpi=DPI, bbox_inches="tight")
+        print(f"  [WRITE] {path}")
+    plt.close(fig)
+
+
 # ═════════════════════════════════════════════════════════════════════════════
 # FIGURE E — Regime-annotated RMS scatter (Camera vs LDV)
 # ═════════════════════════════════════════════════════════════════════════════
@@ -588,9 +809,9 @@ def fig_E_scatter(df: pd.DataFrame):
         if REGIME_REEMERGE[0] <= rpm <= REGIME_REEMERGE[1]: return "Bending re-emergence"
         return "Near-floor"
 
-    for ax, b_or_t, ch_label, r_val in [
-        (axes[0], "b", "Bending",        0.845),
-        (axes[1], "t", "Torsion proxy",  0.940),
+    for ax, b_or_t, ch_label in [
+        (axes[0], "b", "Bending"),
+        (axes[1], "t", "Torsion proxy"),
     ]:
         ldv_col = f"ldv_{b_or_t}_rms"
         cam_col = f"cam_{b_or_t}_rms"
@@ -666,12 +887,124 @@ def fig_E_scatter(df: pd.DataFrame):
 
     fig.suptitle(
         "Condition-Level RMS: Camera vs LDV — Colour-Coded by Aerodynamic Regime\n"
-        "Simultaneous recording | Commercial aerodynamic testing facility, South Korea",
+        "Condition-matched same-facility comparison across separate recording sessions",
         fontsize=11, fontweight="bold"
     )
     fig.tight_layout()
     for ext in ["pdf", "png"]:
         path = OUT_DIR / f"figE_scatter_by_regime.{ext}"
+        fig.savefig(path, dpi=DPI, bbox_inches="tight")
+        print(f"  [WRITE] {path}")
+    plt.close(fig)
+
+
+def fig_E_paper(df: pd.DataFrame):
+    """
+    Paper-ready regime scatter with less clutter and clearer claim boundaries.
+    """
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5.6))
+
+    def regime_color(rpm, flag):
+        if flag == "DCG_excluded":
+            return "0.55"
+        if flag == "VIV":
+            return "white"
+        if REGIME_BENDING[0] <= rpm <= REGIME_BENDING[1]:
+            return C_REG_B
+        if REGIME_TORSION[0] <= rpm <= REGIME_TORSION[1]:
+            return C_REG_T
+        if REGIME_REEMERGE[0] <= rpm <= REGIME_REEMERGE[1]:
+            return C_REG_R
+        return "0.65"
+
+    for ax, b_or_t, ch_label in [
+        (axes[0], "b", "Bending"),
+        (axes[1], "t", "Torsion proxy"),
+    ]:
+        ldv_col = f"ldv_{b_or_t}_rms"
+        cam_col = f"cam_{b_or_t}_rms"
+        all_vals = pd.concat([df[ldv_col], df[cam_col].dropna()])
+        lim = float(all_vals.max() * 1.08)
+        ax.plot([0, lim], [0, lim], ls="--", lw=1.0, color="0.55", zorder=1)
+
+        for _, row in df.iterrows():
+            xv = row[ldv_col]
+            yv = row[cam_col]
+            if np.isnan(yv):
+                continue
+            if row["flag"] == "VIV":
+                ax.scatter(xv, yv, marker="^", s=85, facecolors="none",
+                           edgecolors="purple", lw=1.6, zorder=5)
+            elif row["flag"] == "DCG_excluded":
+                ax.scatter(xv, yv, marker="x", s=75, color="0.55", lw=1.8, zorder=5)
+            else:
+                c = regime_color(row["rpm"], row["flag"])
+                ax.scatter(xv, yv, s=85, color=c, edgecolors="white", lw=0.8, zorder=5)
+
+            if row["rpm"] in (60, 90, 160, 200, 260, 300, 320):
+                ax.annotate(
+                    f"{int(row['rpm'])}",
+                    xy=(xv, yv),
+                    xytext=(4, 3),
+                    textcoords="offset points",
+                    fontsize=7.5,
+                    color="0.25",
+                )
+
+        stable_mask = (df["flag"] == "")
+        x_st = df.loc[stable_mask, ldv_col].values
+        y_st = df.loc[stable_mask, cam_col].values
+        valid = ~np.isnan(y_st)
+        if np.sum(valid) >= 3:
+            r_p, _ = pearsonr(x_st[valid], y_st[valid])
+            r_s, _ = spearmanr(x_st[valid], y_st[valid])
+            ax.text(
+                0.05, 0.95,
+                f"Stable conditions only\nPearson r = {r_p:.3f}\nSpearman rho = {r_s:.3f}",
+                transform=ax.transAxes, fontsize=8.5, va="top",
+                bbox=dict(boxstyle="round,pad=0.35", fc="white", ec="0.6", alpha=0.92),
+            )
+
+        if b_or_t == "b":
+            ax.text(
+                0.49, 0.10,
+                "Bending ratio > 1 in the torsional regime\nis consistent with cross-axis leakage,\nnot same-run amplitude validation.",
+                transform=ax.transAxes, fontsize=7.8,
+                bbox=dict(boxstyle="round,pad=0.3", fc="lightyellow", ec="0.8", alpha=0.92),
+            )
+
+        ax.set_xlim(0, lim)
+        ax.set_ylim(0, lim)
+        ax.set_aspect("equal", adjustable="box")
+        ax.set_xlabel("LDV RMS (mm)")
+        ax.set_ylabel("Camera RMS (mm)")
+        ax.set_title(ch_label, fontsize=11, fontweight="bold")
+
+    legend_handles = [
+        Line2D([0], [0], ls="--", lw=1.0, color="0.55", label="1:1 line"),
+        Line2D([0], [0], marker="o", color="w", markerfacecolor=C_REG_B, markeredgecolor="white", markersize=9, label="Bending VIV"),
+        Line2D([0], [0], marker="o", color="w", markerfacecolor=C_REG_T, markeredgecolor="white", markersize=9, label="Torsional VIV"),
+        Line2D([0], [0], marker="o", color="w", markerfacecolor=C_REG_R, markeredgecolor="white", markersize=9, label="Bending re-emergence"),
+        Line2D([0], [0], marker="^", color="purple", markerfacecolor="none", lw=0, markersize=9, label="VIV outlier (e4)"),
+        Line2D([0], [0], marker="x", color="0.55", lw=0, markersize=9, label="DCG-excluded (e20)"),
+    ]
+
+    fig.suptitle(
+        "Condition-Level RMS Comparison by Aerodynamic Regime",
+        fontsize=13, fontweight="bold", y=0.992
+    )
+    fig.text(
+        0.5, 0.955,
+        "Condition-matched same-facility comparison across separate recording sessions; statistical comparison only",
+        ha="center", fontsize=10
+    )
+    fig.legend(
+        handles=legend_handles, loc="upper center", ncol=3, frameon=True,
+        bbox_to_anchor=(0.5, 0.945), fontsize=8.5
+    )
+    fig.tight_layout(rect=[0, 0, 1, 0.84])
+    for ext in ["pdf", "png"]:
+        path = OUT_DIR / f"figE_scatter_by_regime_paper.{ext}"
         fig.savefig(path, dpi=DPI, bbox_inches="tight")
         print(f"  [WRITE] {path}")
     plt.close(fig)
@@ -735,7 +1068,8 @@ def fig_F_timeseries(df: pd.DataFrame):
 
     fig.suptitle(
         "Time-Domain Overlay — Camera vs LDV\n"
-        "Both instruments recorded simultaneously on separate DAQ systems. Traces mean-removed.",
+        "Separate-session qualitative comparison only; not time-synchronised waveform validation. "
+        "Traces mean-removed.",
         fontsize=11, fontweight="bold"
     )
     for ext in ["pdf", "png"]:
@@ -776,11 +1110,22 @@ def main():
                shade_fn=shade_regimes_ws,
                fname_stem="figB_mean_rms_peak_vs_windspeed")
 
+    print("\n[3b/6] Fig A candidates — RMS-only variants...")
+    fig_A_rms_variants(df,
+                       x_col="rpm",
+                       x_label="Fan speed (RPM)",
+                       shade_fn=shade_regimes_rpm,
+                       fname_stem="figA_rms_only_vs_rpm")
+
     print("\n[4/6] Fig C/D — FFT/PSD overlay (physical + normalised)...")
     fig_fft_physical_and_normalised(df)
+    print("\n[4b/6] Fig C paper — normalized PSD only...")
+    fig_C_paper(df)
 
     print("\n[5/6] Fig E — Regime-annotated scatter...")
     fig_E_scatter(df)
+    print("\n[5b/6] Fig E paper — polished scatter...")
+    fig_E_paper(df)
 
     print("\n[6/6] Fig F — Time-series overlay (2 conditions)...")
     fig_F_timeseries(df)

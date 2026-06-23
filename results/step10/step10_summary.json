@@ -6,19 +6,19 @@
     "bending_pearson_gate": "FAIL",
     "torsion_pearson_gate": "PASS",
     "threshold_pearson_r": 0.9,
-    "stable_bending_pearson_r": 0.7966816153670015,
+    "stable_bending_pearson_r": 0.8450431987291208,
     "stable_torsion_pearson_r": 0.9395511780722222,
-    "target_bending_pearson_r": 0.959,
-    "target_torsion_pearson_r": 0.968,
-    "target_bending_mae_mm": 0.224,
-    "target_bending_rmse_mm": 0.297,
-    "target_bending_ratio": 1.268,
-    "target_torsion_ratio": 0.785,
+    "target_bending_pearson_r": 0.845,
+    "target_torsion_pearson_r": 0.94,
+    "target_bending_mae_mm": 0.485,
+    "target_bending_rmse_mm": 0.719,
+    "target_bending_ratio": 1.339,
+    "target_torsion_ratio": 0.599,
     "notes": [
       "Stable regime excludes e4_60rpm (VIV) and e20_320rpm (high-wind unstable).",
       "Full-regime statistics include all 20 conditions.",
       "Ratio > 1 means camera reads higher than LDV. Not an accuracy claim.",
-      "Cross-tunnel comparison: camera Tunnel A Oct 2025, LDV Tunnel B Sep 2025."
+      "Same-tunnel (Tunnel B) condition-matched comparison. Sessions are 10 days apart \u2014 NOT simultaneous."
     ]
   },
   "n_conditions_processed": 20,

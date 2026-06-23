@@ -27,16 +27,28 @@
     "reproj_err_mean_px": 0.0353
   },
   "derived_bounds": {
-    "note": "Derived upper bounds assuming independent noise between cameras. Static bags were NOT recorded simultaneously across cameras (recorded hours apart). Direct measurement of bending_avg_y_mm noise floor from static bags is therefore not possible.",
+    "note": "Canonical bounds are derived from the e0_0rpm full-pipeline condition (preferred reference because it captures the actual experimental environment). Static-bag bounds are retained for comparison. All bounds assume independent noise between cameras.",
     "sigma_cam1_worst_mm": 0.002592,
     "sigma_cam2_worst_mm": 0.004781,
     "sigma_cam3_worst_mm": 0.004015,
-    "bending_avg_bound_mm": 0.002719,
-    "torsion_diff_bound_mm": 0.004849
+    "bending_avg_bound_mm": 0.004296,
+    "torsion_diff_bound_mm": 0.005204,
+    "static_bag": {
+      "bending_avg_bound_mm": 0.002719,
+      "torsion_diff_bound_mm": 0.004849
+    },
+    "e0_0rpm_full_pipeline": {
+      "source": "e0_0rpm_full_pipeline",
+      "sigma_cam1_mm": 0.00648,
+      "sigma_cam2_mm": 0.005642,
+      "sigma_cam3_mm": 0.002937,
+      "bending_avg_bound_mm": 0.004296,
+      "torsion_diff_bound_mm": 0.005204
+    }
   },
   "gate": {
-    "bending_threshold_mm": 0.1,
-    "torsion_threshold_mm": 0.2,
+    "bending_threshold_mm": 0.05,
+    "torsion_threshold_mm": 0.1,
     "bending_pass": true,
     "torsion_pass": true,
     "SECTION_A_PASS": true

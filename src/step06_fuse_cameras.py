@@ -13,9 +13,9 @@ Purpose:  Remove per-camera DC offset (full-run mean) to convert absolute
             - Every camera's mean x/y/z = 0 by construction
             - Raw Z disagreement (DC offset, ~388 mm) is removed
             - Residual Z disagreement (std of z_diff) is the publishable metric
-            - Target residual: ~1.757 mm RMS (from confirmed pipeline results)
+            - Target residual: ~2.053 mm std (from confirmed clean implementation, e7_90rpm reference)
 
-          The 62x reduction (388 mm raw -> ~1.757 mm aligned) IS a key result.
+          The ~189× improvement (388 mm raw → ~2.053 mm std aligned, e7_90rpm) IS a key result.
           Both numbers must be reported in the manuscript.
 
 Inputs:   results/step05/{condition}/{cam}/synced_pose.csv

@@ -78,16 +78,19 @@ NOISE_FLOOR_BENDING_MM, NOISE_FLOOR_TORSION_MM = _load_noise_floor_from_step09()
 # (1) Fixed averaging bias from 9.8° inter-camera misalignment: 0.038 mm at 5 mm amplitude
 # (2) Regime-dependent torsion coupling: y_leak ≈ α × sin(9.8°), inflates bending RMS by ~2×
 #     in the torsion-dominated regime (90–220 RPM)
-BENDING_RATIO_MEAN_STABLE = 1.339   # cam / LDV, 18 stable conditions
+BENDING_RATIO_MEAN_STABLE = 1.339   # cam / LDV, stable conditions (canonical)
+BENDING_STABLE_PEARSON_R  = 0.845   # stable-regime canonical value from Step 10
+BENDING_STABLE_N          = 18      # stable-regime canonical condition count from Step 10
 BENDING_MISALIGNMENT_DEG  = 9.8     # inter-camera angle, confirmed from extrinsics
 BENDING_LEAKAGE_NOTE = (
-    "Bending cam/LDV ratio = 1.34× (stable mean). "
+    f"Bending cam/LDV ratio = {BENDING_RATIO_MEAN_STABLE:.2f}× (stable mean). "
     "Two sources are identified from the 9.8° inter-camera misalignment: "
-    "(1) fixed averaging bias of 0.038 mm at 5 mm amplitude (< 6% of LDV RMSE); "
+    "(1) fixed averaging bias of 0.038 mm at 5 mm amplitude (~5% of LDV RMSE); "
     "(2) regime-dependent torsion coupling y_leak ≈ α×sin(9.8°), "
     "which amplifies bending RMS by approximately 2× in the torsion-dominated "
     "regime (90–220 RPM) where torsion amplitude α is large. "
-    "Bending r = 0.845 reflects this coupling, not sensor noise."
+    f"Bending r = {BENDING_STABLE_PEARSON_R:.3f} (stable, {BENDING_STABLE_N} cond.) "
+    "reflects this coupling, not sensor noise."
 )
 
 REGIME_BENDING_DOMINATED   = (40,  80)
@@ -214,8 +217,8 @@ CAPTION_FIG1 = (
     "Upper: bending channel (mean of Camera 1 and Camera 2 Y-displacements). "
     "Lower: two-point differential displacement proxy. "
     "Grey: Step 07 motion decomposition output; green: RTS-smoothed output (Step 11). "
-    "The RTS smoother introduces zero measurable phase shift and preserves signal amplitude "
-    "(ratio 0.999), as validated across all 21 conditions."
+    "The RTS smoother introduces no measurable phase shift (< ±8.3 ms, resolution-limited "
+    "at 60 Hz) and preserves signal amplitude (ratio 0.999), as validated across all 21 conditions."
 )
 
 
@@ -259,12 +262,13 @@ def fig01_displacement_traces():
 CAPTION_FIG2 = (
     "Fig. 2. Dominant spectral peak frequency (circles) and nearest reference bin "
     "frequency (crosses) vs fan RPM for all 21 conditions. "
-    "Upper: bending channel (reference f_h = 1.430 Hz). "
-    "Lower: two-point differential displacement proxy (reference f_alpha = 3.103 Hz). "
+    "Upper: bending channel. "
+    "Lower: two-point differential displacement proxy. "
     "Shaded bands show the three aerodynamic regimes: "
     "bending-dominated (40-80 RPM), torsion-dominated (90-220 RPM), "
     "bending re-emergence (240-300 RPM). "
-    "Dominant peak and nearest reference bin are reported separately."
+    "Configured structural reference targets and measured dominant peaks are "
+    "reported separately."
 )
 
 
@@ -307,8 +311,8 @@ CAPTION_FIG3 = (
     "Left: bending channel. Right: two-point differential displacement proxy. "
     "Stable conditions (filled circles); VIV outlier 60 RPM (open triangle); "
     "high-wind-unstable 320 RPM (open square). "
-    "LDV and camera data were recorded simultaneously on separate DAQ systems "
-    "at a commercial aerodynamic testing facility in South Korea. "
+    "Camera and LDV data are compared condition-by-condition from the same tunnel "
+    "using separate recording sessions and separate DAQ systems. "
     "This is a condition-level statistical comparison (RMS and peak per condition). "
     "Pearson r and Spearman rho computed for stable conditions only. "
     + BENDING_LEAKAGE_NOTE
@@ -374,7 +378,7 @@ def fig03_ldv_scatter():
         ax.legend(fontsize=7, loc="lower right")
 
     fig.suptitle(
-        "Step 10 -- Condition-level camera vs LDV RMS (same-tunnel, simultaneous recording)",
+        "Step 10 -- Condition-level camera vs LDV RMS (same-tunnel, separate-session comparison)",
         fontsize=9
     )
     fig.tight_layout()
@@ -433,8 +437,8 @@ CAPTION_FIG5 = (
     "Fig. 5. Per-condition camera RMS displacement with 95% bootstrap confidence "
     "intervals (moving-block, 1000 resamples) and static noise floor. "
     "Upper: bending channel. Lower: two-point differential displacement proxy. "
-    "Horizontal dashed lines show the static noise floor (bending: 0.017 mm; "
-    "torsion proxy: 0.033 mm) derived from static bag recordings (Step 09). "
+    "Horizontal dashed lines show Step 09 static-bag support bounds "
+    f"(bending: {NOISE_FLOOR_BENDING_MM:.3f} mm; torsion proxy: {NOISE_FLOOR_TORSION_MM:.3f} mm). "
     "Grey band indicates the near-floor region where the camera cannot resolve "
     "the true displacement amplitude. "
     "VIV aerodynamic condition (60 RPM) and high-wind-unstable condition (320 RPM) "
@@ -616,13 +620,7 @@ def tab02_summary_stats():
             "RMSE_mm": None, "Ratio_mean": 0.995, "N": 21,
         },
         {
-            "Regime": (
-                "FOOTNOTE — Bending ratio > 1: two sources from 9.8 deg misalignment. "
-                "(1) Fixed averaging bias 0.038 mm (< 6 pct of LDV RMSE). "
-                f"(2) Torsion coupling y_leak~alpha*sin({BENDING_MISALIGNMENT_DEG}deg) "
-                "inflates bending RMS ~2x in torsion-dominated regime (90-220 RPM). "
-                "Bending r=0.845 reflects coupling, not sensor noise."
-            ),
+            "Regime": "FOOTNOTE — " + BENDING_LEAKAGE_NOTE,
             "Channel": "", "Pearson_r": None, "Spearman_rho": None,
             "MAE_mm": None, "RMSE_mm": None, "Ratio_mean": None, "N": None,
         },
@@ -707,8 +705,9 @@ def main():
         "claim_boundary_pass":   len(forbidden_found) == 0,
         "note_comparison": (
             "LDV comparison is condition-level (RMS/peak/frequency per condition). "
-            "Camera and LDV recorded simultaneously in the same Tunnel B 2025 run "
-            "on separate DAQ systems at different sampling rates (60 Hz vs 360 Hz)."
+            "Camera and LDV are compared condition-by-condition in the same tunnel "
+            "from separate recording sessions on separate DAQ systems "
+            "at different sampling rates (60 Hz vs 360 Hz)."
         ),
         "note_bending_ratio": BENDING_LEAKAGE_NOTE,
         "note_torsion_proxy": (

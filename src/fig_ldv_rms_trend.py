@@ -343,7 +343,7 @@ def fig_rms_4panel(df: pd.DataFrame, cam3_b_rms: float):
                bbox_to_anchor=(0.5, -0.04), frameon=True)
 
     fig.suptitle(
-        "Condition-level RMS: Camera vs LDV  —  simultaneous Tunnel B 2025 recording\n"
+        "Condition-level RMS: Camera vs LDV  —  same-tunnel separate-session comparison\n"
         r"Camera 60 Hz  |  LDV 360 Hz  |  $f_{n,b}$=" + f"{FN_B} Hz, "
         r"$f_{n,t}$=" + f"{FN_T} Hz  |  "
         "e20 320 RPM: LDV valid (open), cam1/cam2 DCG-excluded, cam3-only shown (▲)",
@@ -422,7 +422,7 @@ def fig_mrp_6panel(df: pd.DataFrame, cam3_b_rms: float, cam3_b_peak: float):
                bbox_to_anchor=(0.5, -0.04), frameon=True)
 
     fig.suptitle(
-        "Mean / RMS / Peak displacement: Camera vs LDV  —  simultaneous Tunnel B 2025 recording\n"
+        "Mean / RMS / Peak displacement: Camera vs LDV  —  same-tunnel separate-session comparison\n"
         "Camera 60 Hz  |  LDV 360 Hz  |  "
         "Peak = max|x − x̄|  |  e20 cam1/cam2 DCG-excluded; cam3-only shown (▲, bending only)",
         fontsize=9

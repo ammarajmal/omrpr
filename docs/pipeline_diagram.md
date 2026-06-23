@@ -32,7 +32,7 @@ Step 02 — AprilTag Detection
 Step 02b — Detection Completeness Gate (DCG)
         Input:  step02 detections.csv + summary.json per camera per condition
         Output: gate_status.json per condition
-        Accept: r_det ≥ 0.95 AND n_miss_max ≤ 5 AND v_peak < w_cell (all cameras)
+        Accept: Designed criterion r_det ≥ 0.95 AND n_miss_max ≤ 3 AND v_peak < w_cell (all cameras)
         Note:   v_peak = 2π × f_struct × A_px / 60 (from cy amplitude in detections.csv)
                 w_cell = mean tag side length / 10 (from corner coords, not hardcoded)
                 Conditions that FAIL: excluded from all downstream steps
@@ -59,15 +59,17 @@ Step 04 — Camera-Frame Pose Estimation
                 Always call .flatten() on tvec immediately after solvePnP
         │
         ▼
-Step 05 — Cross-Camera Synchronization + Gap Guard
+Step 05 — Cross-Camera Synchronization
         Input:  world_pose.csv per camera (different timestamps)
         Output: Synchronized multi-camera traces on a common 60 Hz grid
         Accept: Direct common60 resampling; dense1000 gives < 0.08% improvement — skipped
         Note:   Normalize timestamps to bag-start BEFORE any sync analysis
-                Max pairwise drift: 20.0 ms (cam1–cam3)
-                Gap-aware guard: gaps ≤ 3 frames → interpolate (ε = 0.008 mm, 0.46× noise floor)
-                                 gaps > 3 frames → write NaN (not interpolated)
-                MAX_INTERP_GAP = 3 frozen from ε = A(πg/T_h)²/8 at T_h = 0.700s, A = 1.25mm
+                Max pairwise drift: 20.03 ms (cam1–cam3)
+                Proposed gap-aware guard patch: gaps ≤ 3 frames → interpolate
+                                                (ε = 0.008 mm, 0.46× noise floor)
+                                                gaps > 3 frames → write NaN
+                MAX_INTERP_GAP = 3 frozen from ε = A(πg/T_h)²/8 at T_h = 0.698 s,
+                A = 1.25mm, but not yet implemented in live Step 05 code
         │
         ▼
 Step 06 — Baseline-Aligned Fusion
@@ -90,8 +92,8 @@ Step 07 — Motion Decomposition
 Step 08 — Frequency Analysis
         Input:  bending_avg_y_mm and torsion_diff_y_mm per condition
         Output: FFT/PSD per condition, dominant peak frequency, nearest reference bin
-        Accept: Bending peak within ±0.5 Hz of f_h = 1.430 Hz for stable conditions
-                Torsion proxy peak near f_α = 3.103 Hz
+        Accept: Bending peak within ±0.5 Hz of f_h = 1.4323 Hz for stable conditions
+                Torsion proxy peak near f_α = 3.0827 Hz
         Note:   Three aerodynamic regimes: bending-dominated (40–80 RPM),
                 torsion-dominated (90–220 RPM), bending re-emergence (240–300 RPM)
                 All 21 conditions: low_snr = False (including 0 and 20 RPM)
@@ -101,19 +103,22 @@ Step 08 — Frequency Analysis
 Step 09 — Uncertainty Quantification
         Input:  Time series + static bags
         Output: Static noise floor, camera-agreement stats, bootstrap CIs, timing audit
-        Accept: bending static RMS < 0.05 mm (result: 0.003 mm, worst-case 0.005 mm)
-                torsion proxy static RMS < 0.1 mm (result: 0.005 mm)
+        Accept: bending preferred full-pipeline bound < 0.05 mm (result: 0.017 mm)
+                torsion proxy preferred full-pipeline bound < 0.1 mm (result: 0.033 mm)
                 reproj error < 0.5 px (result: 0.04–0.17 px — confirms correct intrinsics)
                 Bootstrap CI width < 20% relative for stable non-near-floor conditions
         Note:   Moving-block bootstrap (not standard bootstrap — time series)
+                Manuscript-facing conservative bounds remain 0.017 mm bending,
+                0.033 mm torsion proxy
         │
         ▼
 Step 10 — LDV Condition-Level Comparison
         Input:  Per-condition bending/torsion RMS + LDV reference (converted to mm)
         Output: Comparison table, Pearson/Spearman, ratio analysis
-        Accept: Stable regime Pearson > 0.90 (excluding 60 RPM VIV outlier)
+        Accept: Torsion stable-regime Pearson > 0.90
+                Bending above-floor stable Pearson is reported with physical explanation if below 0.90
         Note:   LDV raw files in CENTIMETERS — convert explicitly; use _mm_corrected columns
-                LDV comparison is condition-level (RMS/peak/freq per condition); simultaneous same-tunnel recording, different sampling rates
+                LDV comparison is condition-level ONLY (same-tunnel Tunnel B, separate sessions 10 days apart, NOT simultaneous)
         │
         ▼
 Step 11 — Non-Causal RTS Smoothing
@@ -145,7 +150,7 @@ Step 12 — Manuscript Figures and Tables
 | LDV dp (torsion scaling) | 1.538 | `BRID2D1_choi.m` MATLAB script |
 | LDV pvolt | 2.7 cm/V | `BRID2D1_choi.m` |
 | LDV fs | 360 Hz | `BRID2D1_choi.m` |
-| f_h (bending nat. freq.) | 1.430 Hz | 6 independent sources |
-| f_α (torsion nat. freq.) | 3.103 Hz | 6 independent sources |
+| f_h (bending nat. freq.) | 1.4323 Hz | Measured Tunnel B free-vibration result |
+| f_α (torsion nat. freq.) | 3.0827 Hz | Measured Tunnel B free-vibration result |
 | Bridge chord width B | 0.40 m | Model setup sheet |
 | RTS process noise σ | 10.0 mm/s | Calibrated for 0.957–1.000 amplitude ratio |

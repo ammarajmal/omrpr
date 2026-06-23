@@ -1,0 +1,56 @@
+{
+  "dp_nominal": 1.538462,
+  "dp_range": [
+    1.4,
+    1.45,
+    1.5,
+    1.55,
+    1.6,
+    1.65
+  ],
+  "note": "Pearson r is scale-invariant \u2014 dp multiplies all LDV torsion values by a constant, leaving r unchanged. Ratio scales as dp_nominal/dp_test. All values exceed the gate threshold of 0.90.",
+  "results": [
+    {
+      "dp": 1.4,
+      "dside_cm": 14.286,
+      "torsion_pearson_r": 0.939551,
+      "torsion_pearson_p": 1e-08,
+      "torsion_ratio_cam_over_ldv": 1.3157
+    },
+    {
+      "dp": 1.45,
+      "dside_cm": 13.793,
+      "torsion_pearson_r": 0.939551,
+      "torsion_pearson_p": 1e-08,
+      "torsion_ratio_cam_over_ldv": 1.2703
+    },
+    {
+      "dp": 1.5,
+      "dside_cm": 13.333,
+      "torsion_pearson_r": 0.939551,
+      "torsion_pearson_p": 1e-08,
+      "torsion_ratio_cam_over_ldv": 1.2279
+    },
+    {
+      "dp": 1.55,
+      "dside_cm": 12.903,
+      "torsion_pearson_r": 0.939551,
+      "torsion_pearson_p": 1e-08,
+      "torsion_ratio_cam_over_ldv": 1.1883
+    },
+    {
+      "dp": 1.6,
+      "dside_cm": 12.5,
+      "torsion_pearson_r": 0.939551,
+      "torsion_pearson_p": 1e-08,
+      "torsion_ratio_cam_over_ldv": 1.1512
+    },
+    {
+      "dp": 1.65,
+      "dside_cm": 12.121,
+      "torsion_pearson_r": 0.939551,
+      "torsion_pearson_p": 1e-08,
+      "torsion_ratio_cam_over_ldv": 1.1163
+    }
+  ]
+}

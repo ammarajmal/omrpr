@@ -351,7 +351,8 @@ def fig_timeseries_overlay():
     """
     One representative condition (e7_90rpm, torsion-dominated).
     Camera (60 Hz) and LDV (360 Hz) shown on the same 20 s axis.
-    Both mean-removed. Not point-by-point aligned — simultaneous DAQ at different rates.
+    Both mean-removed. Not point-by-point aligned — separate DAQ systems and
+    separate recording sessions at different rates.
     """
     COND    = "e7_90rpm"
     D_LABEL = "D07"
@@ -393,7 +394,8 @@ def fig_timeseries_overlay():
     axes[1].set_xlabel("Time (s)", fontsize=10)
     fig.suptitle(
         f"Time-domain overlay — {COND.replace('_', ' ')} (torsion-dominated regime, U*_b=2.91)\n"
-        "Camera and LDV recorded simultaneously on separate DAQ systems. "
+        "Camera and LDV shown for qualitative comparison only; they come from "
+        "separate recording sessions on separate DAQ systems. "
         "Traces mean-removed for comparison.",
         fontsize=9
     )

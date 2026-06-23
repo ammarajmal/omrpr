@@ -219,9 +219,9 @@ This is the exact spectral peak observed in the FFT of the miss-indicator signal
 
 ### 3.4 At Lower Wind Speeds — Why Detection Succeeds
 
-At 300 RPM (e19): $f_{struct} \approx 1.430\,\text{Hz}$, $A_{pix} \approx 51\,\text{px}$.
+At 300 RPM (e19): $f_{struct} \approx 1.4323\,\text{Hz}$, $A_{pix} \approx 51\,\text{px}$.
 
-$$v_{peak}^{(e19)} = 2\pi \times 1.430 \times 51 \approx 458\,\text{px/s} \approx 7.6\,\text{px/frame}$$
+$$v_{peak}^{(e19)} = 2\pi \times 1.4323 \times 51 \approx 459\,\text{px/s} \approx 7.6\,\text{px/frame}$$
 
 This is well below the 29 px/frame threshold. Detection rate: 100%.
 
@@ -250,7 +250,7 @@ displacement in pixel space, so it never blurs past detection threshold.
 
 ### 3.6 Linear Interpolation Error from Periodic Gaps
 
-Step 05 fills the 717 missing detection frames via linear interpolation. For a sinusoidal signal
+In the earlier contaminated pipeline path, Step 05 filled the 717 missing detection frames via linear interpolation. For a sinusoidal signal
 $x(t) = A \sin(2\pi f_s t)$, the maximum error of a linear interpolant across a gap of duration
 $g$ is:
 
@@ -277,10 +277,16 @@ accumulates rather than cancelling, inflating the RMS by a factor of ~4–8× ab
 
 **Observed:** 9.843 mm contaminated vs. 2.19 mm (cam3, uncontaminated). Ratio ≈ **4.5×**.
 
-### 3.7 Detection Completeness Gate (DCG) — Formal Criterion
+### 3.7 Detection Completeness Gate (DCG) — Historical 5-Frame Proposal
 
 **Criterion:**
 $$\text{DCG}_{\text{PASS}} \iff \left( r_{det} \geq 0.95 \right) \land \left( n_{miss,max} \leq 5 \right) \quad \forall\,\text{cameras}$$
+
+**Important note:** This subsection preserves an earlier 5-frame DCG proposal as part of the
+reasoning history. The current repo-wide writeup has moved to the stricter analytical rule
+$r_{det} \geq 0.95 \land n_{miss,max} \leq 3 \land v_{peak} < w_{cell}$, aligned with the
+proposed Step 05 guard. Treat this section as historical background, not the current
+manuscript-ready criterion.
 
 where:
 - $r_{det}$ = detection rate (fraction of frames with successful detection)
@@ -318,18 +324,18 @@ isolated bursts in conditions that pass are handled by the Step 05 guard.
 
 **Viva answer for "why 5 and not 3 or 10":**
 > "Five frames = 83 ms sits at the boundary of the noise floor criterion when evaluated
-> at the structural natural frequency $f_h = 1.430\,\text{Hz}$: the interpolation error is
+> at the structural natural frequency $f_h = 1.4323\,\text{Hz}$: the interpolation error is
 > 0.022 mm, which is 1.28× the noise floor of 0.017 mm. Six frames gives 0.031 mm (1.84×)
 > — clearly above. The threshold is not chosen to match e20; it is the largest burst length
 > that is still within one factor of the noise floor under natural-frequency oscillation.
 > Any condition with bursts exceeding this is excluded and its gaps are not interpolated."
 
-**DCG exclusion statement for manuscript:**
+**Historical DCG exclusion statement (do not copy as the current manuscript criterion):**
 > "The pipeline incorporates a Detection Completeness Gate (DCG) applied at Step 02b. Any
 > condition where a camera exhibits a detection rate below 95%, or a consecutive miss run
 > exceeding 5 frames, is excluded from the bending/torsion analysis. The 5-frame threshold
 > corresponds to 83 ms — the gap duration at which the sinusoidal interpolation error
-> (evaluated at the natural bending frequency $f_h = 1.430\,\text{Hz}$ and representative
+> (evaluated at the natural bending frequency $f_h = 1.4323\,\text{Hz}$ and representative
 > amplitude $A = 1.25\,\text{mm}$) first exceeds the measured static noise floor of 0.017 mm.
 > One condition, e20\_320rpm (cam1: 60.8%, cam2: 61.3%), fails this criterion due to
 > motion-blur-induced detection loss at near-flutter oscillation amplitudes."
@@ -350,7 +356,7 @@ These are two separate thresholds for two separate purposes.
 
 | Gate | Applied at | Threshold | Action on failure |
 |------|-----------|-----------|------------------|
-| DCG | Step 02b | $n_{miss,max} > 5$ | Exclude entire condition |
+| DCG (historical proposal in Section 3.7) | Step 02b | $n_{miss,max} > 5$ | Exclude entire condition |
 | Step 05 guard | Step 05 | gap length $> N$ | Write NaN for that gap |
 
 #### 3.8.2 First attempt — and why it was wrong
@@ -415,7 +421,7 @@ Using it in the interpolation error formula is circular.
 
 The Step 05 guard is a **general protection for all conditions**, including the 20 stable
 conditions (e0–e19) where detection is 100% and the guard never actually fires. For those
-conditions, the oscillation frequency is near the structural natural frequency $f_h = 1.430\,\text{Hz}$,
+conditions, the oscillation frequency is near the structural natural frequency $f_h = 1.4323\,\text{Hz}$,
 so the correct denominator is $T_h = 0.700\,\text{s}$.
 
 For e20 specifically: the DCG at step02b has already excluded the condition. The Step 05 guard
@@ -474,7 +480,7 @@ at N=3 costs nothing in practice and is more defensible under reviewer scrutiny.
 
 **Manuscript language (Option B, N=3):**
 
-> "Within conditions that pass the Detection Completeness Gate, Step 05 applies a
+> "Within conditions that pass the Detection Completeness Gate, the proposed Step 05 patch applies a
 > gap-aware interpolation guard: gaps of $\leq 3$ consecutive frames are filled by linear
 > interpolation; gaps exceeding 3 frames are left as NaN and excluded from downstream
 > analysis. The 3-frame threshold is derived from the condition that the sinusoidal
@@ -488,16 +494,18 @@ at N=3 costs nothing in practice and is more defensible under reviewer scrutiny.
 
 The examiner may ask: "You said N=5 was the threshold earlier, then changed it to N=3. Explain."
 
-> "There are two separate thresholds serving two separate purposes. The DCG at Step 02b uses
+> "There are two separate thresholds serving two separate purposes. In the earlier reasoning,
+> the DCG at Step 02b uses
 > $n_{miss,max} \leq 5$ as a **condition-level exclusion gate**: conditions with any burst
 > longer than 5 frames are excluded entirely. That threshold is evaluated at $T_h = 0.700\,\text{s}$
 > (natural frequency) and sits at the boundary of the noise floor (1.28×), which is
-> appropriate for a gate that excludes rather than corrects. The Step 05 guard uses
+> appropriate for a gate that excludes rather than corrects. In the current repo-wide writeup,
+> the stricter analytical rule is aligned to 3 frames. The Step 05 guard uses
 > $N = 3$ as a **within-condition interpolation guard**: for conditions that passed the DCG,
 > it refuses to fill gaps longer than 3 frames, keeping the interpolation error at
 > 0.46× the noise floor — a 2× safety margin. These are different tools with different
 > criteria. The initial claim that N=5 was 'safe' was wrong because it used T_s = 0.341 s
-> (the contaminated e20 period, which is circular) rather than T_h = 0.700 s (the correct
+> (the contaminated e20 period, which is circular) rather than T_h = 0.698 s (the correct
 > period for stable-regime interpolation)."
 
 ---
@@ -724,7 +732,7 @@ distance is the same), but the data-driven value is more defensible.
 #### 3.10.3 Script 2 (step05 patch) — fixed threshold, not dynamic
 
 **Question:** The N=3 threshold was derived for stable conditions at $A = 1.25\,\text{mm}$
-and $T_h = 0.700\,\text{s}$. Step 05 runs before Step 07 (amplitude estimation) and before
+and $T_h = 0.698\,\text{s}$. Step 05 runs before Step 07 (amplitude estimation) and before
 Step 08 (frequency analysis). It cannot know the condition's amplitude at runtime. How does
 it know what threshold to apply?
 
@@ -732,12 +740,13 @@ it know what threshold to apply?
 
 Justification in one sentence: N=3 is the largest integer satisfying $\varepsilon < 0.017/2$
 (a 2× margin below the noise floor) when evaluated at the structural natural frequency
-$T_h = 0.700\,\text{s}$ and representative stable-regime amplitude $A = 1.25\,\text{mm}$.
+$T_h = 0.698\,\text{s}$ and representative stable-regime amplitude $A = 1.25\,\text{mm}$.
 
-The script applies `MAX_INTERP_GAP = 3` as a module-level constant with a comment stating
-its derivation. It does not attempt to compute the threshold dynamically. The number is
-locked to the derivation in the documentation and cannot change without updating the
-documentation.
+The proposed patch would apply `MAX_INTERP_GAP = 3` as a module-level constant with a comment
+stating its derivation. It does not attempt to compute the threshold dynamically. The
+number is locked to the derivation in the documentation and cannot change without updating
+the documentation. As of the current repo state, this guard is documented but not yet
+implemented in the live `src/step05_synchronize.py`.
 
 For e20: all 717 gaps are length ≥ 4 frames. The guard would write NaN for every single
 one — but e20 is excluded by the DCG before Step 05 runs on it, so this is moot in
@@ -1059,5 +1068,17 @@ These conclusions are confirmed by data and should be stated definitively in the
 
 ---
 
-*Document created 2026-06-19. For the standalone diagnostic script, see `src/e20_diagnostic.py`.*
+---
+
+## 9. Comparison Plot Fix (2026-06-22)
+
+**Problem discovered:** `src/comparison_plots_v2.py` was drawing Camera RMS and Camera Peak for e20 as part of the connected line in the "All 20" top panels of figA/figB. Because e20 camera metrics are 9.843mm RMS / 15.530mm Peak (contaminated), this forced the y-axis to ~16mm (bending) and ~25mm (torsion), compressing all 19 valid conditions into the lower third of the plot.
+
+**Fix applied:** `fig_A_full()` now uses `valid_cam = ~np.isnan(cam_rms) & ~(flag == "DCG_excluded")` for both Camera RMS and Camera Peak lines. e20 camera metrics appear as isolated × markers labelled "Camera (DCG artifact)". LDV lines for e20 remain (genuine data; 25.747mm LDV torsion proxy peak is real — it is the physical reason the camera failed).
+
+**Second fix applied at the same time:** LDV Peak was previously computed as `max(|b_mm_raw|)` (non-demeaned), inconsistent with Camera Peak which uses `max(|b - mean(b)|)`. The LDV mean offset for e20 is +1.648mm, inflating old LDV Peak from 6.844mm to 8.492mm (+24%). Fixed by demeaning before taking peak, consistent with camera. Corrections range 5–24% across conditions. See `docs/RESULTS_LOG.md` §"Bug 4" and "Bug 5" for full per-condition table.
+
+---
+
+*Document created 2026-06-19. Updated 2026-06-22 with comparison plot fix. For the standalone diagnostic script, see `src/e20_diagnostic.py`.*
 *For the broader critical review of the pipeline, see `docs/DEEP_METHODS_REVIEW.md`.*

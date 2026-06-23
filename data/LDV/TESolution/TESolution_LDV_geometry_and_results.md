@@ -178,12 +178,40 @@ All subsequent measurements are bias-corrected before calibration.
 
 ```matlab
 pvolt  = [2.7, 2.7];   % same calibration as Tunnel A
-dside  = 13;           % DIFFERENT: 13 cm from centerline (vs 10 cm in Tunnel A)
-db     = 20;           % same reference distance
-dp     = db/dside;     % = 1.538 (vs 2.0 in Tunnel A) — 23% smaller
+dside  = 13;           % ch2 (side sensor) distance from deck centerline [cm]
+db     = 20;           % reference lever arm (half-chord) for torsion output [cm]
+dp     = db/dside;     % = 1.538 — scale factor
 ```
 
-**Consequence:** For the same physical torsion angle θ, Tunnel B output = 0.769 × Tunnel A output. Torsion values CANNOT be directly compared between tunnels without correcting for this 23% scaling difference.
+**Sensor layout — center+side configuration (NOT symmetric):**
+- ch1 (center sensor): at deck centerline, 0 cm from center
+- ch2 (side sensor): 13 cm from deck centerline, to the right of center
+- `센서간격 = 13 cm` = total gap between sensors (confirmed from setup sheet `설계속도 및 모형Setup_영상계측.xlsx`)
+- Bridge half-chord: db = 20 cm (교폭 40 cm ÷ 2)
+
+**Python pipeline torsion formula (correct for center+side):**
+```python
+torsion_cm = (ch2 - ch1) * dp    # dp = 20/13 = 1.538
+```
+For center+side, ch2 displacement = δ + θ×13, ch1 = δ (pure bending). So `(ch2-ch1) = θ×13`, and `(ch2-ch1) × (20/13) = θ×20` — displacement at the 20 cm reference position. No `/2` factor.
+
+**The MATLAB `/2` formula (wrong for this geometry):**
+The original `BRID2D1_choi.m` uses `(ch2-ch1)/2 × dp` with `dside=10`, designed for symmetric ±10 cm sensors. For center+side (ch1=0, ch2=13), the `/2` halves the signal without physical justification. The Python code correctly drops the `/2`.
+
+**Python Tunnel A and Tunnel B give the same reference displacement:**
+- Tunnel A: ch2 at 10 cm → `(θ×10) × (20/10) = θ×20` ✓
+- Tunnel B: ch2 at 13 cm → `(θ×13) × (20/13) = θ×20` ✓
+
+Both pipelines are dimensionally equivalent and produce displacement at the 20 cm reference. The 0.769× scaling difference applies only to the MATLAB `(ch2-ch1)/2 × dp` outputs, not the Python pipeline.
+
+**Torsion ratio 0.599 — physical explanation (confirmed 2026-06-24):**
+Camera torsion proxy = `y_cam3 − bending_avg` = differential displacement at Marker B arm ≈ 13–14 cm.
+LDV torsion proxy = `(ch2-ch1) × dp` = displacement scaled to 20 cm (deck half-chord).
+Expected ratio = 13/20 ≈ 0.65; observed stable mean 0.599, torsional VIV range 0.61–0.76 — physically consistent.
+Manuscript: "Camera torsion proxy, measured at marker arm ~13 cm, underestimates the LDV torsion proxy (scaled to deck half-chord, 20 cm) by factor ~13/20 ≈ 0.65, consistent with the observed ratio of 0.599."
+
+**Bending contamination (center+side geometry):**
+For center+side LDV: `bending = (ch1+ch2)/2 = δ + θ×6.5` — the LDV bending channel contains a torsion contribution of θ×6.5 mm. In the torsional VIV regime (90–220 RPM), this independently explains why bending comparison is noisier (both LDV bending and camera bending are contaminated, in different ways).
 
 ### 8.2 Data Structure (Tunnel B)
 
