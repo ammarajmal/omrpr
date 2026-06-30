@@ -1,0 +1,16 @@
+name: omrpr
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - pyyaml
+  - pip:
+    - rosbags
+    - pupil-apriltags
+    - opencv-python

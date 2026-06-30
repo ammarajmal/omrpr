@@ -1,0 +1,28 @@
+[project]
+name = "omrpr"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "numpy",
+  "pandas",
+  "scipy",
+  "matplotlib",
+  "seaborn",
+  "opencv-python",
+  "pupil-apriltags",
+  "scikit-learn",
+  "statsmodels",
+  "jupyterlab",
+  "ipykernel",
+  "pyarrow",
+  "openpyxl",
+  "tqdm",
+  "rich",
+  "typer",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.black]
+line-length = 100

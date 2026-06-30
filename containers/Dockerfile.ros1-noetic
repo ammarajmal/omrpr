@@ -1,0 +1,20 @@
+FROM osrf/ros:noetic-desktop-full
+
+ENV DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-c"]
+
+RUN apt-get update && apt-get install -y \
+    python3-pip python3-catkin-tools python3-rosdep python3-vcstool \
+    ros-noetic-cv-bridge ros-noetic-image-transport ros-noetic-camera-info-manager \
+    ros-noetic-usb-cam ros-noetic-rqt-image-view ros-noetic-rviz \
+    ros-noetic-tf ros-noetic-tf2-ros ros-noetic-message-filters \
+    ros-noetic-rosbridge-server \
+    git wget curl nano vim htop tree ripgrep \
+    libopencv-dev python3-opencv \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN rosdep update || true
+
+WORKDIR /catkin_ws
+
+RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc

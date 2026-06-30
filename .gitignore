@@ -1,0 +1,70 @@
+results/step01
+data/WTT/
+data/static_bags/
+data/context_data/
+__pycache__/
+*.pyc
+.env
+*.egg-info/
+
+# MemPalace per-project files (issue #185)
+mempalace.yaml
+entities.json
+
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Large/private data
+data/raw/
+data/private/
+omrpr-data-private/
+*.bag
+*.db3
+*.avi
+*.mp4
+*.mkv
+*.zip
+*.tar
+*.tar.gz
+
+# Results: keep code/results summaries, avoid huge image dump
+results/step01/
+
+# LaTeX/build if any
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.run.xml
+*.synctex.gz
+
+# Local environment files
+.env
+.env.*

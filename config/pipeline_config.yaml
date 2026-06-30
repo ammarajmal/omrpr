@@ -1,0 +1,52 @@
+cameras:
+  cam1:
+    topic: /sony_cam1/image_raw/compressed
+  cam2:
+    topic: /sony_cam2/image_raw/compressed
+  cam3:
+    topic: /sony_cam3/image_raw/compressed
+
+paths:
+  results_dir: results
+  wtt_dir: data/WTT
+  ldv_dir: data/LDV/raw
+  ldv_manifest: data/LDV/manifest.json
+
+quality:
+  low_quality_threshold: 50.0
+
+intrinsics:
+  cam1:
+    fx: 20327.9
+    fy: 20240.8
+    cx: 967.046
+    cy: 530.314
+    dist: [-0.533738, 0.303365, 0.0215373, 0.00130271, 0.000720485, -0.979174, -0.303612, -0.000720938, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  cam2:
+    fx: 25749.5
+    fy: 25819.0
+    cx: 959.448
+    cy: 540.034
+    dist: [-0.0676929, 0.0351158, -0.00189337, -0.00222705, 5.18348e-05, -0.211389, -0.0351198, -5.18391e-05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  cam3:
+    fx: 25630.9
+    fy: 25590.6
+    cx: 958.277
+    cy: 539.119
+    dist: [0.0276978, -0.00646471, -0.00102463, -0.0109985, -1.18615e-05, 0.321229, 0.00646398, 1.18605e-05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+apriltag:
+  tag_size_m: 0.020
+
+frequency:
+  f_h_hz: 1.430
+  f_alpha_hz: 3.103
+  search_min_hz: 0.5
+  search_max_hz: 10.0
+  low_snr_threshold_db: 3.0
+  fs_hz: 60.0
+  window_type: hann
+
+rts_smoother:
+  process_noise_std: 10.0    # mm/s — validated on all 21 conditions, 21/21 PASS
+  measurement_noise_std: 0.05  # mm — amplitude ratio >= 0.957 across all conditions
