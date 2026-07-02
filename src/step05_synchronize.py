@@ -39,9 +39,14 @@ Schema (synced_pose.csv):
 
 Limits:
           Interpolation is linear. Acceptable because delta-t between frames (~16.7ms)
-          is much smaller than the structural period (~700ms for f_h=1.430Hz).
+          is much smaller than the primary structural oscillation period (~0.7 s).
           Quaternion linear interpolation + renormalization is indistinguishable
           from SLERP at < 0.1 degree inter-frame rotation.
+          MAX_INTERP_GAP guard: any consecutive-frame gap in the source camera data
+          exceeding MAX_INTERP_GAP_FRAMES (2 frames = 33 ms) triggers a per-gap
+          WARNING printed to stdout and is recorded in summary.json under
+          "large_gaps".  Interpolation still proceeds — the guard is diagnostic,
+          not a hard stop — so the caller can decide whether to discard the run.
           Per-camera files only — Step 06 is responsible for merging.
 """
 
@@ -78,6 +83,9 @@ def condition_from_arg(arg: str) -> str:
 
 
 INTERP_COLS = ["x_w", "y_w", "z_w", "qx", "qy", "qz", "qw"]
+
+MAX_INTERP_GAP_FRAMES = 2                          # warn if any source gap > this
+MAX_INTERP_GAP_S      = MAX_INTERP_GAP_FRAMES / 60.0
 
 
 def process_condition(condition: str, config: dict) -> None:
@@ -128,16 +136,30 @@ def process_condition(condition: str, config: dict) -> None:
           f"-> {n_frames} frames at 60 Hz\n")
 
     # ── Interpolate each camera onto common grid ──────────────────────────────
+    large_gap_counts = {}   # {cam: n_gaps} — populated in loop, saved to summary
     for cam in cam_names:
         df    = cam_data[cam]
         t_cam = df.timestamp_s.values
 
         # Verify monotonicity — interp1d requires it
-        if not np.all(np.diff(t_cam) > 0):
+        diffs = np.diff(t_cam)
+        if not np.all(diffs > 0):
             raise RuntimeError(
                 f"{cam} timestamps are not strictly monotonic. "
                 f"Check step01 output."
             )
+
+        # MAX_INTERP_GAP guard — warn on any source gap > 3 frames (50 ms)
+        gap_mask    = diffs > MAX_INTERP_GAP_S
+        gap_indices = np.where(gap_mask)[0]
+        if len(gap_indices) > 0:
+            for idx in gap_indices:
+                gap_ms     = diffs[idx] * 1000.0
+                gap_frames = diffs[idx] * 60.0
+                print(f"  [WARN] {cam}: large source gap of {gap_ms:.1f} ms "
+                      f"({gap_frames:.1f} frames) at t={t_cam[idx]:.4f}s — "
+                      f"interpolation will bridge it")
+        large_gap_counts[cam] = int(len(gap_indices))
 
         synced = {"t_s": t_grid}
 
@@ -223,6 +245,11 @@ def process_condition(condition: str, config: dict) -> None:
         "duration_s":      round(float(t_end - t_start), 6),
         "grid_hz":         60,
         "t_s_max_diff":    float(max_t_diff),
+        "large_gaps": {
+            "threshold_frames": MAX_INTERP_GAP_FRAMES,
+            "threshold_ms":     round(MAX_INTERP_GAP_S * 1000.0, 2),
+            "counts":           large_gap_counts,
+        },
         "raw_z_disagreement_mm": {
             "cam1_cam2": round(raw_z12, 2),
             "cam1_cam3": round(raw_z13, 2),

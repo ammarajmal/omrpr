@@ -13,11 +13,11 @@ Outputs:  results/step08/{condition}/frequency.json   (per-condition, full PSD a
 
 FFT methodology (Methods section text — copy to manuscript):
     "The lower bound of the spectral search range was set to 0.5 Hz to exclude
-    quasi-static drift artifacts while remaining well below the confirmed bending
-    natural frequency of 1.430 Hz. The upper bound of 10 Hz was chosen to cover
-    the second harmonic of the torsional frequency (2 × 3.103 = 6.2 Hz) while
-    remaining below the camera Nyquist regime. A Hann window was applied to the
-    full-length signal prior to FFT to reduce spectral leakage."
+    quasi-static drift artifacts while remaining well below the configured
+    structural reference frequencies. The upper bound of 10 Hz was chosen to
+    cover the relevant bending and torsion harmonics while remaining below the
+    camera Nyquist regime. A Hann window was applied to the full-length signal
+    prior to FFT to reduce spectral leakage."
 
 PSD normalization:
     One-sided PSD, physical units mm²/Hz:

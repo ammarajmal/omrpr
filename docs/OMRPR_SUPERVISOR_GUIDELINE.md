@@ -159,10 +159,11 @@ noise as signal.
 Gate criterion: detection_rate ≥ 0.95 per camera AND max_consecutive_miss ≤ 3 frames.
 e20_320rpm: EXCLUDED (cam1 60.8%, cam2 61.3%; 717 detection gaps all ≥ 4 frames).
 All other conditions: PASS.
-The N = 3 consecutive miss threshold is derived from the interpolation error formula:
-ε = A × (π × g / T_h)² / 8 < noise floor
-At A = 1.25 mm, g = 3 frames (50 ms), T_h = 0.698 s: ε = 0.0079 mm < 0.017 mm → SAFE.
-At N = 5 frames (83 ms): ε = 0.022 mm > noise floor → UNSAFE.
+The N = 2 consecutive miss threshold is derived from the interpolation error formula:
+ε = A × (2π × g / T_h)² / 8 < noise floor
+(corrected 2026-07-01 — original formula used ω=π/T_h, missing factor of 4 in ε)
+At A = 1.25 mm, g = 2 frames (33 ms), T_h = 0.698 s: ε = 0.0141 mm < 0.017 mm → SAFE.
+At N = 3 frames (50 ms): ε = 0.0317 mm > noise floor → UNSAFE.
 Must use T_h from stable conditions, not from any e20-derived period (circular).
 
 ### 8. e20_320rpm failure mechanism confirmed: motion blur at equilibrium crossing
@@ -364,8 +365,8 @@ Step 02: Offline AprilTag detection           [COMPLETE]
 Step 02b: Detection Completeness Gate (DCG)   [COMPLETE]
          Output: gate_status.json per condition
          Result: e20_320rpm EXCLUDED; all other conditions PASS
-         Criterion: detection_rate ≥ 0.95 AND max_consecutive_miss ≤ 3 frames
-         Note:   N=3 threshold from ε formula using T_h = 0.698 s
+         Criterion: detection_rate ≥ 0.95 AND max_consecutive_miss ≤ 2 frames
+         Note:   N=2 threshold from ε formula using T_h = 0.698 s (corrected 2026-07-01)
 
 Step 03: Quality scoring                      [COMPLETE]
          Output: detections_with_quality.csv + quality_summary.json
@@ -502,11 +503,12 @@ error. Documented as quantified uncertainty; no code correction applied.
 
 ### 5.6 DCG Interpolation Guard (Threshold Derivation)
 ```
-ε = A × (π × g / T_h)² / 8
+ε = A × (2π × g / T_h)² / 8
 ```
-At A = 1.25 mm, g = 3 frames (50 ms), T_h = 0.698 s: ε = 0.0079 mm < 0.017 mm → SAFE
-At N = 5 frames (83 ms): ε = 0.022 mm > noise floor → UNSAFE
-Threshold locked at N = 3 consecutive missed frames.
+(corrected 2026-07-01 — original formula used ω=π/T_h, missing factor of 4 in ε)
+At A = 1.25 mm, g = 2 frames (33 ms), T_h = 0.698 s: ε = 0.0141 mm < 0.017 mm → SAFE
+At N = 3 frames (50 ms): ε = 0.0317 mm > noise floor → UNSAFE
+Threshold locked at N = 2 consecutive missed frames.
 Always use T_h = 0.698 s from stable conditions.
 
 ### 5.7 RTS Smoothing (Non-Causal — B1 Stage)

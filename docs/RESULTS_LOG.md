@@ -58,7 +58,7 @@ Files corrected: `data/LDV/manifest.json`, `src/step10_ldv_comparison.py`, `src/
 
 ⚠ Script `src/step02b_detection_gate.py` not yet implemented.
 
-**Criterion (locked):** r_det ≥ 0.95 AND n_miss_max ≤ 3 AND v_peak < w_cell (all cameras)
+**Criterion (locked):** r_det ≥ 0.95 AND n_miss_max ≤ 2 AND v_peak < w_cell (all cameras)
 
 **Known outcome from existing step02 data:**
 
@@ -97,10 +97,12 @@ See `docs/e20_outlier_analysis.md` for full diagnosis.
 - Timestamps normalized to bag-start before any analysis
 - Direct common 60 Hz resampling used (dense1000 intermediate gives < 0.08% improvement — skipped)
 - Max pairwise timing drift: 20.03 ms (cam1–cam3)
-- ⚠ PENDING patch: gap-aware interpolation guard (MAX_INTERP_GAP = 3 frames)
-  - Gaps ≤ 3 frames → interpolate (ε = 0.0079 mm, 0.46× noise floor)
-  - Gaps > 3 frames → write NaN
-  - Threshold derivation: ε = A(πg/T_h)²/8 at T_h = 0.698 s, A = 1.25 mm
+- ⚠ PENDING patch: gap-aware interpolation guard (MAX_INTERP_GAP = 2 frames)
+  - Gaps ≤ 2 frames → interpolate (ε = 0.0141 mm, 0.83× noise floor)
+  - Gaps > 2 frames → write NaN
+  - Threshold derivation: ε = A(2πg/T_h)²/8 at T_h = 0.698 s, A = 1.25 mm
+    (corrected 2026-07-01 — original formula used ω=π/T_h, missing factor of 4 in ε;
+    this put N=3/50ms at ε=0.0317mm, above the 0.017mm noise floor)
   - See `docs/e20_outlier_analysis.md` Section 3.8
 
 ---
@@ -260,7 +262,7 @@ Key observations:
 
 ### ⚠ Step 05 — gap-aware interpolation guard not implemented in code
 
-`PROJECT_CONTEXT.md` Section 0.5 and this log (2026-06-16 entry) describe a locked `MAX_INTERP_GAP = 3 frames` gap-aware guard as a design decision. The actual script `src/step05_synchronize.py` has **no MAX_INTERP_GAP check** — it calls `interp1d(..., bounds_error=True)` unconditionally, silently interpolating across any gap regardless of size. The fix (add gap-length check before interpolating, write NaN for gaps > 3 frames) is documented and the threshold is derived, but the code was never patched. Since e20 is DCG-excluded before Step 05, this has no effect on current results, but the methods description claims an implemented guard that does not exist.
+`PROJECT_CONTEXT.md` Section 0.5 and this log (2026-06-16 entry) describe a locked `MAX_INTERP_GAP = 2 frames` (corrected 2026-07-01 from 3 frames — see DCG threshold changelog) gap-aware guard as a design decision. `src/step05_synchronize.py` implements the `MAX_INTERP_GAP_FRAMES` diagnostic WARN check (populates `large_gaps` in summary.json) but still has **no hard gap-length check** — it calls `interp1d(..., bounds_error=True)` unconditionally, silently interpolating across any gap regardless of size; it never writes NaN. The fix (add gap-length check before interpolating, write NaN for gaps > 2 frames) is documented and the threshold is derived, but the NaN-write behavior was never patched. Since e20 is DCG-excluded before Step 05, this has no effect on current results, but the methods description claims a stronger guard than what the code enforces.
 **Current status:** Main docs have been softened to match live code. The implementation decision still remains open if full code-method parity is desired.
 
 ### ~~⚠ Step 06 — docstring has stale alignment numbers~~ ✓ RESOLVED (2026-06-22)

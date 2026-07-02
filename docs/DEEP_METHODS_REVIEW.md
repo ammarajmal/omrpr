@@ -330,7 +330,7 @@ Those four changes would lift this paper from a speculative submission to a more
 | Item | Status | Reference |
 |------|--------|-----------|
 | e20_320rpm motion blur diagnosis | **COMPLETE** | `docs/e20_outlier_analysis.md` — proven mechanism, FFT at 2×f_struct, pixel velocity calculation, Laplacian sharpness, equilibrium clustering |
-| DCG formal criterion | **DESIGNED** | Current writeup uses r_det ≥ 0.95 AND n_miss_max ≤ 3 AND v_peak < w_cell as the analytical exclusion rule. Novelty: velocity threshold derived from tag geometry, not empirical. Implementation (step02b_detection_gate.py) PENDING. |
-| Step05 gap-aware interpolation guard | **DESIGNED** | MAX_INTERP_GAP = 3 frames derived from ε = A(πg/T_h)²/8. Novelty: published sinusoidal error bound tied to tag cell size and structural frequency. Patch to step05 PENDING. |
+| DCG formal criterion | **DESIGNED** | Current writeup uses r_det ≥ 0.95 AND n_miss_max ≤ 2 AND v_peak < w_cell as the analytical exclusion rule. Novelty: velocity threshold derived from tag geometry, not empirical. Implementation (step02b_detection_gate.py) PENDING. |
+| Step05 gap-aware interpolation guard | **DESIGNED** | MAX_INTERP_GAP = 2 frames derived from ε = A(2πg/T_h)²/8 (corrected 2026-07-01, was N=3 under a formula missing a factor of 4). Novelty: published sinusoidal error bound tied to tag cell size and structural frequency. Patch to step05 PENDING. |
 | Step12 e20 annotation | **DESIGNED** | DCG-EXCLUDED annotation + cam3 2.19 mm separate point. Implementation PENDING. |
 | Alternative approaches evaluated | **COMPLETE** | Ghost-DeblurGAN rejected (domain gap, GAN hallucination risk). Kalman gap-filling rejected (fails at equilibrium crossings, RTS already optimal). Hardware fix (t_exp < 7.1 ms) documented as future work. |

@@ -1,0 +1,25 @@
+{
+    "bag": "static_cam2_test6.bag",
+    "topics": {
+        "/sony_cam2/camera_info": {
+            "msgtype": "sensor_msgs/msg/CameraInfo",
+            "count": 1,
+            "first_s": 0.0,
+            "last_s": 0.0,
+            "duration_s": 0,
+            "fps": 0,
+            "max_gap_s": 0
+        },
+        "/sony_cam2/image_raw": {
+            "msgtype": "sensor_msgs/msg/Image",
+            "count": 391,
+            "first_s": 0.0128,
+            "last_s": 11.9913,
+            "duration_s": 11.9785,
+            "fps": 32.56,
+            "max_gap_s": 0.0347
+        }
+    },
+    "timestamp_skew_s": 0.0128,
+    "acceptance": "FAIL"
+}

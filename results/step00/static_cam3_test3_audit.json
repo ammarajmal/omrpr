@@ -1,0 +1,25 @@
+{
+    "bag": "static_cam3_test3.bag",
+    "topics": {
+        "/sony_cam3/camera_info": {
+            "msgtype": "sensor_msgs/msg/CameraInfo",
+            "count": 600,
+            "first_s": 0.0,
+            "last_s": 9.9935,
+            "duration_s": 9.9935,
+            "fps": 59.94,
+            "max_gap_s": 0.0178
+        },
+        "/sony_cam3/image_raw": {
+            "msgtype": "sensor_msgs/msg/Image",
+            "count": 600,
+            "first_s": 0.0,
+            "last_s": 9.9935,
+            "duration_s": 9.9935,
+            "fps": 59.94,
+            "max_gap_s": 0.0178
+        }
+    },
+    "timestamp_skew_s": 0.0,
+    "acceptance": "PASS"
+}

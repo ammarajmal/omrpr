@@ -14,8 +14,9 @@ Purpose:  Decompose aligned per-camera displacements into two physically
                 and Marker A (cam1/cam2 average).
                 Two-point differential displacement proxy for torsion.
                 Treated as unsigned proxy — sign not physically calibrated.
-                Physical validation: dominant frequency should be near f_alpha=3.103 Hz,
-                separate from bending peak at f_h=1.430 Hz (checked in Step 08).
+                Physical validation: dominant frequency should separate from the
+                bending reference target used in Step 08 and cluster near the
+                torsion-reference band in torsion-dominated conditions.
 
 Key decisions (locked):
           - Full-run mean removal was done in Step 06. No second mean removal here.

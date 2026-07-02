@@ -32,7 +32,7 @@ Step 02 — AprilTag Detection
 Step 02b — Detection Completeness Gate (DCG)
         Input:  step02 detections.csv + summary.json per camera per condition
         Output: gate_status.json per condition
-        Accept: Designed criterion r_det ≥ 0.95 AND n_miss_max ≤ 3 AND v_peak < w_cell (all cameras)
+        Accept: Designed criterion r_det ≥ 0.95 AND n_miss_max ≤ 2 AND v_peak < w_cell (all cameras)
         Note:   v_peak = 2π × f_struct × A_px / 60 (from cy amplitude in detections.csv)
                 w_cell = mean tag side length / 10 (from corner coords, not hardcoded)
                 Conditions that FAIL: excluded from all downstream steps
@@ -65,11 +65,12 @@ Step 05 — Cross-Camera Synchronization
         Accept: Direct common60 resampling; dense1000 gives < 0.08% improvement — skipped
         Note:   Normalize timestamps to bag-start BEFORE any sync analysis
                 Max pairwise drift: 20.03 ms (cam1–cam3)
-                Proposed gap-aware guard patch: gaps ≤ 3 frames → interpolate
-                                                (ε = 0.008 mm, 0.46× noise floor)
-                                                gaps > 3 frames → write NaN
-                MAX_INTERP_GAP = 3 frozen from ε = A(πg/T_h)²/8 at T_h = 0.698 s,
-                A = 1.25mm, but not yet implemented in live Step 05 code
+                Proposed gap-aware guard patch: gaps ≤ 2 frames → interpolate
+                                                (ε = 0.0141 mm, 0.83× noise floor)
+                                                gaps > 2 frames → write NaN
+                MAX_INTERP_GAP = 2 frozen from ε = A(2πg/T_h)²/8 at T_h = 0.698 s,
+                A = 1.25mm (corrected 2026-07-01, was N=3 under a formula missing a
+                factor of 4), but not yet implemented in live Step 05 code
         │
         ▼
 Step 06 — Baseline-Aligned Fusion

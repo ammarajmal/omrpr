@@ -5,7 +5,7 @@
 | 00 | Bag Audit | COMPLETE | PASS | 2026-06-23 | All 21 bags; max skew 21.5 ms (e6) |
 | 01 | Frame Export | COMPLETE | PASS | 2026-06-23 | Re-verified 21/21; 0 decode failures; worst gap 31.1 ms (e8 cam3) |
 | 02 | AprilTag Detection | COMPLETE | PASS | 2026-06-23 | Re-verified; 61/63 streams at 100%; e20 cam1/cam2 60.8-61.3%, max miss 6 |
-| 02b | DCG Gate | COMPLETE | PASS | 2026-06-16 | e20 excluded; N=3 threshold |
+| 02b | DCG Gate | COMPLETE | PASS | 2026-06-16 | e20 excluded; N=2 threshold (corrected 2026-07-01 from N=3, factor-of-4 formula bug) |
 | 03 | Quality Scoring | COMPLETE | PASS | 2026-06-23 | Re-ran core B0 on e7 then --all; 63/63 streams low_q=0; B0 remains diagnostic-only |
 | 04 | Pose Estimation | COMPLETE | PASS | 2026-06-23 | Re-ran on e7 then --all; 63/63 streams OK; worst reproj e20 cam3 1.716 px |
 | 05 | Synchronisation | COMPLETE | PASS | 2026-06-23 | Re-ran on e7 then --all; common 60 Hz; normal max start spread 20.03 ms, e20 dropout anomaly 70.94 ms |
