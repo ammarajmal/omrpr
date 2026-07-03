@@ -145,11 +145,24 @@ See `docs/e20_outlier_analysis.md` for full diagnosis.
 
 ## Step 09 — Uncertainty Quantification (2026-06-16; corrected 2026-06-20) ✓ PASS (all 4 gates)
 
+**2026-07-03 RESOLVED:** the noise-floor row values below (0.017/0.033 mm) were confirmed
+stale — a pre-2026-06-20-intrinsics-fix value that never propagated into manuscript-facing
+text, even though this pipeline has computed and gate-checked against the corrected value
+ever since. Corrected to 0.004/0.005 mm (e0_0rpm full-pipeline RMS), consistent across
+`noise_floor_summary.json`'s derived bounds (0.0043/0.0052 mm) and a fresh
+`results/step07/e0_0rpm/summary.json` recomputation (0.0038/0.0052 mm). This also corrected
+the DCG interpolation-error threshold derivation from N≤2 to N≤1 frame (see
+`claim_boundary.md` 2026-07-03 changelog) — verified via `results/step02/*/summary.json`
+that this changes no reported result, since every stable condition has zero missed frames
+regardless of threshold. Bootstrap CI width also corrected below (14.3%/16.3%, from
+re-including e4_60rpm as stable on 2026-07-03). All manuscript-facing files updated
+(abstract, Introduction, Methods, Results, Conclusion).
+
 | Gate | Target | Result |
 |------|--------|--------|
-| Bending noise floor (preferred manuscript reference: e0_0rpm full pipeline) | < 0.05 mm | **0.017 mm** |
-| Torsion proxy noise floor (preferred manuscript reference: e0_0rpm full pipeline) | < 0.10 mm | **0.033 mm** |
-| Bootstrap CI width (stable non-near-floor) | < 20% relative | ~13–15% |
+| Bending noise floor (preferred manuscript reference: e0_0rpm full pipeline) | < 0.05 mm | **0.004 mm** (corrected 2026-07-03; was 0.017 mm) |
+| Torsion proxy noise floor (preferred manuscript reference: e0_0rpm full pipeline) | < 0.10 mm | **0.005 mm** (corrected 2026-07-03; was 0.033 mm) |
+| Bootstrap CI width (stable non-near-floor, n=18) | < 20% relative | **14.3% / 16.3%** (bending/torsion; corrected 2026-07-03) |
 | Timing audit (max pairwise drift) | report value | **20.03 ms** (cam1–cam3) |
 
 - Moving-block bootstrap used (not standard bootstrap — time series)

@@ -62,8 +62,8 @@ import cv2
 import yaml
 import numpy as np
 import pandas as pd
-from rosbags.rosbag1 import Reader
-from rosbags.typesys import Stores, get_typestore
+# rosbags is only needed by Section A (static-bag noise floor); imported lazily
+# inside that code path so --skip-noise-floor works without it installed.
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CONFIGURATION — mirrors pipeline_config.yaml values
@@ -119,9 +119,11 @@ CONFIG = {
         "e20_320rpm",
     ],
 
-    # Stable regime (excludes 0rpm, VIV 60rpm, high-wind 320rpm)
+    # Stable regime (excludes 0rpm [no wind] and 320rpm [DCG, motion blur]).
+    # e4_60rpm included since 2026-07-02 (claim_boundary.md changelog) — do not
+    # re-exclude it as a "VIV outlier"; that diagnosis was retracted.
     "stable_conditions": [
-        "e1_20rpm", "e2_40rpm", "e3_50rpm",
+        "e1_20rpm", "e2_40rpm", "e3_50rpm", "e4_60rpm",
         "e5_70rpm", "e6_80rpm", "e7_90rpm", "e8_100rpm", "e9_110rpm",
         "e10_120rpm", "e11_140rpm", "e12_160rpm", "e13_180rpm", "e14_200rpm",
         "e15_220rpm", "e16_240rpm", "e17_260rpm", "e18_280rpm", "e19_300rpm",
@@ -276,6 +278,8 @@ def process_static_bag(bag_path: str, cam: str, test_idx: int,
 
     print(f"    Processing {os.path.basename(bag_path)} ...", flush=True)
 
+    from rosbags.rosbag1 import Reader
+
     try:
         with Reader(bag_path) as r:
             conns = [c for c in r.connections if c.topic == topic]
@@ -419,6 +423,7 @@ def run_section_a(results_dir: Path, config: dict) -> dict:
     out_dir = results_dir / "noise_floor"
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    from rosbags.typesys import Stores, get_typestore
     typestore = get_typestore(Stores.ROS1_NOETIC)
 
     # Build AprilTag detector — same settings as Step 02
@@ -762,7 +767,6 @@ def run_section_c(results_dir: Path, config: dict) -> dict:
         df = pd.read_csv(motion_path)
 
         is_stable = condition in config["stable_conditions"]
-        is_viv = condition == "e4_60rpm"
         is_high_wind = condition == "e20_320rpm"
         is_near_floor = condition in ["e0_0rpm", "e1_20rpm"]
 
@@ -804,7 +808,6 @@ def run_section_c(results_dir: Path, config: dict) -> dict:
                 "ci_width_mm": round(ci_hi - ci_lo, 6),
                 "relative_ci_width": round(relative_width, 4) if relative_width else None,
                 "is_stable": is_stable,
-                "is_viv": is_viv,
                 "is_high_wind": is_high_wind,
                 "is_near_floor": is_near_floor,
                 "n_bootstrap_resamples": config["bootstrap_n_resamples"],
@@ -815,9 +818,10 @@ def run_section_c(results_dir: Path, config: dict) -> dict:
     df_out = pd.DataFrame(rows)
     df_out.to_csv(out_dir / "bootstrap_ci_per_condition.csv", index=False)
 
-    # Summary: stable non-near-floor conditions only
+    # Summary: stable non-near-floor conditions only (19 conditions; e4_60rpm
+    # included per the 2026-07-02 correction — see stable_conditions above)
     stable_df = df_out[
-        df_out["is_stable"] & ~df_out["is_near_floor"] & ~df_out["is_viv"]
+        df_out["is_stable"] & ~df_out["is_near_floor"]
     ]
 
     max_rel_width = float(stable_df["relative_ci_width"].max()) \

@@ -1,7 +1,7 @@
 {
-  "bending_raw_rms_mm": 2.7628719675892803,
-  "bending_smoothed_rms_mm": 2.760540006565001,
-  "bending_amplitude_ratio": 0.9991559648613345,
+  "bending_raw_rms_mm": 1.4387634657857833,
+  "bending_smoothed_rms_mm": 1.4375930057765873,
+  "bending_amplitude_ratio": 0.9991864819777331,
   "bending_amplitude_pass": "PASS",
   "bending_raw_dominant_freq_hz": 3.0525164113785563,
   "bending_smoothed_dominant_freq_hz": 3.0525164113785563,

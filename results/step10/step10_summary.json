@@ -1,24 +1,24 @@
 {
   "step": "step10_ldv_comparison",
-  "status": "FAIL",
+  "status": "PASS",
   "gate": {
-    "gate_overall": "FAIL",
-    "bending_pearson_gate": "FAIL",
+    "gate_overall": "PASS",
+    "bending_pearson_gate": "PASS",
     "torsion_pearson_gate": "PASS",
     "threshold_pearson_r": 0.9,
-    "stable_bending_pearson_r": 0.8450431987291208,
-    "stable_torsion_pearson_r": 0.9395511780722222,
-    "target_bending_pearson_r": 0.845,
-    "target_torsion_pearson_r": 0.94,
-    "target_bending_mae_mm": 0.485,
-    "target_bending_rmse_mm": 0.719,
-    "target_bending_ratio": 1.339,
-    "target_torsion_ratio": 0.599,
+    "stable_bending_pearson_r": 0.9622435649532893,
+    "stable_torsion_pearson_r": 0.9659917364068521,
+    "target_bending_pearson_r": 0.96,
+    "target_torsion_pearson_r": 0.968,
+    "target_bending_mae_mm": 0.221,
+    "target_bending_rmse_mm": 0.293,
+    "target_bending_ratio": 1.261,
+    "target_torsion_ratio": 0.785,
     "notes": [
-      "Stable regime excludes e4_60rpm (VIV) and e20_320rpm (high-wind unstable).",
-      "Full-regime statistics include all 20 conditions.",
+      "Stable regime excludes only e20_320rpm (DCG, motion blur). e4_60rpm (60 RPM) is included as a normal stable condition.",
+      "Full-regime statistics include all 20 conditions (e0_0rpm has no LDV counterpart).",
       "Ratio > 1 means camera reads higher than LDV. Not an accuracy claim.",
-      "Same-tunnel (Tunnel B) condition-matched comparison. Sessions are 10 days apart \u2014 NOT simultaneous."
+      "Same-tunnel (Tunnel A) condition-matched comparison, separate recording sessions approximately 11 months apart \u2014 NOT simultaneous."
     ]
   },
   "n_conditions_processed": 20,

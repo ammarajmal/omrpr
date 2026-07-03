@@ -43,6 +43,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy import stats
 
 RESULTS_DIR = Path("results")
 OUT_DIR     = Path("results/step12")
@@ -51,6 +52,17 @@ STEP8_DIR   = RESULTS_DIR / "step08"
 STEP9_DIR   = RESULTS_DIR / "step09"
 STEP10_DIR  = RESULTS_DIR / "step10"
 STEP11_DIR  = RESULTS_DIR / "step11"
+
+# Option B canonical per-condition table (claim_boundary.md's designated
+# cross-check source). Table 1 in the manuscript is built from this file
+# directly, so Fig. 3 must use the same source to stay internally consistent —
+# do not substitute results/step10/ldv_comparison_table.csv here even though
+# it now reproduces close (but not identical) numbers after the 2026-07-03
+# step07/step10 formula/geometry fix (see step07_motion_decompose.py docstring).
+OPTION_B_VERIFIED_TABLE = (
+    Path(__file__).resolve().parents[2]
+    / "omrpr_outputs_review" / "final_tables" / "option_b_verified_table.csv"
+)
 
 REFERENCE_CONDITION = "e7_90rpm"
 
@@ -74,23 +86,23 @@ def _load_noise_floor_from_step09() -> tuple[float, float]:
 
 NOISE_FLOOR_BENDING_MM, NOISE_FLOOR_TORSION_MM = _load_noise_floor_from_step09()
 
-# Bending ratio explanation — two documented sources of cam/LDV > 1
-# (1) Fixed averaging bias from 9.8° inter-camera misalignment: 0.038 mm at 5 mm amplitude
-# (2) Regime-dependent torsion coupling: y_leak ≈ α × sin(9.8°), inflates bending RMS by ~2×
-#     in the torsion-dominated regime (90–220 RPM)
-BENDING_RATIO_MEAN_STABLE = 1.339   # cam / LDV, stable conditions (canonical)
-BENDING_STABLE_PEARSON_R  = 0.845   # stable-regime canonical value from Step 10
-BENDING_STABLE_N          = 18      # stable-regime canonical condition count from Step 10
-BENDING_MISALIGNMENT_DEG  = 9.8     # inter-camera angle, confirmed from extrinsics
+# Bending ratio — Option B canonical (claim_boundary.md v2.1). The over-read is
+# explained in Discussion Sec. 5.2 by three documented, non-exclusive factors:
+# non-simultaneous acquisition (~11 months apart), point-vs-spatial-averaging
+# geometry (LDV single point vs. camera cross-bridge average), and residual
+# software timing uncertainty (<=20.03 ms max pairwise drift). The earlier
+# "y_leak / 9.8 deg inter-camera misalignment" explanation was derived for the
+# retracted B0-era result (r=0.845) and does not apply to Option B — do not
+# reintroduce it here (see FINALIZATION_PLAN.md Phase 4 checklist).
+BENDING_RATIO_MEAN_STABLE = 1.261   # cam / LDV, stable conditions (Option B canonical)
+BENDING_STABLE_PEARSON_R  = 0.960   # stable-regime canonical value (claim_boundary.md v2.1)
+BENDING_STABLE_N          = 19      # stable-regime canonical condition count (v2.1)
 BENDING_LEAKAGE_NOTE = (
-    f"Bending cam/LDV ratio = {BENDING_RATIO_MEAN_STABLE:.2f}× (stable mean). "
-    "Two sources are identified from the 9.8° inter-camera misalignment: "
-    "(1) fixed averaging bias of 0.038 mm at 5 mm amplitude (~5% of LDV RMSE); "
-    "(2) regime-dependent torsion coupling y_leak ≈ α×sin(9.8°), "
-    "which amplifies bending RMS by approximately 2× in the torsion-dominated "
-    "regime (90–220 RPM) where torsion amplitude α is large. "
-    f"Bending r = {BENDING_STABLE_PEARSON_R:.3f} (stable, {BENDING_STABLE_N} cond.) "
-    "reflects this coupling, not sensor noise."
+    f"Bending cam/LDV ratio = {BENDING_RATIO_MEAN_STABLE:.2f}× (stable mean, "
+    f"{BENDING_STABLE_N} conditions). The over-read reflects non-simultaneous "
+    "acquisition, point-vs-spatial-averaging geometry, and residual timing "
+    "uncertainty (see Discussion Sec. 5.2) — not a validated accuracy figure. "
+    f"Bending r = {BENDING_STABLE_PEARSON_R:.3f} (stable, {BENDING_STABLE_N} cond.)."
 )
 
 REGIME_BENDING_DOMINATED   = (40,  80)
@@ -214,8 +226,10 @@ def save_fig(fig, name):
 
 CAPTION_FIG1 = (
     "Fig. 1. Displacement traces for e7_90rpm (90 RPM, torsion-dominated regime). "
-    "Upper: bending channel (mean of Camera 1 and Camera 2 Y-displacements). "
-    "Lower: two-point differential displacement proxy. "
+    "Upper: bending channel (cross-bridge average of Camera 1, 2 and 3 "
+    "Y-displacements). "
+    "Lower: two-point differential displacement proxy (Camera 3 minus the "
+    "Camera 1/2 mean). "
     "Grey: Step 07 motion decomposition output; green: RTS-smoothed output (Step 11). "
     "The RTS smoother introduces no measurable phase shift (< ±8.3 ms, resolution-limited "
     "at 60 Hz) and preserves signal amplitude (ratio 0.999), as validated across all 21 conditions."
@@ -235,7 +249,7 @@ def fig01_displacement_traces():
                  color=C_SMOOTHED, lw=1.0, label="RTS-smoothed (Step 11)", zorder=2)
     axes[0].set_ylabel("Bending displacement (mm)")
     axes[0].legend(loc="upper right", fontsize=8)
-    axes[0].set_title("Bending channel — Camera 1 & 2 mean Y-displacement")
+    axes[0].set_title("Bending channel — cross-bridge average (Camera 1, 2 & 3)")
 
     axes[1].plot(t, raw["torsion_diff_y_mm"],
                  color="0.65", lw=0.6, label="Raw (Step 07)", zorder=1)
@@ -309,8 +323,8 @@ def fig02_frequency_overview():
 CAPTION_FIG3 = (
     "Fig. 3. Condition-level RMS comparison: camera system vs LDV reference. "
     "Left: bending channel. Right: two-point differential displacement proxy. "
-    "Stable conditions (filled circles); VIV outlier 60 RPM (open triangle); "
-    "high-wind-unstable 320 RPM (open square). "
+    "Stable conditions, 19 total, includes 60 RPM (filled circles); "
+    "DCG-excluded 320 RPM, motion blur (open square). "
     "Camera and LDV data are compared condition-by-condition from the same tunnel "
     "using separate recording sessions and separate DAQ systems. "
     "This is a condition-level statistical comparison (RMS and peak per condition). "
@@ -319,26 +333,33 @@ CAPTION_FIG3 = (
 )
 
 
+def load_option_b_verified_table():
+    """
+    Option B canonical per-condition table (claim_boundary.md's designated
+    cross-check source) — same file Table 1 in the manuscript is built from.
+    """
+    df = pd.read_csv(OPTION_B_VERIFIED_TABLE)
+    df["flag"] = df["flag"].fillna("")
+    return df.sort_values("rpm").reset_index(drop=True)
+
+
 def fig03_ldv_scatter():
-    df  = load_ldv_table()
-    ldv = load_ldv_summary()
+    df = load_option_b_verified_table()
 
-    stable   = df[df["flag"].isna()].copy()
-    viv      = df[df["flag"] == "VIV_outlier"].copy()
-    unstable = df[df["flag"] == "high_wind_unstable"].copy()
+    stable   = df[df["flag"] == ""].copy()
+    unstable = df[df["flag"] == "DCG-excl"].copy()
 
-    sr    = ldv.get("stable_regime", {})
-    b_r   = sr.get("stable_bending_pearson_r",  float("nan"))
-    b_rho = sr.get("stable_bending_spearman_rho", float("nan"))
-    t_r   = sr.get("stable_torsion_pearson_r",  float("nan"))
-    t_rho = sr.get("stable_torsion_spearman_rho", float("nan"))
+    b_r,   _ = stats.pearsonr(stable["cam_bend_rms"], stable["ldv_bend_rms"])
+    b_rho, _ = stats.spearmanr(stable["cam_bend_rms"], stable["ldv_bend_rms"])
+    t_r,   _ = stats.pearsonr(stable["cam_tors_rms"], stable["ldv_tors_rms"])
+    t_rho, _ = stats.spearmanr(stable["cam_tors_rms"], stable["ldv_tors_rms"])
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 5))
 
     for ax, cam_col, ldv_col, color, title, r_val, rho_val in [
-        (axes[0], "camera_bending_rms_mm", "ldv_bending_rms_mm_corrected",
+        (axes[0], "cam_bend_rms", "ldv_bend_rms",
          C_BENDING, "Bending", b_r, b_rho),
-        (axes[1], "camera_torsion_rms_mm", "ldv_torsion_rms_mm_corrected",
+        (axes[1], "cam_tors_rms", "ldv_tors_rms",
          C_TORSION, "Two-point differential proxy", t_r, t_rho),
     ]:
         all_vals = pd.concat([df[cam_col].dropna(), df[ldv_col].dropna()])
@@ -346,13 +367,10 @@ def fig03_ldv_scatter():
         ax.plot(lim, lim, "k--", lw=0.8, alpha=0.5, label="1:1")
 
         ax.scatter(stable[ldv_col], stable[cam_col],
-                   s=50, color=color, zorder=5, label="Stable")
-        ax.scatter(viv[ldv_col], viv[cam_col],
-                   s=60, color=color, marker="^", facecolors="none",
-                   zorder=5, label="VIV (60 RPM)")
+                   s=50, color=color, zorder=5, label="Stable (19, incl. 60 RPM)")
         ax.scatter(unstable[ldv_col], unstable[cam_col],
                    s=60, color=color, marker="s", facecolors="none",
-                   zorder=5, label="High-wind-unstable (320 RPM)")
+                   zorder=5, label="DCG-excluded (320 RPM)")
 
         ax.set_xlabel("LDV RMS (mm)")
         ax.set_ylabel("Camera RMS (mm)")
@@ -368,17 +386,17 @@ def fig03_ldv_scatter():
         if title == "Bending":
             ax.text(
                 0.05, 0.60,
-                "Ratio cam/LDV = 1.34× (stable mean)\n"
-                "Source 1: fixed bias 0.038 mm (< 6% of RMSE)\n"
-                "Source 2: torsion coupling yₓₑₐₖ ≈ α·sin(9.8°)\n"
-                "  inflates bending in torsion regime (90–220 RPM)",
+                f"Ratio cam/LDV = {BENDING_RATIO_MEAN_STABLE:.2f}x (stable mean)\n"
+                "Non-simultaneous acquisition, spatial-averaging\n"
+                "geometry, and residual timing uncertainty\n"
+                "(see Discussion Sec. 5.2) -- not an accuracy claim.",
                 transform=ax.transAxes, fontsize=7, va="top",
                 bbox=dict(boxstyle="round,pad=0.3", facecolor="lightyellow", alpha=0.85)
             )
         ax.legend(fontsize=7, loc="lower right")
 
     fig.suptitle(
-        "Step 10 -- Condition-level camera vs LDV RMS (same-tunnel, separate-session comparison)",
+        "Condition-level camera vs LDV RMS (same-tunnel, separate-session comparison)",
         fontsize=9
     )
     fig.tight_layout()
@@ -441,8 +459,8 @@ CAPTION_FIG5 = (
     f"(bending: {NOISE_FLOOR_BENDING_MM:.3f} mm; torsion proxy: {NOISE_FLOOR_TORSION_MM:.3f} mm). "
     "Grey band indicates the near-floor region where the camera cannot resolve "
     "the true displacement amplitude. "
-    "VIV aerodynamic condition (60 RPM) and high-wind-unstable condition (320 RPM) "
-    "are annotated separately."
+    "DCG-excluded condition (320 RPM, motion blur) is annotated separately; "
+    "60 RPM is a normal stable condition and is not annotated."
 )
 
 
@@ -482,13 +500,7 @@ def fig05_uncertainty():
 
         for _, row in df.iterrows():
             flag = row.get("flag")
-            if flag == "VIV_outlier":
-                ax.annotate("VIV\n60 RPM",
-                            xy=(row["rpm"], row["rms_estimate_mm"]),
-                            xytext=(row["rpm"] + 10, row["rms_estimate_mm"] * 0.6),
-                            fontsize=6, arrowprops=dict(arrowstyle="->", lw=0.7),
-                            color="0.3")
-            elif flag == "high_wind_unstable":
+            if flag == "high_wind_unstable":
                 ax.annotate("High-wind\nunstable",
                             xy=(row["rpm"], row["rms_estimate_mm"]),
                             xytext=(row["rpm"] - 50, row["rms_estimate_mm"] * 0.7),
@@ -532,14 +544,6 @@ def tab01_ldv_comparison():
         "torsion_ratio_cam_over_ldv":   "Torsion_Ratio",
     }).copy()
 
-    # Annotate bending rows in torsion-dominated regime with leakage note
-    lo, hi = REGIME_TORSION_DOMINATED
-    mask_torsion = (df_out["RPM"] >= lo) & (df_out["RPM"] <= hi)
-    df_out["Bending_Notes"] = ""
-    df_out.loc[mask_torsion, "Bending_Notes"] = (
-        f"torsion coupling y_leak~alpha*sin({BENDING_MISALIGNMENT_DEG}deg)"
-    )
-
     path = OUT_DIR / "tab01_ldv_comparison.csv"
     df_out.to_csv(path, index=False, float_format="%.4f")
     print(f"  [WRITE] {path}")
@@ -576,7 +580,7 @@ def tab02_summary_stats():
             "N": fr.get("torsion_n_conditions"),
         },
         {
-            "Regime": "Stable (18 conditions excl. VIV 60 RPM + high-wind-unstable 320 RPM)",
+            "Regime": "Stable (19 conditions, incl. 60 RPM; excl. DCG 320 RPM)",
             "Channel": "Bending",
             "Pearson_r": sr.get("stable_bending_pearson_r"),
             "Spearman_rho": sr.get("stable_bending_spearman_rho"),
@@ -586,7 +590,7 @@ def tab02_summary_stats():
             "N": sr.get("stable_bending_n_conditions"),
         },
         {
-            "Regime": "Stable (18 conditions)",
+            "Regime": "Stable (19 conditions, incl. 60 RPM; excl. DCG 320 RPM)",
             "Channel": "Torsion proxy",
             "Pearson_r": sr.get("stable_torsion_pearson_r"),
             "Spearman_rho": sr.get("stable_torsion_spearman_rho"),
