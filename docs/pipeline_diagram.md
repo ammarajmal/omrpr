@@ -119,7 +119,7 @@ Step 10 — LDV Condition-Level Comparison
         Accept: Torsion stable-regime Pearson > 0.90
                 Bending above-floor stable Pearson is reported with physical explanation if below 0.90
         Note:   LDV raw files in CENTIMETERS — convert explicitly; use _mm_corrected columns
-                LDV comparison is condition-level ONLY (same-tunnel Tunnel B, separate sessions 10 days apart, NOT simultaneous)
+                LDV comparison is condition-level ONLY (same-tunnel Tunnel A, separate sessions, NOT simultaneous; current canonical LDV reference is the 2024 paired session — Option B, ~11 months apart)
         │
         ▼
 Step 11 — Non-Causal RTS Smoothing
@@ -147,11 +147,11 @@ Step 12 — Manuscript Figures and Tables
 | solvePnP solver | `SOLVEPNP_IPPE_SQUARE` | Optimal for planar square targets |
 | extrinsics.yaml | Empty by design | Replaced by camera-frame pose + baseline alignment |
 | Quality score formula | `dm × sqrt(area_px2)` | B0 formula — locked |
-| LDV dside | 130 mm | Confirmed from facility document |
-| LDV dp (torsion scaling) | 1.538 | `BRID2D1_choi.m` MATLAB script |
+| LDV dside | 100 mm | Option B canonical (2024 paired session, Tunnel A facility) — see `claim_boundary.md` v2.1 (superseded B0/2025 standalone LDV session: 130 mm, same facility) |
+| LDV dp (torsion scaling) | 2.0 | Option B canonical (2024 paired session, Tunnel A facility) — see `claim_boundary.md` v2.1 (superseded B0/2025 standalone LDV session: 1.538, same facility) |
 | LDV pvolt | 2.7 cm/V | `BRID2D1_choi.m` |
 | LDV fs | 360 Hz | `BRID2D1_choi.m` |
-| f_h (bending nat. freq.) | 1.4323 Hz | Measured Tunnel B free-vibration result |
-| f_α (torsion nat. freq.) | 3.0827 Hz | Measured Tunnel B free-vibration result |
+| f_h (bending nat. freq.) | 1.4323 Hz | Measured 2025 standalone LDV session free-vibration result |
+| f_α (torsion nat. freq.) | 3.0827 Hz | Measured 2025 standalone LDV session free-vibration result |
 | Bridge chord width B | 0.40 m | Model setup sheet |
 | RTS process noise σ | 10.0 mm/s | Calibrated for 0.957–1.000 amplitude ratio |

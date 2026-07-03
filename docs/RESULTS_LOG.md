@@ -6,6 +6,11 @@ Each entry: Step, date, what was found, acceptance status.
 
 ## Discrepancy Cleanup — 2026-06-22
 
+**2026-07-02 note:** the "Canonical Value" column below (B0, Tunnel B, dp=1.538, 18 stable cond.) was
+itself superseded on 2026-07-01/02 by the Option B canonical switch (Tunnel A LDV 2024, dp=2.0,
+19 stable cond.) — see `claim_boundary.md` v2.1 and the Step 10 entry further down in this file.
+This table is left as a historical record of the 2026-06-22 cleanup and is not rewritten in place.
+
 All stale values corrected in this audit pass (canonical source: `step10_summary.json`):
 
 | Item | Stale Value | Canonical Value | Source |
@@ -154,7 +159,22 @@ See `docs/e20_outlier_analysis.md` for full diagnosis.
 
 ---
 
-## Step 10 — LDV Comparison (2026-06-17) ✓ PASS (torsion); DOCUMENTED FAIL (bending)
+## Step 10 — LDV Comparison — UPDATED 2026-07-02, Option B canonical (Tunnel A LDV 2024)
+
+**Current (Option B, `claim_boundary.md` v2.1):**
+
+| Metric | Value | Gate | Status |
+|--------|-------|------|--------|
+| Bending Pearson r (stable, 19 cond.) | ≈0.960 | > 0.90 | PASS |
+| Bending Spearman ρ (stable) | 0.944 | — | — |
+| Torsion proxy Pearson r (stable) | ≈0.968 | > 0.90 | PASS |
+
+Bending gate now PASSES cleanly — no gate failure to explain. 60 RPM is included in the 19-condition
+stable-regime statistics after the 2026-07-02 LDV bend RMS correction (1.766mm→0.0492mm); the earlier
+"VIV aerodynamic intermittency" diagnosis is retracted. 320 RPM: cam1/cam2 DCG-excluded; cam3
+amplitude 2.19 mm reported separately as a pre-flutter trend point.
+
+**Superseded (2026-06-17 entry, B0/Tunnel B, dp=1.538, DO NOT USE) — retained for history:**
 
 | Metric | Value | Gate | Status |
 |--------|-------|------|--------|
@@ -163,11 +183,17 @@ See `docs/e20_outlier_analysis.md` for full diagnosis.
 | Torsion proxy Pearson r (stable) | 0.940 | > 0.90 | PASS |
 | Torsion proxy Spearman ρ (stable) | 0.928 | — | — |
 
-Bending Pearson r = 0.845 (gate FAIL; physically explained by regime-dependent cross-axis sensitivity from ~9.8° inter-camera misalignment). The misalignment inflates apparent bending amplitude by ~2× in the torsion-dominated regime (90–220 RPM). Correct geometry parameter dp=1.538 (not dp=2.0) changes all LDV-derived metrics from the original implementation. This is a documented finding, not a code error.
-Bending gate FAIL is accepted and documented as a characterised physical limitation (cross-axis torsion leakage at ~9.8° misalignment), not a code or processing defect.
+Old narrative (B0-era, retained for history): "Bending Pearson r = 0.845 (gate FAIL; physically
+explained by regime-dependent cross-axis sensitivity from ~9.8° inter-camera misalignment). The
+misalignment inflates apparent bending amplitude by ~2× in the torsion-dominated regime (90–220 RPM).
+Correct geometry parameter dp=1.538 (not dp=2.0) changes all LDV-derived metrics from the original
+implementation." This dp=1.538 attribution is itself now superseded — dp=2.0 is the current
+Option B canonical value (Tunnel A 2024).
 
-60 RPM: VIV aerodynamic intermittency — camera/LDV ratio ~0.05×, flagged and reported separately.
-320 RPM: high-wind unstable, reported separately.
+Old: "60 RPM: VIV aerodynamic intermittency — camera/LDV ratio ~0.05×, flagged and reported
+separately." — retracted 2026-07-02, see above.
+Old: "320 RPM: high-wind unstable, reported separately." — superseded by the DCG framing (motion
+blur, physical mechanism), already reflected in the current entry above.
 
 ---
 
@@ -248,7 +274,10 @@ New script `src/comparison_plots.py` generating four figures in `results/compari
 
 Key observations:
 - Dominant frequency: both instruments agree on fn_t ≈ 3.08 Hz in torsional VIV regime; at ≤ 20 RPM, below threshold → noise peaks
-- RMS ratio 1.339× in bending (stable regime; explained by torsion-coupling leakage), 0.599× in torsion (attenuation well understood)
+- RMS ratio 1.339× in bending, 0.599× in torsion (stable regime) — **superseded 2026-07-02 by Option B
+  canonical: ≈1.261× bending, ≈0.785× torsion.** These figures (and the `comparison_plots.py` figures
+  listed above) were generated under the B0/Tunnel B geometry; regenerating under Option B geometry
+  would be needed for the figures to match the current canonical numbers.
 - PSD overlay shows aligned spectral peaks; both instruments resolve fn_b and fn_t cleanly in their respective regimes
 - Time-series overlay demonstrates condition-level response similarity only; it is not presented as a waveform-validation result because the recordings are separate-session and non-simultaneous
 
@@ -259,6 +288,8 @@ Key observations:
 ### ~~⚠ Step 10 — stale output JSON needs re-run~~ ✓ RESOLVED (2026-06-22)
 
 `results/step10/ldv_summary.json` and `results/step10/ldv_comparison_table.csv` were regenerated on 2026-06-22 with the e0_0rpm-derived noise floor. The JSON now includes a stable-regime block and reports bending r = 0.845 (18 stable conditions). Target values in the script are updated to r = 0.845 (bending), ratio = 1.339×. **Status:** RESOLVED.
+**2026-07-02 note:** this JSON/CSV reflect the B0/Tunnel B geometry and are superseded by the Option B
+canonical switch — current numbers are in `claim_boundary.md` v2.1 / `scripts/option_b_verified_table.csv`.
 
 ### ⚠ Step 05 — gap-aware interpolation guard not implemented in code
 
@@ -307,7 +338,7 @@ Six figures regenerated: figA (rpm), figB (wind speed), figC (FFT physical + nor
 
 ## LDV Geometry Verification — 2026-06-24
 
-Triggered by handwritten image of the Tunnel B setup showing a torsion formula with a `/2` factor not present in the Python code. Full investigation conducted to verify whether the pipeline formula was correct.
+Triggered by handwritten image of the 2025 standalone LDV session's setup showing a torsion formula with a `/2` factor not present in the Python code. Full investigation conducted to verify whether the pipeline formula was correct. (This investigation concerns the 2025 standalone LDV session only — see the 2026-07-03 resolution below for why it does not apply to the Option B / 2024 paired-session geometry.)
 
 **Geometry confirmed — center+side configuration:**
 
@@ -335,6 +366,45 @@ The MATLAB source `BRID2D1_choi.m` used `(ch2-ch1)/2` with incorrect `dside=10` 
 
 **Torsion ratio 0.599 — physical explanation derived:**
 Camera torsion proxy (`y_cam3 − bending_avg`) measures differential displacement at Marker B arm ≈ 13–14 cm from deck center. LDV torsion proxy is scaled to db = 20 cm (deck half-chord). For the same angle θ: camera measures θ×13, LDV measures θ×20. Expected ratio = 13/20 ≈ 0.65. Observed: 0.599 stable mean, 0.61–0.76 in torsional VIV. Physically consistent — no correction needed.
+
+**2026-07-03 RESOLVED — Tunnel A/B was a facility mislabel, not two rigs; Option B geometry independently verified.**
+
+The facility question is settled: all camera and LDV data (2024 paired session, 2025 camera-only
+bags, 2025 standalone LDV session above) were recorded in the **same physical wind tunnel facility**,
+confirmed directly. "Tunnel B" was a wrong inference from circumstantial evidence (different
+`dside`/`dp`, file naming, session duration) — fully explained by a different test session with a
+repositioned sensor rig, not a different lab/facility. `TESolution_four_experiments_map.md` has been
+corrected; refer to the session above as the **2025 standalone LDV session**, not "Tunnel B."
+
+This entire geometry-verification investigation (dside=13cm, dp=1.538, center+side configuration)
+remains a correct physical derivation for **that 2025 standalone LDV session specifically** — dp=2.0
+is genuinely physically implausible for *that session's* sensor mounting (camera marker arm would sit
+≈24cm from deck center, outside the deck edge). It does **not** apply to, and does not invalidate,
+the Option B canonical geometry (2024 paired session, dside=100mm, dp=2.0), which is a different
+session with a different, independently-verified sensor mounting.
+
+**Independent verification of the 2024 paired-session geometry (dp=2.0, dside=100mm)** — the check
+this flag asked for — is now done. Read directly from TESolution's own vendor-delivered files in
+`omrpr_private_data/external/TESOLUTION_final response/` (primary source, not re-derived and not
+copied from the 2025 session):
+1. `Video Measurement/RAW_Data/{laser_displacement,3D_video_system}/2D_WTT/BRID2D1_choi.m` — header
+   `Ver. 2.1 2024.11.11, Modified by CHOI` (TESolution engineer). Hardcodes `dside=10` cm,
+   `db=20.0` cm, `dp=db/dside=2.0`. This is the actual script TESolution used to produce their own
+   `result_bending.txt`/`result_torsion.txt` for this exact dataset.
+2. `Displacement Measurement System_V2.pdf` (TESolution's own Nov 2024 test summary, page 3) states
+   model width = 40 cm (B/D=4) → half-width = 20 cm, independently matching the script's `db=20.0`.
+   Natural frequencies stated (Vertical 1.4303 Hz, Torsion 3.1036 Hz) match the f_h/f_α values used
+   elsewhere in this pipeline.
+3. Page 2 ("Camera & Target Install") shows the physical laser ch1 (center) / ch2 (side) mounting
+   consistent with this geometry.
+
+**Conclusion:** dp=2.0/dside=100mm is CORRECT for the 2024 paired session (Option B canonical) and
+now has primary vendor-source verification, independent of any OMRPR-authored code. Torsion ratio
+(camera underestimates torsion — see `claim_boundary.md` for the current exact ratio, which shifts
+slightly with the separate 18-vs-19-stable-condition/60RPM question, unrelated to geometry) and the
+`y_leak` physical explanation in the Discussion
+stand unchanged. Do not recompute with dside=13cm/dp=1.538 — that would incorrectly import the 2025
+standalone session's geometry into the 2024 dataset.
 
 **Bending contamination identified (center+side geometry):**
 LDV bending channel = `(ch1+ch2)/2 = δ + θ×6.5` — contains torsion leakage of θ×6.5 mm. In the torsional VIV regime, this independently elevates LDV bending, contributing to the lower bending Pearson r = 0.845 (alongside the camera-side 9.8° misalignment leakage).

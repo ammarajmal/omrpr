@@ -21,6 +21,13 @@ Active source-of-truth layer:
 
 ## Final Sync Outcome
 
+**⚠️ SUPERSEDED 2026-07-03:** This snapshot reflects the 2026-06-23 B0-era state (pre-Option-B,
+pre-60RPM-correction, pre-Tunnel-naming-fix). Current numbers: bending r≈0.960 (19 stable cond.),
+RMSE≈0.293mm, torsion r≈0.968, ratio≈0.785× — see `docs/claim_boundary.md`. "Tunnel B" below was
+a facility mislabel for the 2025 standalone LDV session — same physical facility as "Tunnel A",
+see `docs/RESULTS_LOG.md` "2026-07-03 RESOLVED" entry. Kept below for historical record only.
+
+
 The current repo-facing documentation is aligned to:
 
 - Bending Pearson r = **0.845**

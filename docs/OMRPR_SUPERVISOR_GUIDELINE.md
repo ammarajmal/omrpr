@@ -2,6 +2,20 @@
 **Prepared by:** Ammar Ajmal (PhD Researcher)
 **Date:** 2026-06-23
 **Status:** Active — supersedes all previous versions
+**Last updated:** 2026-07-02 — Option B canonical switch (Tunnel A LDV 2024): recording context, LDV
+geometry, and Step 10 results below corrected against `docs/claim_boundary.md` v2.1. The 18-stable-cond.
+B0 (Tunnel B, dp=1.538) numbers throughout Section 0 are superseded — see inline notes.
+**NOTE:** f_h/f_α/damping values are UNVERIFIED pending a provenance check (Tunnel B Sept 2025 vs.
+2024 TESolution free-vibration data) and are left unchanged in this pass.
+
+**⚠️ CORRECTED 2026-07-03:** This file predates the Option B canonical switch (2026-07-01) and
+the Tunnel A/B facility-naming correction (2026-07-03). "Tunnel B" throughout this document was a
+mislabel — all data (2024 paired session, 2025 camera bags, 2025 standalone LDV session) come from
+the SAME physical wind tunnel facility ("Tunnel A"). This document's LDV geometry (dp=1.538,
+dside=130mm) and comparison numbers (r=0.845 etc.) describe the RETIRED B0 lock, not the current
+canonical. For current numbers, geometry, and terminology, read `docs/claim_boundary.md` and
+`docs/RESULTS_LOG.md` "2026-07-03 RESOLVED" entry — this file is kept for historical/implementation
+detail only.
 
 > This is the single authoritative reference for the OMRPR pipeline implementation.
 > All values here are confirmed from actual result files and facility documents.
@@ -20,11 +34,13 @@ step on all 21 conditions and updating this document with the new result file ev
 
 | Item | Value |
 |------|-------|
-| Camera bags | Tunnel B, October 2025 |
-| LDV reference | Tunnel B, September 2025 |
-| Separation | ~10 days apart — NOT simultaneous |
+| Camera bags | Tunnel A, October 2025 |
+| LDV reference | Tunnel A, October–November 2024 (Option B canonical, since 2026-07-01) |
+| Separation | ≈11 months apart — NOT simultaneous |
 | Comparison protocol | Condition-level only (RMS per RPM condition) |
 | Same facility | Yes — same structural model, same tunnel |
+
+**Superseded (B0, DO NOT USE):** Camera + LDV both Tunnel B (camera Oct 2025, LDV Sept 2025), ~10 days apart.
 
 Source: `data/LDV/manifest.json`, bag metadata, `src/step10_ldv_comparison.py`
 
@@ -33,11 +49,13 @@ Source: `data/LDV/manifest.json`, bag metadata, `src/step10_ldv_comparison.py`
 | Parameter | Value | Source |
 |-----------|-------|--------|
 | pvolt | 2.7 cm/V | BRID2D1_choi.m |
-| dside | 13.0 cm (130 mm) | 설계속도 및 모형Setup_영상계측.xlsx |
+| dside | 10.0 cm (100 mm) | Option B canonical (Tunnel A 2024) — `claim_boundary.md` v2.1 |
 | db | 20.0 cm (200 mm) | Same document |
-| dp = db/dside | 1.538462 | Derived (NOT 2.0) |
+| dp = db/dside | 2.0 | Option B canonical (Tunnel A 2024) — `claim_boundary.md` v2.1 |
 | fs | 360 Hz | BRID2D1_choi.m |
 | Bias reference | D00 (zero-wind static) | LDV data folder |
+
+**Superseded (B0, Tunnel B, DO NOT USE):** dside = 13.0 cm (130 mm), dp = db/dside = 1.538462.
 
 ### Aerodynamic Parameters
 
@@ -52,40 +70,48 @@ Source: `data/LDV/manifest.json`, bag metadata, `src/step10_ldv_comparison.py`
 | VIV onset (bending) | ~60 RPM | Facility data |
 | Flutter onset | near 320 RPM | Facility data |
 
-### Step 10 — LDV Comparison Results (Locked)
+### Step 10 — LDV Comparison Results (Locked, Option B canonical — updated 2026-07-02)
 
-Source: `results/step10/ldv_summary.json`
+Source: `claim_boundary.md` v2.1 / `scripts/option_b_verified_table.csv`
 
 | Metric | Value |
 |--------|-------|
-| Bending Pearson r (stable regime, 18 conditions) | **0.845** |
-| Bending Spearman ρ (stable regime) | 0.864 |
-| Bending MAE (stable regime) | 0.484 mm |
-| Bending RMSE (stable regime) | 0.719 mm |
-| Bending ratio camera/LDV (stable regime) | 1.339× |
-| Torsion Pearson r (stable regime) | **0.940** |
-| Torsion Spearman ρ (stable regime) | 0.928 |
-| Torsion MAE (stable regime) | 0.549 mm |
-| Torsion RMSE (stable regime) | 0.771 mm |
-| Torsion ratio camera/LDV (stable regime) | 0.599× |
-| Full regime bending Pearson r (20 conditions) | 0.832 |
-| Full regime torsion Pearson r (20 conditions) | 0.992 |
+| Bending Pearson r (stable regime, 19 conditions) | **≈0.960** |
+| Bending Spearman ρ (stable regime) | 0.944 |
+| Bending MAE (stable regime) | ≈0.221 mm |
+| Bending RMSE (stable regime) | ≈0.293 mm |
+| Bending ratio camera/LDV (stable regime) | ≈1.261× |
+| Torsion Pearson r (stable regime) | **≈0.968** |
+| Torsion ratio camera/LDV (stable regime) | ≈0.785× |
 
-Stable regime excludes e4_60rpm (VIV) and e20_320rpm (DCG-excluded).
+Stable regime now includes e4_60rpm (restored 2026-07-02 after LDV bend RMS correction) and excludes
+only e20_320rpm (DCG-excluded, cam1/cam2). Torsion Spearman/MAE/RMSE are not reported in the
+manuscript — Pearson r and mean ratio are the only aggregate torsion metrics used.
 
-**Bending gate FAIL is accepted and documented.** Bending r = 0.845 does not reach
-the 0.90 threshold. The physical cause is cross-axis torsion leakage from the ~9.8°
-inter-camera axis misalignment, which inflates the camera bending channel by ~2× in
-the torsion-dominated regime (90–220 RPM). In bending-dominated regimes (40–80 RPM,
-240–300 RPM), the ratio returns to near-unity (0.84–1.24×). This is a characterised
-physical limitation, not a pipeline failure.
+**Bending gate now PASSES cleanly.** Bending r ≈ 0.960 clears the 0.90 threshold with no exclusions
+needed beyond the DCG-excluded e20_320rpm. The ~9.8° inter-camera axis misalignment remains a real,
+documented uncertainty contribution (see below) but is no longer invoked to explain a gate failure.
 
-**Viva-defensible sentence (copy verbatim):**
+**Superseded (B0, Tunnel B, dp=1.538, 18 stable cond. — DO NOT USE):**
+Bending r=0.845 (Spearman ρ=0.864, MAE=0.484mm, RMSE=0.719mm, ratio=1.339×), Torsion r=0.940
+(Spearman ρ=0.928, MAE=0.549mm, RMSE=0.771mm, ratio=0.599×). Full-regime (20 cond.) figures
+0.832/0.992 were also computed under this superseded geometry and have not been recomputed.
+
+**Old (B0-era) bending-gate-FAIL narrative, retained for history:** "Bending gate FAIL is accepted
+and documented. Bending r = 0.845 does not reach the 0.90 threshold. The physical cause is cross-axis
+torsion leakage from the ~9.8° inter-camera axis misalignment, which inflates the camera bending
+channel by ~2× in the torsion-dominated regime (90–220 RPM). In bending-dominated regimes (40–80 RPM,
+240–300 RPM), the ratio returns to near-unity (0.84–1.24×). This is a characterised physical
+limitation, not a pipeline failure."
+
+**Viva-defensible sentence (updated for Option B — copy verbatim):**
 "The bending channel cross-axis sensitivity is a bounded, amplitude-dependent bias of
-A × (1 − cos 9.8°) / 2 ≈ 0.038 mm at 5 mm amplitude — 12.8% of the bending RMSE.
+A × (1 − cos 9.8°) / 2 ≈ 0.038 mm at 5 mm amplitude — 13.0% of the bending RMSE (0.293 mm).
 We document it as a quantified uncertainty rather than correct it, because the correction
 would require applying the full extrinsic rotation matrix, which was deliberately not
 included in this pipeline for robustness reasons."
+*(Superseded B0 version: "...12.8% of the bending RMSE" — the percentage changed because the
+RMSE denominator changed from 0.719mm to 0.293mm under Option B; the 0.038mm absolute bias is unchanged.)*
 
 ### Other Confirmed Pipeline Results
 
@@ -109,8 +135,14 @@ included in this pipeline for robustness reasons."
 | RTS phase shift | 0.00 ms (all 21 conditions) |
 | RTS amplitude ratio (stable conditions) | 0.999 |
 | RTS amplitude ratio (near-floor e0, e1) | 0.961–0.966 |
-| dp sensitivity: Pearson r range (dp 1.40–1.65) | 0.940 (invariant — r is scale-invariant) |
-| dp sensitivity: ratio range | 0.558–0.658× |
+| dp sensitivity: Pearson r range (dp 1.40–1.65, B0 sensitivity study) | 0.940 (invariant — r is scale-invariant) |
+| dp sensitivity: ratio range (B0 sensitivity study) | 0.558–0.658× |
+
+*Note: the dp-sensitivity study above was run around the B0 dp=1.538 value (range 1.40–1.65) and
+demonstrates that Pearson r is scale-invariant to dp — a true mathematical fact that holds regardless
+of which dp value is canonical. It does not by itself validate dp=1.538 over dp=2.0 (the current
+Option B canonical value); it only shows r doesn't move within that range. Ratio depends on dp linearly,
+so the ratio range above is specific to the B0 sensitivity window and does not apply at dp=2.0.*
 
 ---
 
@@ -185,15 +217,17 @@ All downstream steps work in millimetres after Step 06 unit conversion.
 Intrinsics are NOT read from bag at runtime — they come from config only.
 
 ### 11. LDV comparison is condition-level only
-LDV (Tunnel B, September 2025) and cameras (Tunnel B, October 2025) were recorded
-~10 days apart. Compare RMS per RPM condition only. Never compare waveforms.
-Never claim simultaneous validation.
+LDV (Tunnel A, October–November 2024) and cameras (Tunnel A, October 2025) were recorded
+≈11 months apart (Option B canonical, since 2026-07-01 — superseded: Tunnel B, ~10 days apart).
+Compare RMS per RPM condition only. Never compare waveforms. Never claim simultaneous validation.
 
 ### 12. dp is scale-invariant for Pearson r
 Pearson r is invariant to scaling of the LDV torsion values. dp affects the ratio
-(camera/LDV) but not r. Sensitivity analysis confirmed: r = 0.940 across dp range
-1.40–1.65. The ratio scales as dp_nominal/dp_test. This robustness supports the
-dp = 1.538 choice and eliminates dp uncertainty as a threat to the torsion r result.
+(camera/LDV) but not r. A B0-era sensitivity analysis confirmed r = 0.940 across dp range
+1.40–1.65 (a range centred on the then-current dp=1.538). The ratio scales as
+dp_nominal/dp_test. This scale-invariance fact is unaffected by the Option B switch to
+dp=2.0, but the sensitivity study itself does not favor one dp value over another — it
+only shows r is insensitive to dp within the tested range.
 
 ---
 
@@ -294,7 +328,9 @@ uncertainty; not corrected.
 
 **Condition categories:**
 - Near-floor (sub-noise-level bending): e0_0rpm, e1_20rpm, e2_40rpm
-- VIV outlier: e4_60rpm — peak at 1.377 Hz; diagnose and report separately
+- Stable (updated 2026-07-02): e4_60rpm — peak at 1.377 Hz; formerly flagged as a "VIV outlier" and
+  reported separately, but the LDV bend RMS correction (1.766mm→0.0492mm) showed it is not an
+  outlier — now included in the 19-condition stable-regime statistics like any other condition.
 - Bending-dominated: 40–80 RPM
 - Transition: e9_110rpm — anomalous peak at 2.262 Hz; report separately
 - Torsion-dominated: 90–220 RPM
@@ -302,13 +338,15 @@ uncertainty; not corrected.
 - DCG-excluded: e20_320rpm — motion blur mechanism confirmed; excluded before Step 05
 
 ### 2.4 Reference Sensor — LDV
-- Recorded in Tunnel B, September 2025 — ~10 days before camera acquisition
+- Recorded in Tunnel A, October–November 2024 — ≈11 months before camera acquisition
+  (Option B canonical, since 2026-07-01 — superseded: Tunnel B, ~10 days before)
 - NOT simultaneous with camera recordings
 - Sampling rate: 360 Hz
 - Covers conditions D00–D20 (0–320 RPM)
 - Units: centimetres (cm) in raw files — always convert explicitly to mm
 - Store converted values in column named `_mm_corrected`
-- Confirmed geometry: dside = 130 mm, db = 200 mm, dp = 1.538, pvolt = 2.7 cm/V
+- Confirmed geometry (Option B canonical): dside = 100 mm, db = 200 mm, dp = 2.0, pvolt = 2.7 cm/V
+  (superseded B0/Tunnel B: dside = 130 mm, dp = 1.538)
 - D00 is the zero-wind bias reference; subtract before calibration
 
 **LDV comparison is condition-level only.** Never compare waveforms. Never claim
@@ -421,12 +459,13 @@ Step 09: Uncertainty quantification           [COMPLETE — all gates PASS]
                  Moving-block bootstrap preserves temporal autocorrelation
                  Timing audit is informational — report 20.03 ms honestly
 
-Step 10: LDV condition-level comparison       [COMPLETE]
+Step 10: LDV condition-level comparison       [COMPLETE — Option B canonical, updated 2026-07-02]
          Output: ldv_comparison_table.csv + ldv_summary.json
-         Result: Bending r = 0.845 (gate FAIL — physically explained)
-                 Torsion r = 0.940 (gate PASS)
+         Result: Bending r ≈ 0.960 (gate PASS, 19 stable cond.)
+                 Torsion r ≈ 0.968 (gate PASS)
+                 Superseded (B0, Tunnel B, 18 cond.): Bending r = 0.845 (FAIL), Torsion r = 0.940 (PASS)
          Note:   LDV raw files in CENTIMETRES — convert to _mm_corrected column
-                 dp = 1.538 is confirmed; r is scale-invariant to dp
+                 dp = 2.0 is canonical (Option B, Tunnel A 2024); r is scale-invariant to dp regardless
                  Comparison is condition-level only — not simultaneous waveforms
 
 Step 11: RTS/Kalman smoothing (B1 stage)      [COMPLETE — all 21 conditions PASS]
@@ -523,7 +562,8 @@ P_0 = diag([signal_variance, velocity_variance]) from data RMS.
 ## Section 6 — Critical Rules
 
 1. **LDV comparison is condition-level only.** Never compare waveforms. LDV and
-   camera data were recorded at different times (~10 days apart) in Tunnel B.
+   camera data were recorded at different times (≈11 months apart, both Tunnel A — Option B canonical,
+   since 2026-07-01; superseded: ~10 days apart, both Tunnel B).
 
 2. **Torsion is a proxy.** `torsion_diff_y_mm` is a two-point differential
    displacement proxy. Never call it a "torsion angle." Not independently validated.
@@ -534,14 +574,17 @@ P_0 = diag([signal_variance, velocity_variance]) from data RMS.
 4. **e20_320rpm is DCG-excluded.** The exclusion mechanism (motion blur, velocity
    threshold) is a novel contribution — document it, do not hide it.
 
-5. **60 RPM is a VIV outlier.** Camera/LDV divergence is physically explainable
-   via VIV lock-in intermittency. Diagnose and report separately.
+5. **60 RPM is a stable condition (updated 2026-07-02).** The earlier "VIV lock-in intermittency"
+   diagnosis is retracted — the LDV bend RMS correction (1.766mm→0.0492mm) showed it is not an
+   outlier. It is now included in the 19-condition stable-regime statistics; do not report it separately.
 
 6. **Facility anonymized.** Never write TESolution or any city name. Always write
    "a commercial aerodynamic testing facility in South Korea [Lee2016]."
 
-7. **No LDV-equivalent accuracy claim.** Bending r = 0.845 has a physical
-   explanation — document it, never claim absolute accuracy.
+7. **No LDV-equivalent accuracy claim.** Bending r ≈ 0.960 (Option B canonical) passes the gate
+   cleanly — document the ~9.8° inter-camera misalignment as a general bounded uncertainty
+   contribution, never claim absolute accuracy. (Superseded: r = 0.845 required a physical
+   explanation for a gate FAIL — no longer applicable.)
 
 8. **No C1/C2 Z-value fusion.** Camera 1 and Camera 2 Z values are in different
    camera frames. Never fuse Z across cam1 and cam2.
@@ -596,9 +639,12 @@ All cameras detect tag_id=0. Routing is by camera only. Never route by tag ID.
 P_0 = eye(2) × 1.0 is too small relative to signal amplitude (~1.6 mm RMS).
 Filter rejects true motion as noise. Initialise P_0 from data signal variance.
 
-### 7.12 dp Geometry Error in Facility MATLAB Script
-`BRID2D1_choi.m` used dside = 10 cm (wrong) and dp = 2.0 (wrong).
-Confirmed values: dside = 13.0 cm, dp = 1.538. Use only confirmed values.
+### 7.12 dp Geometry — RETRACTED 2026-07-02 (was: "dp Geometry Error in Facility MATLAB Script")
+This entry previously claimed `BRID2D1_choi.m`'s dside=10cm/dp=2.0 was "wrong" and that
+dside=13.0cm/dp=1.538 were the "confirmed" values. The Option B canonical switch (2026-07-01,
+Tunnel A LDV 2024) reverses this: **dside=10cm (100mm), dp=2.0 is now the canonical geometry**,
+and dside=13.0cm/dp=1.538 (Tunnel B) is the superseded B0 value. This was not a bug in
+`BRID2D1_choi.m` after all — see `claim_boundary.md` v2.1 for the full geometry history.
 
 ### 7.13 Circular Reference in DCG Threshold
 Never derive the N threshold from e20's structural period. Use T_h = 0.698 s
@@ -623,10 +669,12 @@ Decode via `np.frombuffer().reshape()`, not `cv2.imdecode()`.
 - Bootstrap stability: max relative CI width 0.200 (near-floor); stable non-near-floor better
 - Timing mitigation: 20.03 ms max pairwise drift, software common-grid only
 - Non-causal RTS smoothing: 0.00 ms phase shift, amplitude ratio 0.999; only possible offline
-- 60 RPM: diagnosed as VIV aerodynamic intermittency, not camera failure
+- 60 RPM: included in the 19-condition stable-regime statistics (2026-07-02 LDV correction); the
+  earlier "VIV aerodynamic intermittency" diagnosis is retracted
 - Three aerodynamic regimes characterised from frequency analysis
-- Cross-axis bending bias: bounded, quantified — 0.038 mm at 5 mm amplitude
-- dp sensitivity: torsion Pearson r = 0.940 is invariant to dp in range 1.40–1.65
+- Cross-axis bending bias: bounded, quantified — 0.038 mm at 5 mm amplitude (13.0% of Option B RMSE)
+- dp sensitivity: Pearson r is scale-invariant to dp (B0-era study showed r=0.940 invariant across
+  dp range 1.40–1.65); this property holds at the current canonical dp=2.0 as well
 
 ### What the Manuscript CANNOT Claim
 - LDV-equivalent absolute displacement accuracy
@@ -636,7 +684,7 @@ Decode via `np.frombuffer().reshape()`, not `cv2.imdecode()`.
 - Modal validation (restrict to response characterisation only)
 - KLT or B2 robustness improvement
 - C1/C2 stereo fusion validity
-- That bending r = 0.845 constitutes a pipeline failure
+- That bending r = 0.845 constitutes a pipeline failure (moot under Option B: r ≈ 0.960 passes cleanly, no deviation to explain)
 
 ### Required Language
 
@@ -686,8 +734,8 @@ Timing audit shows direct common60 and dense1000 differ by < 0.08%; max drift
 is 20.03 ms; common60 is sufficient and more transparent.
 
 **Q3:** "What exactly is your torsion measurement?"
-Two-point differential displacement proxy with operator-confirmed geometry (dp = 1.538,
-db = 200 mm). Not a torsion angle. Stated explicitly throughout.
+Two-point differential displacement proxy with operator-confirmed geometry (dp = 2.0,
+db = 200 mm, Option B canonical — superseded: dp = 1.538). Not a torsion angle. Stated explicitly throughout.
 
 **Q4:** "Why no modal validation from your spectra?"
 Dominant peaks and nearest reference bins systematically diverge; restricted to
@@ -697,17 +745,19 @@ response characterisation, not modal identification.
 All figures generated programmatically from a tagged release; rerun command documented;
 code public at GitHub.
 
-**Q6:** "Why does your bending correlation not reach 0.90?"
-Cross-axis torsion leakage from the 9.8° inter-camera misalignment inflates the
-bending channel in torsion-dominated regimes. The bias is bounded (0.038 mm at
-5 mm amplitude), quantified, and documented. In bending-dominated regimes the
-ratio returns to 0.84–1.24×, confirming accurate trend tracking where the
-measurement is physically valid.
+**Q6:** "Why does your bending correlation not reach 0.90?" — **now moot under Option B (updated
+2026-07-02): bending r ≈ 0.960 passes cleanly, 19 stable conditions.** Retained for history: under
+the superseded B0 geometry, cross-axis torsion leakage from the 9.8° inter-camera misalignment
+inflated the bending channel in torsion-dominated regimes (bias bounded at 0.038 mm at 5 mm
+amplitude). This bias still exists as a general uncertainty contribution (13.0% of the current
+RMSE) but is no longer needed to explain a gate failure.
 
-**Q7:** "How do you know dp = 1.538 is correct?"
-Confirmed from the facility setup document (dside = 130 mm). Sensitivity analysis
-shows Pearson r = 0.940 is invariant across dp range 1.40–1.65 because r is
-scale-invariant. Only the ratio changes with dp; the trend comparison is robust.
+**Q7:** "How do you know dp = 2.0 is correct?" (superseded question: "...dp = 1.538 is correct?")
+Confirmed from the facility setup document for Tunnel A 2024 (dside = 100 mm) — this is the Option B
+canonical geometry as of 2026-07-01, superseding the earlier dside=130mm/dp=1.538 Tunnel B lock.
+Sensitivity analysis shows Pearson r is invariant to dp because r is scale-invariant to a pure
+scaling factor — this holds regardless of which dp is canonical. Only the ratio changes with dp;
+the trend comparison is robust either way.
 
 ---
 
@@ -733,21 +783,25 @@ The manuscript writing project references it for confirmed values and claim lang
 | Reproducibility | All steps run from raw bags in < 8 hours | PASS |
 | Noise floor | bending bound < 0.05 mm | PASS (0.0029 mm derived; 0.017 mm conservative) |
 | Camera agreement | 20/21 conditions: aligned Z < 15 mm | PASS (all 21; worst 7.42 mm at e20) |
-| Bending correlation | Stable Pearson r vs LDV > 0.90 | FAIL — 0.845; physically explained and accepted |
-| Torsion correlation | Stable Pearson r vs LDV > 0.90 | PASS — 0.940 |
+| Bending correlation | Stable Pearson r vs LDV > 0.90 | PASS — ≈0.960, 19 cond. (superseded: FAIL — 0.845, 18 cond.) |
+| Torsion correlation | Stable Pearson r vs LDV > 0.90 | PASS — ≈0.968 (superseded: 0.940) |
 | Bootstrap CI | Stable non-near-floor CI width < 20% | PASS (max 0.200 at near-floor e3_50rpm) |
 | Frequency presence | Bending peak within 0.5 Hz of f_h for 15+ conditions | PASS |
 | RTS phase shift | < 10 ms | PASS — 0.00 ms |
 | DCG exclusion | e20 diagnosed and excluded with physical mechanism | PASS |
-| 60 RPM | Physical explanation documented | PASS (VIV lock-in intermittency) |
+| 60 RPM | Included in stable-regime statistics (2026-07-02 correction) | PASS (superseded: "VIV lock-in intermittency" diagnosis, now retracted) |
 | Claim language | Zero forbidden phrases in any output or figure caption | PASS |
 | Environment lock | requirements.txt with pinned versions | PASS |
 
-Bending correlation gate FAIL is accepted. The result is characterised, quantified,
-and defensible. It is reported as a finding, not hidden.
+Bending correlation gate now PASSES cleanly under Option B (Tunnel A LDV 2024). The B0-era FAIL
+result is retained above for history — it was characterised, quantified, and defensible at the time,
+but is no longer the current status.
 
 ---
 
-*Version 2026-06-23. Clean document — no historical values retained.*
+*Version 2026-06-23. Clean document — no historical values retained at time of writing.*
+*Updated 2026-07-02: Option B canonical switch layered on top per `claim_boundary.md` v2.1 — see
+inline superseded-value notes throughout Sections 0, 2.4, 6, 8, 10, and 12.*
 *Confirmed from: results/step10/ldv_summary.json, results/step10/step10_summary.json,*
-*dp_sensitivity.json, current_ground_truth_audit_2026-06-23.md, bag metadata, facility documents.*
+*dp_sensitivity.json, current_ground_truth_audit_2026-06-23.md, bag metadata, facility documents,*
+*claim_boundary.md v2.1, option_b_verified_table.csv.*

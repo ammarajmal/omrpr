@@ -13,6 +13,6 @@
 | 07 | Motion Decompose | COMPLETE | PASS | 2026-06-23 | Re-ran on e7 then --all; e7 cam1-cam2 r=0.999012; low-r warnings only in low-signal e0-e2 |
 | 08 | Frequency Analysis | COMPLETE | PASS | 2026-06-23 | User-ran e7 then --all; 21/21 OK; 3 regimes confirmed; zero low_snr flags |
 | 09 | Uncertainty | COMPLETE | PASS | 2026-06-23 | Re-ran --smoke-test then --all; 4/4 gates PASS; noise floor 0.0043/0.0052 mm; timing drift 20.0 ms |
-| 10 | LDV Comparison | COMPLETE | FAIL/PASS | 2026-06-24 | Re-ran smoke then full; bend r=0.845 FAIL explained; tors r=0.940 PASS; stable ratios 1.339x/0.599x |
+| 10 | LDV Comparison | COMPLETE | PASS/PASS | 2026-07-02 | Option B canonical (Tunnel A LDV 2024): bend r≈0.960 PASS, tors r≈0.968 PASS; stable ratios ≈1.261x/≈0.785x; 19 stable cond. (superseded 2026-06-24: bend r=0.845 FAIL explained, tors r=0.940 PASS, ratios 1.339x/0.599x, 18 cond.) |
 | 11 | RTS Smoothing | COMPLETE | PASS | 2026-06-24 | Re-ran on e7 then full default run; 21/21 PASS; 0.00 ms phase; stable ratio 0.999; e0/e1 0.961-0.966 |
-| 12 | Figures/Tables | COMPLETE | PASS | 2026-06-24 | Re-ran full generation; 5 figs, 2 tables, 0 violations; fixed stale Step 10 footnote 0.833/17 -> 0.845/18 |
+| 12 | Figures/Tables | COMPLETE | PASS | 2026-06-24 | Re-ran full generation; 5 figs, 2 tables, 0 violations; fixed stale Step 10 footnote 0.833/17 -> 0.845/18 (this footnote value is itself now superseded by the 2026-07-02 Option B switch — see Step 10 row above) |
