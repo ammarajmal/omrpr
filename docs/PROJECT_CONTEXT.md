@@ -290,7 +290,7 @@ processed through the main WTT pipeline. Use only for:
 ### 2.7 Facility Anonymization (Hard Rule)
 
 **NEVER write:** TESolution Co., Ltd. / TESolution / Anseong-si / any city name
-**ALWAYS write:** "a commercial aerodynamic testing facility in South Korea [Lee2016]"
+**ALWAYS write:** "a commercial aerodynamic testing facility in South Korea" (no citation)
 
 Lee2016 citation: Lee, S.-W. et al. (2016). Proc. SPIE 9803, 98032X. DOI: 10.1117/12.2219404
 
@@ -602,7 +602,7 @@ Do not claim KLT improves results.
    statistics like any other condition. Do not diagnose or report it separately.
 
 6. **Facility anonymized.** Never write TESolution or any city name.
-   Always write "a commercial aerodynamic testing facility in South Korea [Lee2016]"
+   Always write "a commercial aerodynamic testing facility in South Korea" (no citation)
 
 7. **No LDV-equivalent accuracy claim.** Current locked ratios (Option B canonical, `claim_boundary.md`
    v2.1): ≈1.261× bending, ≈0.785× torsion (dp=2.0, Tunnel A 2024). The B0 ratios (1.339× bending,
@@ -835,7 +835,7 @@ Never open the next step until the current step passes all three levels.
 | two-point differential displacement proxy | torsion angle / validated torsion |
 | high_wind_unstable_motion | measurement failure |
 | internal camera-agreement uncertainty | absolute accuracy |
-| commercial aerodynamic testing facility in South Korea [Lee2016] | TESolution / any city name |
+| commercial aerodynamic testing facility in South Korea (no citation) | TESolution / any city name / [Lee2016] (identifies TESolution via author affiliation) |
 
 ---
 

@@ -354,7 +354,7 @@ simultaneous validation.
 
 ### 2.5 Facility Anonymization (Hard Rule)
 **NEVER write:** TESolution Co., Ltd. / TESolution / Anseong-si / any city name
-**ALWAYS write:** "a commercial aerodynamic testing facility in South Korea [Lee2016]"
+**ALWAYS write:** "a commercial aerodynamic testing facility in South Korea" (no citation)
 
 Lee2016: Lee, S.-W. et al. (2016). Proc. SPIE 9803, 98032X. DOI: 10.1117/12.2219404
 
@@ -579,7 +579,10 @@ P_0 = diag([signal_variance, velocity_variance]) from data RMS.
    outlier. It is now included in the 19-condition stable-regime statistics; do not report it separately.
 
 6. **Facility anonymized.** Never write TESolution or any city name. Always write
-   "a commercial aerodynamic testing facility in South Korea [Lee2016]."
+   "a commercial aerodynamic testing facility in South Korea" (no citation — [Lee2016]
+   was removed 2026-07-03: its DOI resolves to a paper co-authored by TESolution's own
+   engineer, with the facility name/province in the author affiliation metadata, so
+   citing it would deanonymize the facility via a one-click lookup).
 
 7. **No LDV-equivalent accuracy claim.** Bending r ≈ 0.960 (Option B canonical) passes the gate
    cleanly — document the ~9.8° inter-camera misalignment as a general bounded uncertainty
@@ -697,7 +700,7 @@ Decode via `np.frombuffer().reshape()`, not `cv2.imdecode()`.
 | DCG-excluded (detection_rate < 0.95) | measurement failure |
 | characterised physical limitation (bending bias) | pipeline failure |
 | internal camera-agreement uncertainty | absolute accuracy |
-| commercial aerodynamic testing facility in South Korea [Lee2016] | TESolution / any city name |
+| commercial aerodynamic testing facility in South Korea (no citation) | TESolution / any city name / [Lee2016] (identifies TESolution via author affiliation) |
 | 20.03 ms max pairwise timing drift | any other timing drift figure |
 | same-tunnel non-simultaneous comparison | cross-tunnel / simultaneous |
 

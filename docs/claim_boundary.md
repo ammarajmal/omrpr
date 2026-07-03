@@ -80,7 +80,7 @@
 | near-flutter / pre-flutter condition | high-wind failure |
 | cam3 clean amplitude 2.19 mm (cam1/cam2 DCG-excluded) | e20 bending result |
 | internal camera-agreement uncertainty | absolute accuracy |
-| commercial aerodynamic testing facility in South Korea [Lee2016] | facility name / any city name |
+| commercial aerodynamic testing facility in South Korea (no citation) | facility name / any city name / [Lee2016] (identifies TESolution via author affiliation) |
 | same-tunnel (Tunnel A) non-simultaneous comparison | "different tunnel"/"Tunnel B" for the 2025 standalone LDV session (mislabel, corrected), or simultaneous |
 
 ## Validated Numbers — LOCKED (Option B Canonical, Tunnel A LDV 2024)
