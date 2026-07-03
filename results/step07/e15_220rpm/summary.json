@@ -3,10 +3,10 @@
   "n_frames": 1828,
   "cam1_cam2_y_corr": 0.999525,
   "bending_avg_y_mm": {
-    "rms_mm": 2.0872,
-    "std_mm": 2.0872,
-    "peak_mm": 4.146,
-    "mean_mm": -0.0
+    "rms_mm": 1.1389,
+    "std_mm": 1.1389,
+    "peak_mm": 2.5092,
+    "mean_mm": 0.0
   },
   "torsion_diff_y_mm": {
     "rms_mm": 2.0064,
