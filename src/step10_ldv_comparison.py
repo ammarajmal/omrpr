@@ -3,74 +3,85 @@ step10_ldv_comparison.py — OMRPR Pipeline Step 10: LDV Condition-Level Compari
 
 PURPOSE:
     Compares camera-derived bending and torsion RMS values against LDV reference
-    measurements at the condition level across 20 matched WTT conditions.
+    measurements at the condition level across 19 stable + 1 DCG-excluded WTT
+    conditions (Option B canonical, claim_boundary.md v2.1).
 
     This is NOT a waveform comparison. LDV (360 Hz) and camera (60 Hz) have different
-    sampling rates. Both were recorded in the 2025 standalone LDV session (same Tunnel A facility)
-    with the same structural model
-    and matched RPM conditions, on separate DAQ systems in separate sessions (LDV:
-    September 2025, camera: October 2025). The comparison is condition-level (RMS / peak /
-    dominant frequency per condition) — not point-by-point trace alignment.
+    sampling rates. Camera (Tunnel A facility, October 2025) and LDV (same Tunnel A
+    facility, 2024 paired session, October-November 2024) were recorded on separate
+    DAQ systems in separate sessions approximately 11 months apart — NOT simultaneous.
+    The comparison is condition-level (RMS / peak per condition) — not point-by-point
+    trace alignment.
+
+    CORRECTED 2026-07-03: this script previously pointed at the WRONG LDV dataset (the
+    2025 standalone session, dside=130mm/dp=1.538 — since superseded/retracted, see
+    claim_boundary.md changelog) and hardcoded e4_60rpm as an excluded "VIV outlier".
+    Both are fixed below to match the locked Option B canonical geometry and sample,
+    and to reproduce (from in-repo files only) the same numbers independently verified
+    in omrpr_manuscript/scripts/verify_option_b.py / option_b_verified_table.csv.
 
 INPUTS:
     Camera:  results/step07/{condition}/motion.csv
              Columns: t_s, bending_avg_y_mm, torsion_diff_y_mm
-    LDV:     /media/ammar/phd/omrpr/data/LDV/TESolution/laser_displacement/등류/영각00/D01..D20
+             (bending_avg_y_mm is the cross-bridge average — see step07 docstring)
+    LDV:     omrpr_private_data/external/TESOLUTION_final response/Video Measurement
+             /RAW_Data/laser_displacement/2D_WTT/D0..D38 (2024 paired session)
              3-column tab-separated ASCII, no header, units: cm
              Col 1 = bending channel (ch1), Col 2 = torsion channel (ch2), Col 3 = wind (discard)
-    Bias:    D00 (same folder) — static zero-wind reference, subtracted before calibration
-    Mapping: /media/ammar/phd/omrpr/data/LDV/manifest.json
+    Bias:    D0 (same folder) — static zero-wind reference, subtracted before calibration
+    Mapping: CONDITIONS dict below (RPM -> (wtt_condition, LDV D-file)), matching
+             verify_option_b.py's CONDITIONS / option_B_guide.md section 2.2.
 
 OUTPUTS:
     results/step10/ldv_comparison_table.csv   — per-condition comparison
     results/step10/ldv_summary.json           — Pearson r, Spearman rho, MAE, RMSE, ratio
     results/step10/step10_summary.json        — gate check
 
-CONFIRMED GEOMETRY (Section 0 of PROJECT_CONTEXT.md — DO NOT CHANGE):
+CONFIRMED GEOMETRY — 2024 paired session, vendor-verified via BRID2D1_choi.m
+(Ver 2.1, 2024.11.11) and Displacement Measurement System_V2.pdf (see
+docs/RESULTS_LOG.md "2026-07-03 RESOLVED"). DO NOT CHANGE without updating that entry:
     pvolt  = 2.7 cm/V   (calibration gain, both channels)
-    dside  = 13.0 cm    (130 mm — confirmed from 설계속도 및 모형Setup_영상계측.xlsx)
-    db     = 20.0 cm    (200 mm — confirmed from same document)
-    dp     = db/dside   = 1.538 for THIS session only (2025 standalone LDV session).
-                          NOTE (2026-07-03): dside=10/dp=2.0 is NOT wrong in general — it is
-                          the vendor-verified correct geometry for the separate 2024 paired
-                          session (Option B canonical). Do not reuse either session's dside
-                          for the other. See docs/RESULTS_LOG.md "2026-07-03 RESOLVED".
+    dside  = 10.0 cm    (100 mm)
+    db     = 20.0 cm    (200 mm)
+    dp     = db/dside   = 2.0
     fs     = 360 Hz
-    D00    = bias reference (zero-wind static condition)
+    D0     = bias reference (zero-wind static condition)
+
+    NOTE: dside=130mm/dp=1.538 is the geometry of a DIFFERENT, separate 2025 standalone
+    LDV session (since superseded/retracted) — do not reuse it here. The "Tunnel A" /
+    "Tunnel B" naming used in older docs for these two sessions was a facility mislabel,
+    corrected 2026-07-03: there is only one physical facility.
 
 CRITICAL RULES (from guideline Section 6):
     1. LDV comparison is condition-level ONLY. Never compare waveforms.
     2. LDV raw files are in CENTIMETRES. Convert to mm, store in _mm_corrected.
        NEVER store cm values in _mm columns.
-    3. e4_60rpm is a VIV outlier — report separately, but INCLUDE in statistics.
-    4. e20_320rpm is high-wind unstable — report separately, but INCLUDE in statistics.
-    5. e0_0rpm has NO LDV counterpart (D00 is bias reference, not a condition).
+    3. e20_320rpm is DCG-excluded (motion blur) — report separately, excluded from stats.
+    4. e4_60rpm is a normal stable condition (reclassified 2026-07-02 after an LDV
+       data-labeling fix) — INCLUDE in stable statistics, do not flag or annotate it
+       as an outlier.
+    5. e0_0rpm has NO LDV counterpart (D0 is bias reference, not a condition).
     6. No LDV-equivalent accuracy claim. The ratio is NOT a validated accuracy number.
 
 ACCEPTANCE CRITERIA:
-    Stable regime Pearson r (bending) > 0.90  (excluding 60 RPM VIV and 320 RPM DCG)
-    Stable regime Pearson r (torsion) > 0.90  (excluding 60 RPM and 320 RPM)
-    Target (canonical — 18 stable conditions, no near-floor exclusion):
-        Bending Pearson r  ≈ 0.845
-        Bending Spearman ρ ≈ 0.864
-        Bending MAE        ≈ 0.485 mm
-        Bending RMSE       ≈ 0.719 mm
-        Bending ratio      ≈ 1.339×
-        Torsion Pearson r  ≈ 0.940
-        Torsion ratio      ≈ 0.599×
-
-    Near-floor exclusion REMOVED — rationale:
-        (a) With correct intrinsics, e1/e2/e3 are 2.5-9x above true noise floor (0.0027 mm)
-        (b) Exclusion threshold is arbitrary and not reviewer-defensible
-        (c) Physically justified exclusions are VIV (60 RPM) and DCG (320 RPM) only
-        (d) 18 stable conditions with no ad-hoc exclusion is the cleanest claim
+    Stable regime Pearson r (bending) > 0.90  (excluding only 320 RPM DCG)
+    Stable regime Pearson r (torsion) > 0.90  (excluding only 320 RPM DCG)
+    Target (canonical — 19 stable conditions, claim_boundary.md v2.1):
+        Bending Pearson r  ≈ 0.960
+        Bending Spearman ρ ≈ 0.944
+        Bending MAE        ≈ 0.221 mm
+        Bending RMSE       ≈ 0.293 mm
+        Bending ratio      ≈ 1.261×
+        Torsion Pearson r  ≈ 0.968
+        Torsion ratio      ≈ 0.785×
 
 KNOWN BUGS AVOIDED:
     - LDV unit confusion (Bug 7.2): raw files are cm, converted explicitly to mm
-    - dp=2.0 is WRONG for THIS session (2025 standalone LDV, 130mm sensor gap): correct value here
-      is 1.538; formula is (ch2-ch1) * dp where dp = db/sensor_gap = 200/130. This does NOT apply
-      to the separate 2024 paired session, where dp=2.0/dside=100mm is vendor-verified correct
-      (Option B canonical) — see docs/RESULTS_LOG.md "2026-07-03 RESOLVED".
+    - Using the wrong (2025 standalone) LDV session/geometry for this (2024 paired)
+      comparison — see CONFIRMED GEOMETRY note above.
+    - Hardcoding e4_60rpm as an excluded VIV outlier (retracted 2026-07-02 — see
+      claim_boundary.md changelog: the underlying LDV figure was untraceable and has
+      since been corrected, and 60 RPM is not an outlier under the corrected value).
     - result_bending.txt NOT used: we recompute from raw files with correct geometry
 """
 
@@ -89,19 +100,46 @@ from scipy import stats
 # ─────────────────────────────────────────────────────────────────────────────
 
 PVOLT  = 2.7    # cm/V  — calibration gain, both channels
-DSIDE  = 13.0   # cm    — 130 mm confirmed from facility document
-DB     = 20.0   # cm    — 200 mm confirmed from facility document
-DP     = DB / DSIDE   # = 1.538...  NOT 2.0
+DSIDE  = 10.0   # cm    — 100 mm, vendor-verified (BRID2D1_choi.m, 2024 paired session)
+DB     = 20.0   # cm    — 200 mm
+DP     = DB / DSIDE   # = 2.0
 FS_LDV = 360    # Hz
 
 LDV_DIR = Path(
-    "/media/ammar/phd/omrpr/data/LDV/TESolution"
-    "/laser_displacement/등류/영각00"
+    "/media/ammar/phd/fin_phd/omrpr_private_data/external"
+    "/TESOLUTION_final response/Video Measurement"
+    "/RAW_Data/laser_displacement/2D_WTT"
 )
-MANIFEST_PATH = Path("/media/ammar/phd/omrpr/data/LDV/manifest.json")
 
-# Conditions to flag separately (still included in all statistics)
-VIV_CONDITION      = "e4_60rpm"
+# RPM -> (camera condition, LDV D-file) mapping — 2024 paired session.
+# Source: verify_option_b.py / option_B_guide.md section 2.2 (cross-checked against
+# option_b_verified_table.csv, which this script's output must match).
+CONDITIONS = {
+     20: ("e1_20rpm",   "D1"),
+     40: ("e2_40rpm",   "D3"),
+     50: ("e3_50rpm",   "D5"),
+     60: ("e4_60rpm",   "D7"),
+     70: ("e5_70rpm",   "D9"),
+     80: ("e6_80rpm",   "D11"),
+     90: ("e7_90rpm",   "D13"),
+    100: ("e8_100rpm",  "D15"),
+    110: ("e9_110rpm",  "D17"),
+    120: ("e10_120rpm", "D18"),
+    140: ("e11_140rpm", "D20"),
+    160: ("e12_160rpm", "D22"),
+    180: ("e13_180rpm", "D24"),
+    200: ("e14_200rpm", "D26"),
+    220: ("e15_220rpm", "D28"),
+    240: ("e16_240rpm", "D30"),
+    260: ("e17_260rpm", "D32"),
+    280: ("e18_280rpm", "D34"),
+    300: ("e19_300rpm", "D36"),
+    320: ("e20_320rpm", "D38"),
+}
+
+# Only DCG (motion blur, 320 RPM) is excluded from stable statistics.
+# e4_60rpm (60 RPM) was reclassified from excluded-VIV to stable-included on
+# 2026-07-02 (claim_boundary.md changelog) — do not reintroduce that exclusion.
 UNSTABLE_CONDITION = "e20_320rpm"
 
 
@@ -111,16 +149,16 @@ UNSTABLE_CONDITION = "e20_320rpm"
 
 def load_ldv_bias(ldv_dir: Path) -> np.ndarray:
     """
-    Load D00 (zero-wind static reference) and return mean of both channels.
+    Load D0 (zero-wind static reference) and return mean of both channels.
     Returns array of shape (2,) in raw cm/V units — NOT yet multiplied by pvolt.
     """
-    d00_path = ldv_dir / "D00"
-    if not d00_path.exists():
-        raise FileNotFoundError(f"LDV bias file not found: {d00_path}")
+    d0_path = ldv_dir / "D0"
+    if not d0_path.exists():
+        raise FileNotFoundError(f"LDV bias file not found: {d0_path}")
 
-    raw = np.loadtxt(str(d00_path), usecols=(0, 1))  # col 0=bending, col 1=torsion
+    raw = np.loadtxt(str(d0_path), usecols=(0, 1))  # col 0=bending, col 1=torsion
     bias = np.mean(raw, axis=0)  # shape (2,)
-    print(f"  [LDV] Bias (D00 mean): ch1={bias[0]:.6f} cm/V, ch2={bias[1]:.6f} cm/V")
+    print(f"  [LDV] Bias (D0 mean): ch1={bias[0]:.6f} cm/V, ch2={bias[1]:.6f} cm/V")
     return bias
 
 
@@ -128,12 +166,12 @@ def process_ldv_condition(d_path: Path, bias: np.ndarray) -> dict:
     """
     Load one LDV D-file and compute bending and torsion RMS in mm.
 
-    Processing chain (replicates BRID2D1_choi.m with CORRECT geometry):
+    Processing chain (replicates BRID2D1_choi.m, 2024 paired-session geometry):
         raw       — 3-column file, units cm/V, 360 Hz
-        debiased  — subtract D00 mean per channel
+        debiased  — subtract D0 mean per channel
         calibrated — multiply by pvolt = 2.7 → units now cm
         bending   — (ch1_cal + ch2_cal) / 2  → cm
-        torsion   — (ch2_cal - ch1_cal) * dp → cm  (dp = 1.538; sensor gap = 13 cm total, dp = db/gap = 20/13)
+        torsion   — (ch2_cal - ch1_cal) * dp → cm  (dp = 2.0; dside = 10 cm, dp = db/dside = 20/10)
         convert   — multiply by 10 → mm  (_mm_corrected)
         rms       — std() of the mm time series
 
@@ -274,9 +312,9 @@ PEARSON_THRESHOLD = 0.90
 
 def gate_check(stats_full: dict, stats_stable: dict, stats_above_floor_bending: dict) -> dict:
     """
-    Evaluate acceptance criteria against confirmed targets.
-    Stable regime excludes 60 RPM (VIV) and 320 RPM (high-wind unstable).
-    Canonical bending gate uses all 18 stable conditions (no near-floor exclusion).
+    Evaluate acceptance criteria against confirmed targets (claim_boundary.md v2.1).
+    Stable regime excludes only 320 RPM (DCG, motion blur). 60 RPM is included.
+    Canonical bending gate uses all 19 stable conditions (no near-floor exclusion).
     """
     b_r = stats_above_floor_bending.get(
         "above_floor_bending_pearson_r", 0.0)
@@ -294,17 +332,19 @@ def gate_check(stats_full: dict, stats_stable: dict, stats_above_floor_bending: 
         "threshold_pearson_r":  PEARSON_THRESHOLD,
         "stable_bending_pearson_r":  b_r,
         "stable_torsion_pearson_r":  t_r,
-        "target_bending_pearson_r":  0.845,
-        "target_torsion_pearson_r":  0.940,
-        "target_bending_mae_mm":     0.485,
-        "target_bending_rmse_mm":    0.719,
-        "target_bending_ratio":      1.339,
-        "target_torsion_ratio":      0.599,
+        "target_bending_pearson_r":  0.960,
+        "target_torsion_pearson_r":  0.968,
+        "target_bending_mae_mm":     0.221,
+        "target_bending_rmse_mm":    0.293,
+        "target_bending_ratio":      1.261,
+        "target_torsion_ratio":      0.785,
         "notes": [
-            "Stable regime excludes e4_60rpm (VIV) and e20_320rpm (high-wind unstable).",
-            "Full-regime statistics include all 20 conditions.",
+            "Stable regime excludes only e20_320rpm (DCG, motion blur). e4_60rpm (60 RPM) "
+            "is included as a normal stable condition.",
+            "Full-regime statistics include all 20 conditions (e0_0rpm has no LDV counterpart).",
             "Ratio > 1 means camera reads higher than LDV. Not an accuracy claim.",
-            "Same-tunnel (Tunnel A facility) condition-matched comparison. Sessions are 10 days apart — NOT simultaneous.",
+            "Same-tunnel (Tunnel A) condition-matched comparison, separate recording "
+            "sessions approximately 11 months apart — NOT simultaneous.",
         ],
     }
 
@@ -339,29 +379,25 @@ def main():
     print("STEP 10 — LDV CONDITION-LEVEL COMPARISON")
     print("=" * 60)
 
-    # ── Load manifest ──────────────────────────────────────────────────────
-    if not MANIFEST_PATH.exists():
-        print(f"[FAIL] Manifest not found: {MANIFEST_PATH}")
-        sys.exit(1)
-
-    with open(MANIFEST_PATH) as f:
-        manifest = json.load(f)
-
-    conditions = manifest["conditions"]
+    # ── Build condition list from CONDITIONS dict (2024 paired session) ────
+    conditions = [
+        {"wtt_condition": wtt, "rpm": rpm, "ldv_file": dfile}
+        for rpm, (wtt, dfile) in sorted(CONDITIONS.items())
+    ]
     if args.smoke_test:
         conditions = [c for c in conditions if c["wtt_condition"] == "e7_90rpm"]
-        print("[SMOKE TEST] Processing e7_90rpm / D07 only")
+        print("[SMOKE TEST] Processing e7_90rpm / D13 only")
 
-    print(f"\n[INFO] LDV geometry:")
+    print(f"\n[INFO] LDV geometry (2024 paired session, vendor-verified):")
     print(f"       pvolt = {PVOLT} cm/V")
-    print(f"       dside = {DSIDE} cm  (130 mm — confirmed)")
-    print(f"       db    = {DB} cm  (200 mm — confirmed)")
-    print(f"       dp    = {DP:.4f}  (NOT 2.0 — MATLAB script had wrong dside=10)")
+    print(f"       dside = {DSIDE} cm  (100 mm)")
+    print(f"       db    = {DB} cm  (200 mm)")
+    print(f"       dp    = {DP:.4f}")
     print(f"       fs    = {FS_LDV} Hz")
     print(f"       units = cm raw → mm converted (_mm_corrected)")
 
-    # ── Load LDV bias (D00) ───────────────────────────────────────────────
-    print(f"\n[LDV] Loading bias from D00...")
+    # ── Load LDV bias (D0) ───────────────────────────────────────────────
+    print(f"\n[LDV] Loading bias from D0...")
     bias = load_ldv_bias(LDV_DIR)
 
     # ── Process each condition ─────────────────────────────────────────────
@@ -371,18 +407,12 @@ def main():
     for cond in conditions:
         wtt  = cond["wtt_condition"]
         rpm  = cond["rpm"]
-        dfile = cond["ldv_file"].replace(".csv", "")  # manifest uses D01.csv, file is D01
-        note  = cond.get("note", "")
+        dfile = cond["ldv_file"]
 
         d_path = LDV_DIR / dfile
 
-        is_viv      = (wtt == VIV_CONDITION)
         is_unstable = (wtt == UNSTABLE_CONDITION)
-        flag = ""
-        if is_viv:
-            flag = "VIV_outlier"
-        elif is_unstable:
-            flag = "high_wind_unstable"
+        flag = "high_wind_unstable" if is_unstable else ""
 
         # LDV
         try:
@@ -450,14 +480,14 @@ def main():
     # ── Compute statistics ─────────────────────────────────────────────────
     # Full regime: all 20 conditions
     df_full   = df.copy()
-    # Stable regime: exclude VIV and high-wind unstable
+    # Stable regime: exclude only the DCG high-wind-unstable condition (320 RPM)
     df_stable = df[df["flag"] == ""].copy()
 
     # Near-floor reporting note (informational only — not used as exclusion gate).
     # With correct intrinsics, static bending noise bound = ~0.0027 mm.
     # e1/e2/e3 bending RMS (0.007-0.024 mm) are 2.5-9x above floor.
-    # Canonical reporting uses all 18 stable conditions (no near-floor exclusion).
-    # The physically justified exclusions are VIV (60 RPM) and DCG (320 RPM) only.
+    # Canonical reporting uses all 19 stable conditions (no near-floor exclusion).
+    # The only physically justified exclusion is DCG (320 RPM).
     _nf_path = results_dir / "step09" / "noise_floor" / "noise_floor_summary.json"
     if _nf_path.exists():
         with open(_nf_path) as _f:
@@ -465,13 +495,13 @@ def main():
         _derived_nf = _nf_data["derived_bounds"]["bending_avg_bound_mm"]
         print(f"[INFO] Derived static bending noise floor: {_derived_nf:.6f} mm "
               f"(informational — not used as exclusion gate)")
-    # No near-floor exclusion — use full stable subset (18 conditions)
+    # No near-floor exclusion — use full stable subset (19 conditions)
     df_stable_above_floor = df_stable.copy()
     near_floor_conditions = []
 
     print(f"\n[STATS] Full regime: {len(df_full)} conditions")
     print(f"[STATS] Stable regime: {len(df_stable)} conditions "
-          f"(excluding {VIV_CONDITION} and {UNSTABLE_CONDITION})")
+          f"(excluding only {UNSTABLE_CONDITION})")
 
     def _stats_for(subset: pd.DataFrame, label_prefix: str) -> dict:
         b_cam = subset["camera_bending_rms_mm"].to_numpy()
@@ -516,7 +546,7 @@ def main():
     print(f"  Spearman ρ = {stats_full['torsion_spearman_rho']:.4f}")
     print(f"  Ratio mean = {stats_full['torsion_ratio_mean']:.4f}×")
 
-    print("\nSTABLE REGIME ONLY (excl. 60 RPM, 320 RPM)")
+    print("\nSTABLE REGIME ONLY (excl. 320 RPM only; 60 RPM included)")
     print(f"  Bending Pearson r = {stats_stable['stable_bending_pearson_r']:.4f}")
     print(f"  Torsion Pearson r = {stats_stable['stable_torsion_pearson_r']:.4f}")
 
@@ -524,19 +554,19 @@ def main():
           f"no near-floor exclusion)")
     print(f"  Pearson r  = "
           f"{stats_above_floor_bending['above_floor_bending_pearson_r']:.4f}  "
-          f"(target ≈ 0.845)")
+          f"(target ≈ 0.960)")
     print(f"  Spearman ρ = "
           f"{stats_above_floor_bending['above_floor_bending_spearman_rho']:.4f}  "
-          f"(target ≈ 0.864)")
+          f"(target ≈ 0.944)")
     print(f"  MAE        = "
           f"{stats_above_floor_bending['above_floor_bending_mae_mm']:.4f} mm  "
-          f"(target ≈ 0.485 mm)")
+          f"(target ≈ 0.221 mm)")
     print(f"  RMSE       = "
           f"{stats_above_floor_bending['above_floor_bending_rmse_mm']:.4f} mm  "
-          f"(target ≈ 0.719 mm)")
+          f"(target ≈ 0.293 mm)")
     print(f"  Ratio mean = "
           f"{stats_above_floor_bending['above_floor_bending_ratio_mean']:.4f}×  "
-          f"(target ≈ 1.339×)")
+          f"(target ≈ 1.261×)")
 
     # ── Gate check ─────────────────────────────────────────────────────────
     gate = gate_check(stats_full, stats_stable, stats_above_floor_bending)
@@ -556,10 +586,11 @@ def main():
             "db_cm":    DB,
             "dp":       round(DP, 6),
             "fs_hz":    FS_LDV,
-            "bias_file": "D00",
-            "note_dp": "dp=1.538 NOT 2.0; MATLAB script had wrong sensor gap=10cm, "
-                       "confirmed sensor gap=130mm (센서간격) from facility document; "
-                       "formula is (ch2-ch1) * dp where dp = db/sensor_gap = 200mm/130mm",
+            "bias_file": "D0",
+            "note_dp": "dp=2.0, dside=100mm — vendor-verified via BRID2D1_choi.m "
+                       "(Ver 2.1, 2024.11.11) and Displacement Measurement System_V2.pdf "
+                       "for the 2024 paired session (Option B canonical); "
+                       "formula is (ch2-ch1) * dp where dp = db/dside = 200mm/100mm",
         },
         "full_regime":   stats_full,
         "stable_regime": stats_stable,
@@ -567,13 +598,13 @@ def main():
         "n_full":        len(df_full),
         "n_stable":      len(df_stable),
         "n_above_floor": len(df_stable_above_floor),
-        "excluded_from_stable": [VIV_CONDITION, UNSTABLE_CONDITION],
+        "excluded_from_stable": [UNSTABLE_CONDITION],
         "excluded_from_above_floor": near_floor_conditions,
         "recording_note": (
-            "Camera (Tunnel A, October 2025) and LDV from the 2025 standalone LDV session (same Tunnel A facility, September 2025) — "
-            "same structural model, matched RPM conditions. Sessions are 10 days apart — "
-            "NOT simultaneous. Comparison is condition-level: RMS, peak, and dominant frequency "
-            "per RPM condition."
+            "Camera (Tunnel A, October 2025) and LDV (same Tunnel A facility, 2024 paired "
+            "session, October-November 2024) — same structural model, matched RPM "
+            "conditions. Sessions are approximately 11 months apart — NOT simultaneous. "
+            "Comparison is condition-level: RMS and peak per RPM condition."
         ),
         "claim_boundary": (
             "The ratio (camera/LDV) is NOT an accuracy claim. "

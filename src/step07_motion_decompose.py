@@ -4,14 +4,15 @@ Step 07 — Motion Decomposition
 Purpose:  Decompose aligned per-camera displacements into two physically
           meaningful channels:
 
-          bending_avg_y_mm  = mean(cam1_y, cam2_y)
-              — Average vertical displacement of Marker A across both cameras.
+          bending_avg_y_mm  = ((cam1_y + cam2_y) / 2 + cam3_y) / 2   [cross-bridge average]
+              — Full-model average vertical displacement across all three markers.
                 Represents bridge bending (vertical oscillation).
                 cam1 vs cam2 correlation r=0.999 confirms sign consistency.
 
-          torsion_diff_y_mm = cam3_y - bending_avg_y_mm
+          torsion_diff_y_mm = cam3_y - (cam1_y + cam2_y) / 2
               — Differential vertical displacement between Marker B (cam3)
-                and Marker A (cam1/cam2 average).
+                and Marker A (cam1/cam2 average). Deliberately NOT computed from
+                the cross-bridge bending_avg_y_mm above — see "Key decisions" below.
                 Two-point differential displacement proxy for torsion.
                 Treated as unsigned proxy — sign not physically calibrated.
                 Physical validation: dominant frequency should separate from the
@@ -19,9 +20,23 @@ Purpose:  Decompose aligned per-camera displacements into two physically
                 torsion-reference band in torsion-dominated conditions.
 
 Key decisions (locked):
+          - Bending formula corrected 2026-07-03: bending_avg_y_mm changed from the
+            two-camera average (cam1_y+cam2_y)/2 ["near-edge-only"] to the three-camera
+            cross-bridge average ((cam1_y+cam2_y)/2 + cam3_y)/2. At torsion-dominated
+            RPMs (90-220), cam3 moves opposite to cam1+cam2, so the near-edge-only
+            average leaks torsion coupling into the bending channel; the cross-bridge
+            average cancels most of that leakage. This is the formula validated in
+            verify_option_b.py / option_b_verified_table.csv (r=0.960 vs LDV, locked in
+            claim_boundary.md v2.1). Do not revert without re-deriving the locked numbers.
+          - torsion_diff_y_mm is intentionally computed from the ORIGINAL two-camera
+            average (cam1_y+cam2_y)/2, NOT from the new cross-bridge bending_avg_y_mm.
+            Reusing the cross-bridge average here would make torsion_diff_y_mm partly
+            self-referential (it already contains cam3) and would silently change the
+            already-validated torsion proxy (r=0.968, ratio=0.785x). The two channels
+            are deliberately built from different underlying averages.
           - Full-run mean removal was done in Step 06. No second mean removal here.
-            bending_avg_y_mm is zero-mean by construction (average of two zero-mean signals).
-            torsion_diff_y_mm is zero-mean by construction (difference of two zero-mean signals).
+            Both channels are zero-mean by construction (combinations of zero-mean
+            per-camera signals).
           - Torsion is a proxy, not a calibrated torsion angle. Never call it a torsion angle.
           - No sign flip applied to either channel. Sign consistency confirmed by r=0.999
             for cam1 vs cam2 y_w_mm.
@@ -34,8 +49,8 @@ Outputs:  results/step07/{condition}/motion.csv
 
 Schema (motion.csv):
           t_s                float  — common grid time (from step06, unchanged)
-          bending_avg_y_mm   float  — (cam1_y + cam2_y) / 2
-          torsion_diff_y_mm  float  — cam3_y - bending_avg_y_mm
+          bending_avg_y_mm   float  — ((cam1_y + cam2_y) / 2 + cam3_y) / 2
+          torsion_diff_y_mm  float  — cam3_y - (cam1_y + cam2_y) / 2
 
 Schema (summary.json):
           bending_rms_mm       — RMS of bending_avg_y_mm
@@ -129,8 +144,13 @@ def process_condition(condition: str, config: dict) -> None:
               f"Negate one camera's y_w_mm before averaging.")
 
     # ── Decompose ─────────────────────────────────────────────────────────────
-    bending_avg_y_mm  = (y1 + y2) / 2.0
-    torsion_diff_y_mm = y3 - bending_avg_y_mm
+    # bending_2cam is the original two-camera (near-edge-only) average. It is used
+    # ONLY as the reference point for torsion_diff_y_mm — kept separate from the
+    # reported bending_avg_y_mm so the torsion proxy's definition (and its locked,
+    # validated r=0.968 result) is unaffected by the 2026-07-03 bending formula fix.
+    bending_2cam      = (y1 + y2) / 2.0
+    bending_avg_y_mm  = (bending_2cam + y3) / 2.0
+    torsion_diff_y_mm = y3 - bending_2cam
 
     # Verify zero-mean (should be by construction — assert as safety check)
     bending_mean  = float(np.mean(bending_avg_y_mm))
