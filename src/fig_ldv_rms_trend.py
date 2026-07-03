@@ -46,7 +46,7 @@ PVOLT  = 2.7      # cm/V
 DP     = 20.0 / 13.0   # 1.538... (db=200mm, dside=130mm)
 FS_LDV = 360.0    # Hz
 
-# ── structural parameters (from free_vib_analysis, Tunnel B 2025) ─────────────
+# ── structural parameters (from free_vib_analysis, 2025 standalone LDV session) ──
 FN_B = 1.4323   # Hz — bending
 FN_T = 3.0827   # Hz — torsion
 B    = 0.40     # m  — chord

@@ -1,5 +1,5 @@
 """
-Free-vibration analysis of bridge model (Tunnel B, 2025 campaign).
+Free-vibration analysis of bridge model (2025 standalone LDV session, same Tunnel A facility).
 Translates fqB.m / fqT.m MATLAB logic to Python.
 
 Outputs:
@@ -203,7 +203,7 @@ def build_regime_table(fn_b: float, fn_t: float):
 def make_figure(b_res, t_res, regime_rows, fn_b, fn_t, zeta_b, zeta_t):
     fig = plt.figure(figsize=(16, 14))
     fig.suptitle(
-        f"Free-vibration analysis — Tunnel B 2025\n"
+        f"Free-vibration analysis — 2025 standalone LDV session\n"
         f"fn_b = {fn_b:.4f} Hz, ζ_b = {zeta_b*100:.3f}%  |  "
         f"fn_t = {fn_t:.4f} Hz, ζ_t = {zeta_t*100:.3f}%",
         fontsize=12, fontweight="bold"
@@ -315,7 +315,7 @@ def main():
     # Print summary
     print()
     print("=" * 65)
-    print("FREE-VIBRATION RESULTS (Tunnel B 2025)")
+    print("FREE-VIBRATION RESULTS (2025 standalone LDV session)")
     print("=" * 65)
     print(f"  Bending:  fn_b = {fn_b:.4f} Hz    ζ_b = {zeta_b*100:.3f}%")
     print(f"            (ζ⁺ = {b_res['zeta_pos']*100:.3f}%  |  ζ⁻ = {b_res['zeta_neg']*100:.3f}%)")

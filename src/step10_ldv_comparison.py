@@ -6,7 +6,8 @@ PURPOSE:
     measurements at the condition level across 20 matched WTT conditions.
 
     This is NOT a waveform comparison. LDV (360 Hz) and camera (60 Hz) have different
-    sampling rates. Both were recorded in Tunnel B 2025 with the same structural model
+    sampling rates. Both were recorded in the 2025 standalone LDV session (same Tunnel A facility)
+    with the same structural model
     and matched RPM conditions, on separate DAQ systems in separate sessions (LDV:
     September 2025, camera: October 2025). The comparison is condition-level (RMS / peak /
     dominant frequency per condition) — not point-by-point trace alignment.
@@ -29,7 +30,11 @@ CONFIRMED GEOMETRY (Section 0 of PROJECT_CONTEXT.md — DO NOT CHANGE):
     pvolt  = 2.7 cm/V   (calibration gain, both channels)
     dside  = 13.0 cm    (130 mm — confirmed from 설계속도 및 모형Setup_영상계측.xlsx)
     db     = 20.0 cm    (200 mm — confirmed from same document)
-    dp     = db/dside   = 1.538 (NOT 2.0 — the MATLAB script had wrong dside=10)
+    dp     = db/dside   = 1.538 for THIS session only (2025 standalone LDV session).
+                          NOTE (2026-07-03): dside=10/dp=2.0 is NOT wrong in general — it is
+                          the vendor-verified correct geometry for the separate 2024 paired
+                          session (Option B canonical). Do not reuse either session's dside
+                          for the other. See docs/RESULTS_LOG.md "2026-07-03 RESOLVED".
     fs     = 360 Hz
     D00    = bias reference (zero-wind static condition)
 
@@ -62,7 +67,10 @@ ACCEPTANCE CRITERIA:
 
 KNOWN BUGS AVOIDED:
     - LDV unit confusion (Bug 7.2): raw files are cm, converted explicitly to mm
-    - dp=2.0 error: correct value is 1.538; sensor gap (센서간격) = 130 mm total between sensors (not 100 mm); formula is (ch2-ch1) * dp where dp = db/sensor_gap = 200/130
+    - dp=2.0 is WRONG for THIS session (2025 standalone LDV, 130mm sensor gap): correct value here
+      is 1.538; formula is (ch2-ch1) * dp where dp = db/sensor_gap = 200/130. This does NOT apply
+      to the separate 2024 paired session, where dp=2.0/dside=100mm is vendor-verified correct
+      (Option B canonical) — see docs/RESULTS_LOG.md "2026-07-03 RESOLVED".
     - result_bending.txt NOT used: we recompute from raw files with correct geometry
 """
 
@@ -296,7 +304,7 @@ def gate_check(stats_full: dict, stats_stable: dict, stats_above_floor_bending: 
             "Stable regime excludes e4_60rpm (VIV) and e20_320rpm (high-wind unstable).",
             "Full-regime statistics include all 20 conditions.",
             "Ratio > 1 means camera reads higher than LDV. Not an accuracy claim.",
-            "Same-tunnel (Tunnel B) condition-matched comparison. Sessions are 10 days apart — NOT simultaneous.",
+            "Same-tunnel (Tunnel A facility) condition-matched comparison. Sessions are 10 days apart — NOT simultaneous.",
         ],
     }
 
@@ -562,7 +570,7 @@ def main():
         "excluded_from_stable": [VIV_CONDITION, UNSTABLE_CONDITION],
         "excluded_from_above_floor": near_floor_conditions,
         "recording_note": (
-            "Camera (Tunnel B, October 2025) and LDV (Tunnel B, September 2025) — same facility, "
+            "Camera (Tunnel A, October 2025) and LDV from the 2025 standalone LDV session (same Tunnel A facility, September 2025) — "
             "same structural model, matched RPM conditions. Sessions are 10 days apart — "
             "NOT simultaneous. Comparison is condition-level: RMS, peak, and dominant frequency "
             "per RPM condition."

@@ -1,0 +1,40 @@
+wing: omrpr
+rooms:
+- name: configuration
+  description: Files from config/
+  keywords:
+  - configuration
+  - config
+- name: data
+  description: Files from data/
+  keywords:
+  - data
+  - data
+- name: documentation
+  description: Files from docs/
+  keywords:
+  - documentation
+  - docs
+- name: results
+  description: Files from results/
+  keywords:
+  - results
+  - results
+- name: src
+  description: Files from src/
+  keywords:
+  - src
+  - src
+- name: testing
+  description: Files from tests/
+  keywords:
+  - testing
+  - tests
+- name: scripts
+  description: Files from utils/
+  keywords:
+  - scripts
+  - utils
+- name: general
+  description: Files that don't fit other rooms
+  keywords: []

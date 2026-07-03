@@ -3369,7 +3369,7 @@ OUT
   "captions_checked": 5,
   "forbidden_found": [],
   "claim_boundary_pass": true,
-  "note_comparison": "LDV comparison is condition-level only. Camera (October 2025) and LDV (September 2025) were recorded in Tunnel B in separate sessions 10 days apart on separate DAQ systems; condition-level (not point-by-point) due to different sampling rates (60 Hz vs 360 Hz) and non-simultaneity.",
+  "note_comparison": "LDV comparison is condition-level only. Camera (October 2025) and LDV (September 2025, 2025 standalone LDV session) were recorded at the same Tunnel A facility in separate sessions 10 days apart on separate DAQ systems; condition-level (not point-by-point) due to different sampling rates (60 Hz vs 360 Hz) and non-simultaneity. NOTE: this describes the retired B0/2025 standalone session pairing, not the current Option B canonical (2024 paired session) reference.",
   "note_torsion_proxy": "torsion_diff_y_mm is a two-point differential displacement proxy, not a validated torsion angle measurement."
 }
 Bash Step11 smoothing diagnostics for e20_320rpm

@@ -1,12 +1,51 @@
-results/step01
-data/WTT/
-data/static_bags/
-data/context_data/
+# Python
 __pycache__/
-*.pyc
-.env
-*.egg-info/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
 
-# MemPalace per-project files (issue #185)
-mempalace.yaml
-entities.json
+# Build/cache
+build/
+dist/
+*.egg-info/
+.cache/
+
+# Private/large data
+data/raw/
+data/private/
+../omrpr_private_data/
+*.bag
+*.db3
+*.avi
+*.mp4
+*.mkv
+*.zip
+*.tar
+*.tar.gz
+
+# Huge generated outputs
+results/step01/
+results/raw_images/
+results/**/*.png
+results/**/*.jpg
+results/**/*.jpeg
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Env
+.env
+.env.*
+
+# Hold unreviewed data/results folders out of Git until explicitly audited
+data/
+results/
+zdfds

@@ -8,7 +8,7 @@ A fully offline, deterministic, multi-camera reconstruction pipeline for reprodu
 sub-millimeter structural displacement tracking using AprilTag markers — applied to
 wind tunnel testing of a bridge section model (21 RPM conditions, 3 Sony RX10 IV cameras).
 
-LDV comparison is condition-level only (same-tunnel Tunnel B, separate sessions 10 days apart, NOT simultaneous). No hardware sync.
+LDV comparison is condition-level only (same-tunnel Tunnel A facility, separate sessions, NOT simultaneous). No hardware sync. Current canonical LDV reference is the 2024 paired session (Option B, ~11 months apart) — see docs/claim_boundary.md.
 See `docs/PROJECT_CONTEXT.md` for the full design rationale and claim boundaries.
 
 ## Pipeline Overview

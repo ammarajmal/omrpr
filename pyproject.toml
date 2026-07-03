@@ -1,0 +1,33 @@
+[project]
+name = "omrpr-fin-analysis"
+version = "0.1.0"
+description = "Clean OMRPR Paper 2 analysis, plotting, and reproducibility environment"
+requires-python = ">=3.12"
+dependencies = [
+  "numpy",
+  "pandas",
+  "scipy",
+  "matplotlib",
+  "plotly",
+  "opencv-python",
+  "pupil-apriltags",
+  "scikit-learn",
+  "statsmodels",
+  "jupyterlab",
+  "ipykernel",
+  "pyarrow",
+  "openpyxl",
+  "tqdm",
+  "rich",
+  "typer",
+  "ruff",
+  "black",
+  "mypy",
+  "pytest",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.black]
+line-length = 100
