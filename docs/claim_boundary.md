@@ -64,13 +64,16 @@
   Reported as a separate pre-flutter trend data point, clearly labelled "cam3 only (cam1/cam2 DCG-excluded)"
 - Motion blur physical diagnosis: four independent lines of evidence (FFT, pixel velocity, Laplacian
   sharpness, boundary analysis). Publishable diagnostic work.
-- DCG formal criterion: r_det ≥ 0.95 AND n_miss_max ≤ 2 AND v_peak < w_cell, designed for
-  step02b and used as the analytical exclusion rule in the current writeup.
+- DCG formal criterion: r_det ≥ 0.95 AND n_miss_max ≤ 1 AND v_peak < w_cell, designed for
+  step02b and used as the analytical exclusion rule in the current writeup (threshold
+  corrected 2026-07-03 from N≤2 to N≤1, see changelog).
   The n_miss_max threshold is derived from ε = A(2πg/T_h)²/8; the velocity criterion is derived from
   tag geometry. Neither threshold is empirically chosen to match e20.
-- Sinusoidal interpolation error bound: ε = A(2πg/T_h)²/8. N=2 frame guard derived from noise floor
-  criterion at T_h = 0.698 s, A = 1.25 mm (g=2 frames/33ms → ε=0.0141mm safe; g=3 frames/50ms →
-  ε=0.0317mm exceeds 0.017mm floor). Novel formula not previously published in SHM literature.
+- Sinusoidal interpolation error bound: ε = A(2πg/T_h)²/8. N=1 frame guard derived from noise floor
+  criterion at T_h = 0.698 s, A = 1.25 mm (g=1 frame/16.7ms → ε=0.0035mm safe; g=2 frames/33ms →
+  ε=0.0141mm exceeds the corrected 0.004mm floor, forcing N≤1). Novel formula not previously
+  published in SHM literature. (Corrected 2026-07-03: this passage previously read N=2/0.017mm,
+  matching the pre-noise-floor-correction threshold; see changelog for the full derivation.)
 - Future hardware recommendation (Discussion section only): t_exp < w_cell / v_peak = 7.1 ms
   for Sony RX10 IV at 320 RPM. Novel quantitative design criterion derived from the physics.
 - LDV geometry (Tunnel A 2024): pvolt=2.7 cm/V, dside=100 mm, dp=2.0, fs=360 Hz

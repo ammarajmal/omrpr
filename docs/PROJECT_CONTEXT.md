@@ -3,7 +3,15 @@
 **Date:** 2026-06-16
 **Last updated:** 2026-07-02 — Option B canonical switch (Tunnel A LDV 2024): LDV geometry, bending/torsion comparison numbers, and 60RPM status corrected against `claim_boundary.md` v2.1. See update summary at bottom. Earlier update (2026-06-30): stale aerodynamic parameters, tunnel attribution, and timing value corrected against OMRPR_SUPERVISOR_GUIDELINE.md (2026-06-23). Added Step 02b (DCG).
 **Status:** Active
-**NOTE:** f_h/f_α/damping values below are UNVERIFIED pending a provenance check (2025 standalone LDV session Sept 2025 vs. 2024 TESolution free-vibration data) — left unchanged in this pass.
+**2026-07-06 RESOLVED:** f_h/f_α/damping values below were UNVERIFIED pending a provenance check;
+now confirmed. Source: TESolution vendor-delivered raw LDV files `Bd1`/`Td1`
+(`data/LDV/TESolution/laser_displacement/자유진동/`), co-located with the 2025 standalone LDV
+session's own D00–D20 wind-test data (confirming session attribution). `src/free_vib_analysis.py`
+(documented Python translation of vendor's own `fqb.m`/`fqt.m` MATLAB method) independently
+reproduces the locked values exactly. Cross-validated against an independent 2024-session
+free-vibration measurement (f_h=1.4299 Hz/f_α=3.1098 Hz, within 0.2%/0.9%) and the already-documented
+camera-based FFT corroboration (f_h=1.4290 Hz/f_α=3.0990 Hz) — all three cluster tightly. See
+`RESULTS_LOG.md` for the full provenance chain.
 
 > This document captures the experimental context, pipeline design decisions, confirmed parameter values, known pitfalls, and claim boundaries for the OMRPR offline multi-camera displacement reconstruction project.
 
@@ -20,8 +28,8 @@ They override older values that appear elsewhere in this document.
 **2026-07-02 SUPERSESSION NOTICE:** The dside/dp row below (130mm / dp=1.538, 2025 standalone LDV
 session) was itself superseded on 2026-07-01 by the Option B canonical switch to the 2024 paired-session
 geometry: **dside = 100 mm, dp = 2.0**. See `claim_boundary.md` v2.1. The rest of this table
-(f_h/f_α/damping/timing) is unaffected by the Option B switch and left as-is pending a separate
-provenance check.
+(f_h/f_α/damping/timing) is unaffected by the Option B switch; f_h/f_α/damping provenance was
+separately confirmed 2026-07-06 (see NOTE above).
 
 **2026-07-03 RESOLVED — facility naming corrected:** "Tunnel B" throughout this table (and the rest of
 this document) was a mislabel for the **2025 standalone LDV session** — confirmed to be the same
@@ -707,8 +715,8 @@ omrpr-clean/
 │   ├── step11_rts_smoothing.py
 │   └── step12_figures_tables.py
 ├── data/
-│   ├── WTT/                (symlink to bag files — input only)
-│   └── static_bags/        (symlink — input only)
+│   ├── WTT/                (real directory of bag files — input only; migrated from retired `omrpr` project, 2026-07)
+│   └── static_bags/        (real directory of static-test bags — input only; migrated from retired `omrpr` project, 2026-07)
 ├── results/                (all generated outputs — never commit to git)
 ├── docs/
 │   ├── claim_boundary.md

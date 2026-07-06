@@ -21,7 +21,7 @@ Claude finished the responseYou said: Now, i wanted to thoroughly revise and upd
 
 Bash Gather all step02 detection summaries across conditions
 IN
-find /media/ammar/phd/omrpr/results/step02 -name "summary.json" | sort | xargs -I{} sh -c 'echo "=== {} ==="; catpastedNow, i wanted to thoroughly revise and update the methods to identify and fix the outliers in teh data; 
+find /media/ammar/phd/fin_phd/omrpr_fin/results/step02 -name "summary.json" | sort | xargs -I{} sh -c 'echo "=== {} ==="; catpastedNow, i wanted to thoroughly revise and update the methods to identify and fix the outliers in teh data; 
 Lets take this as a case study:  
 I used Claude to identify the possible issues in the final run of the 320 rpm which had bad results and have effected the overall results badly:
 Now, read all this:
@@ -244,7 +244,7 @@ The evidence is sitting in your step01 PNG frames. You do not need to rerun anyt
 Step 1 — Find a miss burst in your step02 detections.csv for e20 cam1.
 You already know the first big gap is frames 9–14 (a burst of 5 missed frames). Find the frames just before (frame 8) and just after (frame 14) where detection resumes.
 Step 2 — Look at the actual PNG images.
-bashls /media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/frames/ | head -20
+bashls /media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/frames/ | head -20
 Find frames 007, 008, 009, 010, 011, 012, 013, 014 and open them. In frame 8 you should see the tag. In frames 9–13 it should be absent or at the very edge. In frame 14 it should reappear.
 Can you run that and tell me what you see? Specifically:
 
@@ -300,7 +300,7 @@ Write that down. That is your viva answer and your manuscript sentence at the sa
 Now one more thing before code
 You proposed investigating the actual PNG frames to confirm the out-of-frame hypothesis. That is the right instinct — and it is a 10-minute check that either confirms or refutes the entire physical argument.
 Before I write any code, I need you to do this manually first:
-bashls /media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/frames/ | grep -E "frame_00(07|08|09|10|11|12|13|14)"
+bashls /media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/frames/ | grep -E "frame_00(07|08|09|10|11|12|13|14)"
 Open frames 008 (last detected before first gap) and 009, 010, 011 (missed frames) in any image viewer. Tell me what you see:
 
 Is the tag visible in frame 008? Where in the frame — centre, edge?
@@ -311,7 +311,7 @@ Can you run that and report back?You said: i tried to figure o
 
 Bash Check if step01 frames exist for e20_320rpm
 IN
-ls /media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/ 2>/dev/null | head -5; ls /media/ammar/phd/omrpr/results/step01/e20_320rpm/pastedi tried to figure out the actual issue with the claude code into my codebase using vscode and found this:11:52 AMClaude responded: Stop.Stop. Before you say anything about what Claude found in VSCode — look at what the images have already proven. This changes the entire academic argument, and it is more powerful than what we had before.
+ls /media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/ 2>/dev/null | head -5; ls /media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/pastedi tried to figure out the actual issue with the claude code into my codebase using vscode and found this:11:52 AMClaude responded: Stop.Stop. Before you say anything about what Claude found in VSCode — look at what the images have already proven. This changes the entire academic argument, and it is more powerful than what we had before.
 
 What the images prove definitively
 The "out of frame" hypothesis is wrong. Look at Panel A of the diagnostic figure. The tag centroid cy ranges from 200 to 643 pixels. The frame is 1080 pixels tall. The tag never leaves the frame. This rules out your earlier suggestion completely.
@@ -337,7 +337,7 @@ But your instinct to question it is correct. Here is what to check:
 bashpython3 -c "
 import csv
 rows = list(csv.DictReader(open(
-  '/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+  '/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 rows.sort(key=lambda r: int(r['frame_idx']))
 
 # Check if any detected frame has corners near frame boundary
@@ -406,7 +406,7 @@ import csv
 import numpy as np
 
 rows = list(csv.DictReader(open(
-    '/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+    '/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 all_fi = set(range(1829))
 det_fi = set(int(r['frame_idx']) for r in rows)
 miss_fi = sorted(all_fi - det_fi)
@@ -480,7 +480,7 @@ At 320 RPM, the bridge deck oscillates at 2.93 Hz with pixel amplitude ±221px i
  python3 -c "
 import csv
 rows = list(csv.DictReader(open(
-  '/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+  '/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 rows.sort(key=lambda r: int(r['frame_idx']))
 
 # Check if any detected frame has corners near frame boundary
@@ -510,12 +510,12 @@ Frames with corners within 60px of boundary: 125
   frame 109: cy_min=54.7  cy_max=387.0
   frame 128: cy_min=54.3  cy_max=379.1
 Max cy ever seen across all detections: 804.3
-(omrpr) ammar@ubun24:/media/ammar/phd/omrpr$ python3 -c "
+(omrpr) ammar@ubun24:/media/ammar/phd/fin_phd/omrpr_fin$ python3 -c "
 import csv
 import numpy as np
 
 rows = list(csv.DictReader(open(
-    '/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+    '/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 all_fi = set(range(1829))
 det_fi = set(int(r['frame_idx']) for r in rows)
 miss_fi = sorted(all_fi - det_fi)
@@ -555,16 +555,16 @@ Missed frames estimated cy:
 
 === Conclusion ===
 Fraction of misses near equilibrium (300-540px): 93.4%
-(omrpr) ammar@ubun24:/media/ammar/phd/omrpr$ 
+(omrpr) ammar@ubun24:/media/ammar/phd/fin_phd/omrpr_fin$ 
 ------------------------__
 Let me gather comparison data across all conditions and dig into what's happening at each pipeline step for this outlier.
 
 Bash Gather all step02 detection summaries across conditions
 IN
-find /media/ammar/phd/omrpr/results/step02 -name "summary.json" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
+find /media/ammar/phd/fin_phd/omrpr_fin/results/step02 -name "summary.json" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
 
 OUT
-=== /media/ammar/phd/omrpr/results/step02/e0_0rpm/cam1/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e0_0rpm/cam1/summary.json ===
 {
   "condition": "e0_0rpm",
   "cam": "cam1",
@@ -573,7 +573,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e0_0rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e0_0rpm/cam2/summary.json ===
 {
   "condition": "e0_0rpm",
   "cam": "cam2",
@@ -582,7 +582,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e0_0rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e0_0rpm/cam3/summary.json ===
 {
   "condition": "e0_0rpm",
   "cam": "cam3",
@@ -591,7 +591,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e10_120rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e10_120rpm/cam1/summary.json ===
 {
   "condition": "e10_120rpm",
   "cam": "cam1",
@@ -600,7 +600,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e10_120rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e10_120rpm/cam2/summary.json ===
 {
   "condition": "e10_120rpm",
   "cam": "cam2",
@@ -609,7 +609,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e10_120rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e10_120rpm/cam3/summary.json ===
 {
   "condition": "e10_120rpm",
   "cam": "cam3",
@@ -618,7 +618,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e11_140rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e11_140rpm/cam1/summary.json ===
 {
   "condition": "e11_140rpm",
   "cam": "cam1",
@@ -627,7 +627,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e11_140rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e11_140rpm/cam2/summary.json ===
 {
   "condition": "e11_140rpm",
   "cam": "cam2",
@@ -636,7 +636,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e11_140rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e11_140rpm/cam3/summary.json ===
 {
   "condition": "e11_140rpm",
   "cam": "cam3",
@@ -645,7 +645,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e1_20rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e1_20rpm/cam1/summary.json ===
 {
   "condition": "e1_20rpm",
   "cam": "cam1",
@@ -654,7 +654,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e1_20rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e1_20rpm/cam2/summary.json ===
 {
   "condition": "e1_20rpm",
   "cam": "cam2",
@@ -663,7 +663,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e1_20rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e1_20rpm/cam3/summary.json ===
 {
   "condition": "e1_20rpm",
   "cam": "cam3",
@@ -672,7 +672,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e12_160rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e12_160rpm/cam1/summary.json ===
 {
   "condition": "e12_160rpm",
   "cam": "cam1",
@@ -681,7 +681,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e12_160rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e12_160rpm/cam2/summary.json ===
 {
   "condition": "e12_160rpm",
   "cam": "cam2",
@@ -690,7 +690,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e12_160rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e12_160rpm/cam3/summary.json ===
 {
   "condition": "e12_160rpm",
   "cam": "cam3",
@@ -699,7 +699,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e13_180rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e13_180rpm/cam1/summary.json ===
 {
   "condition": "e13_180rpm",
   "cam": "cam1",
@@ -708,7 +708,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e13_180rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e13_180rpm/cam2/summary.json ===
 {
   "condition": "e13_180rpm",
   "cam": "cam2",
@@ -717,7 +717,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e13_180rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e13_180rpm/cam3/summary.json ===
 {
   "condition": "e13_180rpm",
   "cam": "cam3",
@@ -726,7 +726,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e14_200rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e14_200rpm/cam1/summary.json ===
 {
   "condition": "e14_200rpm",
   "cam": "cam1",
@@ -735,7 +735,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e14_200rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e14_200rpm/cam2/summary.json ===
 {
   "condition": "e14_200rpm",
   "cam": "cam2",
@@ -744,7 +744,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e14_200rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e14_200rpm/cam3/summary.json ===
 {
   "condition": "e14_200rpm",
   "cam": "cam3",
@@ -753,7 +753,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e15_220rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e15_220rpm/cam1/summary.json ===
 {
   "condition": "e15_220rpm",
   "cam": "cam1",
@@ -762,43 +762,43 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e15_220rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e15_220rpm/cam2/summary.json ===
 {
   "condition": "e15_220rpm",
-  "cam": "cam2",
-  "total_frames": 1827,
-  "detected_frames": 1827,
-  "missed_frames": 0,
-  "detection_rate": 1.0,
-  "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e15_220rpm/cam3/summary.json ===
-{
-  "condition": "e15_220rpm",
-  "cam": "cam3",
-  "total_frames": 1829,
-  "detected_frames": 1829,
-  "missed_frames": 0,
-  "detection_rate": 1.0,
-  "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e16_240rpm/cam1/summary.json ===
-{
-  "condition": "e16_240rpm",
-  "cam": "cam1",
-  "total_frames": 1828,
-  "detected_frames": 1828,
-  "missed_frames": 0,
-  "detection_rate": 1.0,
-  "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e16_240rpm/cam2/summary.json ===
-{
-  "condition": "e16_240rpm",
   "cam": "cam2",
   "total_frames": 1827,
   "detected_frames": 1827,
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e16_240rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e15_220rpm/cam3/summary.json ===
+{
+  "condition": "e15_220rpm",
+  "cam": "cam3",
+  "total_frames": 1829,
+  "detected_frames": 1829,
+  "missed_frames": 0,
+  "detection_rate": 1.0,
+  "max_consecutive_miss": 0
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e16_240rpm/cam1/summary.json ===
+{
+  "condition": "e16_240rpm",
+  "cam": "cam1",
+  "total_frames": 1828,
+  "detected_frames": 1828,
+  "missed_frames": 0,
+  "detection_rate": 1.0,
+  "max_consecutive_miss": 0
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e16_240rpm/cam2/summary.json ===
+{
+  "condition": "e16_240rpm",
+  "cam": "cam2",
+  "total_frames": 1827,
+  "detected_frames": 1827,
+  "missed_frames": 0,
+  "detection_rate": 1.0,
+  "max_consecutive_miss": 0
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e16_240rpm/cam3/summary.json ===
 {
   "condition": "e16_240rpm",
   "cam": "cam3",
@@ -807,7 +807,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e17_260rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e17_260rpm/cam1/summary.json ===
 {
   "condition": "e17_260rpm",
   "cam": "cam1",
@@ -816,7 +816,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e17_260rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e17_260rpm/cam2/summary.json ===
 {
   "condition": "e17_260rpm",
   "cam": "cam2",
@@ -825,7 +825,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e17_260rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e17_260rpm/cam3/summary.json ===
 {
   "condition": "e17_260rpm",
   "cam": "cam3",
@@ -834,7 +834,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e18_280rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e18_280rpm/cam1/summary.json ===
 {
   "condition": "e18_280rpm",
   "cam": "cam1",
@@ -843,7 +843,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e18_280rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e18_280rpm/cam2/summary.json ===
 {
   "condition": "e18_280rpm",
   "cam": "cam2",
@@ -852,7 +852,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e18_280rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e18_280rpm/cam3/summary.json ===
 {
   "condition": "e18_280rpm",
   "cam": "cam3",
@@ -861,7 +861,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e19_300rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e19_300rpm/cam1/summary.json ===
 {
   "condition": "e19_300rpm",
   "cam": "cam1",
@@ -870,7 +870,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e19_300rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e19_300rpm/cam2/summary.json ===
 {
   "condition": "e19_300rpm",
   "cam": "cam2",
@@ -879,7 +879,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e19_300rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e19_300rpm/cam3/summary.json ===
 {
   "condition": "e19_300rpm",
   "cam": "cam3",
@@ -888,7 +888,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam1",
@@ -897,7 +897,7 @@ OUT
   "missed_frames": 717,
   "detection_rate": 0.607983,
   "max_consecutive_miss": 6
-}=== /media/ammar/phd/omrpr/results/step02/e20_320rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam2/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam2",
@@ -906,7 +906,7 @@ OUT
   "missed_frames": 707,
   "detection_rate": 0.61345,
   "max_consecutive_miss": 6
-}=== /media/ammar/phd/omrpr/results/step02/e20_320rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam3/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam3",
@@ -915,7 +915,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e2_40rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e2_40rpm/cam1/summary.json ===
 {
   "condition": "e2_40rpm",
   "cam": "cam1",
@@ -924,7 +924,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e2_40rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e2_40rpm/cam2/summary.json ===
 {
   "condition": "e2_40rpm",
   "cam": "cam2",
@@ -933,7 +933,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e2_40rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e2_40rpm/cam3/summary.json ===
 {
   "condition": "e2_40rpm",
   "cam": "cam3",
@@ -942,7 +942,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e3_50rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e3_50rpm/cam1/summary.json ===
 {
   "condition": "e3_50rpm",
   "cam": "cam1",
@@ -951,7 +951,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e3_50rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e3_50rpm/cam2/summary.json ===
 {
   "condition": "e3_50rpm",
   "cam": "cam2",
@@ -960,7 +960,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e3_50rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e3_50rpm/cam3/summary.json ===
 {
   "condition": "e3_50rpm",
   "cam": "cam3",
@@ -969,7 +969,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e4_60rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e4_60rpm/cam1/summary.json ===
 {
   "condition": "e4_60rpm",
   "cam": "cam1",
@@ -978,7 +978,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e4_60rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e4_60rpm/cam2/summary.json ===
 {
   "condition": "e4_60rpm",
   "cam": "cam2",
@@ -987,7 +987,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e4_60rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e4_60rpm/cam3/summary.json ===
 {
   "condition": "e4_60rpm",
   "cam": "cam3",
@@ -996,7 +996,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e5_70rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e5_70rpm/cam1/summary.json ===
 {
   "condition": "e5_70rpm",
   "cam": "cam1",
@@ -1005,7 +1005,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e5_70rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e5_70rpm/cam2/summary.json ===
 {
   "condition": "e5_70rpm",
   "cam": "cam2",
@@ -1014,7 +1014,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e5_70rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e5_70rpm/cam3/summary.json ===
 {
   "condition": "e5_70rpm",
   "cam": "cam3",
@@ -1023,7 +1023,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e6_80rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e6_80rpm/cam1/summary.json ===
 {
   "condition": "e6_80rpm",
   "cam": "cam1",
@@ -1032,7 +1032,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e6_80rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e6_80rpm/cam2/summary.json ===
 {
   "condition": "e6_80rpm",
   "cam": "cam2",
@@ -1041,7 +1041,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e6_80rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e6_80rpm/cam3/summary.json ===
 {
   "condition": "e6_80rpm",
   "cam": "cam3",
@@ -1050,7 +1050,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e7_90rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e7_90rpm/cam1/summary.json ===
 {
   "condition": "e7_90rpm",
   "cam": "cam1",
@@ -1059,7 +1059,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e7_90rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e7_90rpm/cam2/summary.json ===
 {
   "condition": "e7_90rpm",
   "cam": "cam2",
@@ -1068,7 +1068,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e7_90rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e7_90rpm/cam3/summary.json ===
 {
   "condition": "e7_90rpm",
   "cam": "cam3",
@@ -1077,7 +1077,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e8_100rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e8_100rpm/cam1/summary.json ===
 {
   "condition": "e8_100rpm",
   "cam": "cam1",
@@ -1086,7 +1086,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e8_100rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e8_100rpm/cam2/summary.json ===
 {
   "condition": "e8_100rpm",
   "cam": "cam2",
@@ -1095,7 +1095,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e8_100rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e8_100rpm/cam3/summary.json ===
 {
   "condition": "e8_100rpm",
   "cam": "cam3",
@@ -1104,7 +1104,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e9_110rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e9_110rpm/cam1/summary.json ===
 {
   "condition": "e9_110rpm",
   "cam": "cam1",
@@ -1113,7 +1113,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e9_110rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e9_110rpm/cam2/summary.json ===
 {
   "condition": "e9_110rpm",
   "cam": "cam2",
@@ -1122,7 +1122,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step02/e9_110rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e9_110rpm/cam3/summary.json ===
 {
   "condition": "e9_110rpm",
   "cam": "cam3",
@@ -1134,10 +1134,10 @@ OUT
 }
 Bash Gather all step03 quality summaries across conditions
 IN
-find /media/ammar/phd/omrpr/results/step03 -name "summary.json" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
+find /media/ammar/phd/fin_phd/omrpr_fin/results/step03 -name "summary.json" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
 
 OUT
-=== /media/ammar/phd/omrpr/results/step03/e0_0rpm/cam1/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e0_0rpm/cam1/summary.json ===
 {
   "condition": "e0_0rpm",
   "cam": "cam1",
@@ -1155,7 +1155,7 @@ OUT
     "min": 36.0,
     "max": 44.5331
   }
-}=== /media/ammar/phd/omrpr/results/step03/e0_0rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e0_0rpm/cam2/summary.json ===
 {
   "condition": "e0_0rpm",
   "cam": "cam2",
@@ -1173,7 +1173,7 @@ OUT
     "min": 38.1033,
     "max": 47.8802
   }
-}=== /media/ammar/phd/omrpr/results/step03/e0_0rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e0_0rpm/cam3/summary.json ===
 {
   "condition": "e0_0rpm",
   "cam": "cam3",
@@ -1191,7 +1191,7 @@ OUT
     "min": 30.6777,
     "max": 37.9421
   }
-}=== /media/ammar/phd/omrpr/results/step03/e10_120rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e10_120rpm/cam1/summary.json ===
 {
   "condition": "e10_120rpm",
   "cam": "cam1",
@@ -1209,7 +1209,7 @@ OUT
     "min": 34.6983,
     "max": 46.9793
   }
-}=== /media/ammar/phd/omrpr/results/step03/e10_120rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e10_120rpm/cam2/summary.json ===
 {
   "condition": "e10_120rpm",
   "cam": "cam2",
@@ -1227,7 +1227,7 @@ OUT
     "min": 35.6653,
     "max": 48.876
   }
-}=== /media/ammar/phd/omrpr/results/step03/e10_120rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e10_120rpm/cam3/summary.json ===
 {
   "condition": "e10_120rpm",
   "cam": "cam3",
@@ -1245,7 +1245,7 @@ OUT
     "min": 28.0661,
     "max": 41.0372
   }
-}=== /media/ammar/phd/omrpr/results/step03/e11_140rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e11_140rpm/cam1/summary.json ===
 {
   "condition": "e11_140rpm",
   "cam": "cam1",
@@ -1263,7 +1263,7 @@ OUT
     "min": 34.124,
     "max": 46.9917
   }
-}=== /media/ammar/phd/omrpr/results/step03/e11_140rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e11_140rpm/cam2/summary.json ===
 {
   "condition": "e11_140rpm",
   "cam": "cam2",
@@ -1281,7 +1281,7 @@ OUT
     "min": 35.2314,
     "max": 47.4008
   }
-}=== /media/ammar/phd/omrpr/results/step03/e11_140rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e11_140rpm/cam3/summary.json ===
 {
   "condition": "e11_140rpm",
   "cam": "cam3",
@@ -1299,7 +1299,7 @@ OUT
     "min": 27.1405,
     "max": 43.4876
   }
-}=== /media/ammar/phd/omrpr/results/step03/e1_20rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e1_20rpm/cam1/summary.json ===
 {
   "condition": "e1_20rpm",
   "cam": "cam1",
@@ -1317,7 +1317,7 @@ OUT
     "min": 34.938,
     "max": 44.1033
   }
-}=== /media/ammar/phd/omrpr/results/step03/e1_20rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e1_20rpm/cam2/summary.json ===
 {
   "condition": "e1_20rpm",
   "cam": "cam2",
@@ -1335,7 +1335,7 @@ OUT
     "min": 38.3512,
     "max": 48.3471
   }
-}=== /media/ammar/phd/omrpr/results/step03/e1_20rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e1_20rpm/cam3/summary.json ===
 {
   "condition": "e1_20rpm",
   "cam": "cam3",
@@ -1353,7 +1353,7 @@ OUT
     "min": 32.1322,
     "max": 38.2314
   }
-}=== /media/ammar/phd/omrpr/results/step03/e12_160rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e12_160rpm/cam1/summary.json ===
 {
   "condition": "e12_160rpm",
   "cam": "cam1",
@@ -1371,7 +1371,7 @@ OUT
     "min": 33.0785,
     "max": 47.1488
   }
-}=== /media/ammar/phd/omrpr/results/step03/e12_160rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e12_160rpm/cam2/summary.json ===
 {
   "condition": "e12_160rpm",
   "cam": "cam2",
@@ -1389,7 +1389,7 @@ OUT
     "min": 34.4298,
     "max": 47.3554
   }
-}=== /media/ammar/phd/omrpr/results/step03/e12_160rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e12_160rpm/cam3/summary.json ===
 {
   "condition": "e12_160rpm",
   "cam": "cam3",
@@ -1407,7 +1407,7 @@ OUT
     "min": 26.6446,
     "max": 43.1446
   }
-}=== /media/ammar/phd/omrpr/results/step03/e13_180rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e13_180rpm/cam1/summary.json ===
 {
   "condition": "e13_180rpm",
   "cam": "cam1",
@@ -1425,7 +1425,7 @@ OUT
     "min": 32.8347,
     "max": 46.5702
   }
-}=== /media/ammar/phd/omrpr/results/step03/e13_180rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e13_180rpm/cam2/summary.json ===
 {
   "condition": "e13_180rpm",
   "cam": "cam2",
@@ -1443,7 +1443,7 @@ OUT
     "min": 32.4669,
     "max": 46.5
   }
-}=== /media/ammar/phd/omrpr/results/step03/e13_180rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e13_180rpm/cam3/summary.json ===
 {
   "condition": "e13_180rpm",
   "cam": "cam3",
@@ -1461,7 +1461,7 @@ OUT
     "min": 26.8058,
     "max": 41.8884
   }
-}=== /media/ammar/phd/omrpr/results/step03/e14_200rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e14_200rpm/cam1/summary.json ===
 {
   "condition": "e14_200rpm",
   "cam": "cam1",
@@ -1479,7 +1479,7 @@ OUT
     "min": 31.124,
     "max": 46.7355
   }
-}=== /media/ammar/phd/omrpr/results/step03/e14_200rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e14_200rpm/cam2/summary.json ===
 {
   "condition": "e14_200rpm",
   "cam": "cam2",
@@ -1497,7 +1497,7 @@ OUT
     "min": 33.6942,
     "max": 47.2438
   }
-}=== /media/ammar/phd/omrpr/results/step03/e14_200rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e14_200rpm/cam3/summary.json ===
 {
   "condition": "e14_200rpm",
   "cam": "cam3",
@@ -1515,7 +1515,7 @@ OUT
     "min": 27.3802,
     "max": 41.8388
   }
-}=== /media/ammar/phd/omrpr/results/step03/e15_220rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e15_220rpm/cam1/summary.json ===
 {
   "condition": "e15_220rpm",
   "cam": "cam1",
@@ -1533,7 +1533,7 @@ OUT
     "min": 33.3512,
     "max": 45.3719
   }
-}=== /media/ammar/phd/omrpr/results/step03/e15_220rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e15_220rpm/cam2/summary.json ===
 {
   "condition": "e15_220rpm",
   "cam": "cam2",
@@ -1551,7 +1551,7 @@ OUT
     "min": 33.8512,
     "max": 50.0124
   }
-}=== /media/ammar/phd/omrpr/results/step03/e15_220rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e15_220rpm/cam3/summary.json ===
 {
   "condition": "e15_220rpm",
   "cam": "cam3",
@@ -1569,7 +1569,7 @@ OUT
     "min": 27.4587,
     "max": 41.8471
   }
-}=== /media/ammar/phd/omrpr/results/step03/e16_240rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e16_240rpm/cam1/summary.json ===
 {
   "condition": "e16_240rpm",
   "cam": "cam1",
@@ -1587,7 +1587,7 @@ OUT
     "min": 34.9793,
     "max": 46.6322
   }
-}=== /media/ammar/phd/omrpr/results/step03/e16_240rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e16_240rpm/cam2/summary.json ===
 {
   "condition": "e16_240rpm",
   "cam": "cam2",
@@ -1605,7 +1605,7 @@ OUT
     "min": 35.9587,
     "max": 49.5496
   }
-}=== /media/ammar/phd/omrpr/results/step03/e16_240rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e16_240rpm/cam3/summary.json ===
 {
   "condition": "e16_240rpm",
   "cam": "cam3",
@@ -1623,7 +1623,7 @@ OUT
     "min": 27.3512,
     "max": 41.9504
   }
-}=== /media/ammar/phd/omrpr/results/step03/e17_260rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e17_260rpm/cam1/summary.json ===
 {
   "condition": "e17_260rpm",
   "cam": "cam1",
@@ -1641,7 +1641,7 @@ OUT
     "min": 32.7893,
     "max": 46.1942
   }
-}=== /media/ammar/phd/omrpr/results/step03/e17_260rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e17_260rpm/cam2/summary.json ===
 {
   "condition": "e17_260rpm",
   "cam": "cam2",
@@ -1659,7 +1659,7 @@ OUT
     "min": 36.0868,
     "max": 50.7149
   }
-}=== /media/ammar/phd/omrpr/results/step03/e17_260rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e17_260rpm/cam3/summary.json ===
 {
   "condition": "e17_260rpm",
   "cam": "cam3",
@@ -1677,7 +1677,7 @@ OUT
     "min": 28.9711,
     "max": 41.7066
   }
-}=== /media/ammar/phd/omrpr/results/step03/e18_280rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e18_280rpm/cam1/summary.json ===
 {
   "condition": "e18_280rpm",
   "cam": "cam1",
@@ -1695,7 +1695,7 @@ OUT
     "min": 34.0909,
     "max": 46.4421
   }
-}=== /media/ammar/phd/omrpr/results/step03/e18_280rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e18_280rpm/cam2/summary.json ===
 {
   "condition": "e18_280rpm",
   "cam": "cam2",
@@ -1713,7 +1713,7 @@ OUT
     "min": 35.4298,
     "max": 48.7273
   }
-}=== /media/ammar/phd/omrpr/results/step03/e18_280rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e18_280rpm/cam3/summary.json ===
 {
   "condition": "e18_280rpm",
   "cam": "cam3",
@@ -1731,7 +1731,7 @@ OUT
     "min": 27.7727,
     "max": 41.3017
   }
-}=== /media/ammar/phd/omrpr/results/step03/e19_300rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e19_300rpm/cam1/summary.json ===
 {
   "condition": "e19_300rpm",
   "cam": "cam1",
@@ -1749,7 +1749,7 @@ OUT
     "min": 33.8058,
     "max": 45.4256
   }
-}=== /media/ammar/phd/omrpr/results/step03/e19_300rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e19_300rpm/cam2/summary.json ===
 {
   "condition": "e19_300rpm",
   "cam": "cam2",
@@ -1767,7 +1767,7 @@ OUT
     "min": 35.781,
     "max": 49.0165
   }
-}=== /media/ammar/phd/omrpr/results/step03/e19_300rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e19_300rpm/cam3/summary.json ===
 {
   "condition": "e19_300rpm",
   "cam": "cam3",
@@ -1785,7 +1785,7 @@ OUT
     "min": 26.4008,
     "max": 43.281
   }
-}=== /media/ammar/phd/omrpr/results/step03/e20_320rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e20_320rpm/cam1/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam1",
@@ -1803,7 +1803,7 @@ OUT
     "min": 25.781,
     "max": 47.5868
   }
-}=== /media/ammar/phd/omrpr/results/step03/e20_320rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e20_320rpm/cam2/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam2",
@@ -1821,7 +1821,7 @@ OUT
     "min": 27.1777,
     "max": 51.2066
   }
-}=== /media/ammar/phd/omrpr/results/step03/e20_320rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e20_320rpm/cam3/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam3",
@@ -1839,7 +1839,7 @@ OUT
     "min": 20.8347,
     "max": 39.5289
   }
-}=== /media/ammar/phd/omrpr/results/step03/e2_40rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e2_40rpm/cam1/summary.json ===
 {
   "condition": "e2_40rpm",
   "cam": "cam1",
@@ -1857,7 +1857,7 @@ OUT
     "min": 35.2273,
     "max": 44.8058
   }
-}=== /media/ammar/phd/omrpr/results/step03/e2_40rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e2_40rpm/cam2/summary.json ===
 {
   "condition": "e2_40rpm",
   "cam": "cam2",
@@ -1875,7 +1875,7 @@ OUT
     "min": 38.2149,
     "max": 47.1529
   }
-}=== /media/ammar/phd/omrpr/results/step03/e2_40rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e2_40rpm/cam3/summary.json ===
 {
   "condition": "e2_40rpm",
   "cam": "cam3",
@@ -1893,7 +1893,7 @@ OUT
     "min": 32.3512,
     "max": 38.9835
   }
-}=== /media/ammar/phd/omrpr/results/step03/e3_50rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e3_50rpm/cam1/summary.json ===
 {
   "condition": "e3_50rpm",
   "cam": "cam1",
@@ -1911,7 +1911,7 @@ OUT
     "min": 35.5909,
     "max": 45.781
   }
-}=== /media/ammar/phd/omrpr/results/step03/e3_50rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e3_50rpm/cam2/summary.json ===
 {
   "condition": "e3_50rpm",
   "cam": "cam2",
@@ -1929,7 +1929,7 @@ OUT
     "min": 34.0207,
     "max": 46.2521
   }
-}=== /media/ammar/phd/omrpr/results/step03/e3_50rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e3_50rpm/cam3/summary.json ===
 {
   "condition": "e3_50rpm",
   "cam": "cam3",
@@ -1947,7 +1947,7 @@ OUT
     "min": 30.0868,
     "max": 39.0579
   }
-}=== /media/ammar/phd/omrpr/results/step03/e4_60rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e4_60rpm/cam1/summary.json ===
 {
   "condition": "e4_60rpm",
   "cam": "cam1",
@@ -1965,7 +1965,7 @@ OUT
     "min": 34.4959,
     "max": 47.9959
   }
-}=== /media/ammar/phd/omrpr/results/step03/e4_60rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e4_60rpm/cam2/summary.json ===
 {
   "condition": "e4_60rpm",
   "cam": "cam2",
@@ -1983,7 +1983,7 @@ OUT
     "min": 34.7727,
     "max": 48.5496
   }
-}=== /media/ammar/phd/omrpr/results/step03/e4_60rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e4_60rpm/cam3/summary.json ===
 {
   "condition": "e4_60rpm",
   "cam": "cam3",
@@ -2001,7 +2001,7 @@ OUT
     "min": 29.5785,
     "max": 38.6942
   }
-}=== /media/ammar/phd/omrpr/results/step03/e5_70rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e5_70rpm/cam1/summary.json ===
 {
   "condition": "e5_70rpm",
   "cam": "cam1",
@@ -2019,7 +2019,7 @@ OUT
     "min": 33.3471,
     "max": 47.1198
   }
-}=== /media/ammar/phd/omrpr/results/step03/e5_70rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e5_70rpm/cam2/summary.json ===
 {
   "condition": "e5_70rpm",
   "cam": "cam2",
@@ -2037,7 +2037,7 @@ OUT
     "min": 35.1694,
     "max": 48.2975
   }
-}=== /media/ammar/phd/omrpr/results/step03/e5_70rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e5_70rpm/cam3/summary.json ===
 {
   "condition": "e5_70rpm",
   "cam": "cam3",
@@ -2055,7 +2055,7 @@ OUT
     "min": 24.814,
     "max": 40.3843
   }
-}=== /media/ammar/phd/omrpr/results/step03/e6_80rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e6_80rpm/cam1/summary.json ===
 {
   "condition": "e6_80rpm",
   "cam": "cam1",
@@ -2073,7 +2073,7 @@ OUT
     "min": 34.5785,
     "max": 46.7438
   }
-}=== /media/ammar/phd/omrpr/results/step03/e6_80rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e6_80rpm/cam2/summary.json ===
 {
   "condition": "e6_80rpm",
   "cam": "cam2",
@@ -2091,7 +2091,7 @@ OUT
     "min": 35.3223,
     "max": 48.3099
   }
-}=== /media/ammar/phd/omrpr/results/step03/e6_80rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e6_80rpm/cam3/summary.json ===
 {
   "condition": "e6_80rpm",
   "cam": "cam3",
@@ -2109,7 +2109,7 @@ OUT
     "min": 28.4959,
     "max": 41.8223
   }
-}=== /media/ammar/phd/omrpr/results/step03/e7_90rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e7_90rpm/cam1/summary.json ===
 {
   "condition": "e7_90rpm",
   "cam": "cam1",
@@ -2127,7 +2127,7 @@ OUT
     "min": 32.4545,
     "max": 47.8636
   }
-}=== /media/ammar/phd/omrpr/results/step03/e7_90rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e7_90rpm/cam2/summary.json ===
 {
   "condition": "e7_90rpm",
   "cam": "cam2",
@@ -2145,7 +2145,7 @@ OUT
     "min": 35.0,
     "max": 49.6074
   }
-}=== /media/ammar/phd/omrpr/results/step03/e7_90rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e7_90rpm/cam3/summary.json ===
 {
   "condition": "e7_90rpm",
   "cam": "cam3",
@@ -2163,7 +2163,7 @@ OUT
     "min": 27.8347,
     "max": 43.2479
   }
-}=== /media/ammar/phd/omrpr/results/step03/e8_100rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e8_100rpm/cam1/summary.json ===
 {
   "condition": "e8_100rpm",
   "cam": "cam1",
@@ -2181,7 +2181,7 @@ OUT
     "min": 35.0165,
     "max": 46.5248
   }
-}=== /media/ammar/phd/omrpr/results/step03/e8_100rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e8_100rpm/cam2/summary.json ===
 {
   "condition": "e8_100rpm",
   "cam": "cam2",
@@ -2199,7 +2199,7 @@ OUT
     "min": 35.2479,
     "max": 49.9091
   }
-}=== /media/ammar/phd/omrpr/results/step03/e8_100rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e8_100rpm/cam3/summary.json ===
 {
   "condition": "e8_100rpm",
   "cam": "cam3",
@@ -2217,7 +2217,7 @@ OUT
     "min": 29.0579,
     "max": 40.7521
   }
-}=== /media/ammar/phd/omrpr/results/step03/e9_110rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e9_110rpm/cam1/summary.json ===
 {
   "condition": "e9_110rpm",
   "cam": "cam1",
@@ -2235,7 +2235,7 @@ OUT
     "min": 35.6529,
     "max": 47.0702
   }
-}=== /media/ammar/phd/omrpr/results/step03/e9_110rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e9_110rpm/cam2/summary.json ===
 {
   "condition": "e9_110rpm",
   "cam": "cam2",
@@ -2253,7 +2253,7 @@ OUT
     "min": 35.7231,
     "max": 47.6116
   }
-}=== /media/ammar/phd/omrpr/results/step03/e9_110rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e9_110rpm/cam3/summary.json ===
 {
   "condition": "e9_110rpm",
   "cam": "cam3",
@@ -2276,16 +2276,16 @@ Now let me look at the detection script and downstream steps to trace the cascad
 
 Bash List pipeline scripts
 IN
-ls /media/ammar/phd/omrpr/scripts/ | sort
+ls /media/ammar/phd/fin_phd/omrpr_fin/scripts/ | sort
 
 OUT
-ls: cannot access '/media/ammar/phd/omrpr/scripts/': No such file or directory
+ls: cannot access '/media/ammar/phd/fin_phd/omrpr_fin/scripts/': No such file or directory
 Bash Check step04 results for e20_320rpm
 IN
-find /media/ammar/phd/omrpr/results/step04 -name "summary.json" -path "*e20_320rpm*" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
+find /media/ammar/phd/fin_phd/omrpr_fin/results/step04 -name "summary.json" -path "*e20_320rpm*" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
 
 OUT
-=== /media/ammar/phd/omrpr/results/step04/e20_320rpm/cam1/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step04/e20_320rpm/cam1/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam1",
@@ -2300,7 +2300,7 @@ OUT
   "bad_reproj_count": 0,
   "reproj_warn_thresh": 3.0,
   "reproj_bad_thresh": 10.0
-}=== /media/ammar/phd/omrpr/results/step04/e20_320rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step04/e20_320rpm/cam2/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam2",
@@ -2315,7 +2315,7 @@ OUT
   "bad_reproj_count": 0,
   "reproj_warn_thresh": 3.0,
   "reproj_bad_thresh": 10.0
-}=== /media/ammar/phd/omrpr/results/step04/e20_320rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step04/e20_320rpm/cam3/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam3",
@@ -2333,10 +2333,10 @@ OUT
 }
 Bash All downstream summaries for e20_320rpm
 IN
-find /media/ammar/phd/omrpr/results -name "summary.json" -path "*e20_320rpm*" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
+find /media/ammar/phd/fin_phd/omrpr_fin/results -name "summary.json" -path "*e20_320rpm*" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
 
 OUT
-=== /media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam1",
@@ -2345,7 +2345,7 @@ OUT
   "missed_frames": 717,
   "detection_rate": 0.607983,
   "max_consecutive_miss": 6
-}=== /media/ammar/phd/omrpr/results/step02/e20_320rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam2/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam2",
@@ -2354,7 +2354,7 @@ OUT
   "missed_frames": 707,
   "detection_rate": 0.61345,
   "max_consecutive_miss": 6
-}=== /media/ammar/phd/omrpr/results/step02/e20_320rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam3/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam3",
@@ -2363,7 +2363,7 @@ OUT
   "missed_frames": 0,
   "detection_rate": 1.0,
   "max_consecutive_miss": 0
-}=== /media/ammar/phd/omrpr/results/step03/e20_320rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e20_320rpm/cam1/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam1",
@@ -2381,7 +2381,7 @@ OUT
     "min": 25.781,
     "max": 47.5868
   }
-}=== /media/ammar/phd/omrpr/results/step03/e20_320rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e20_320rpm/cam2/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam2",
@@ -2399,7 +2399,7 @@ OUT
     "min": 27.1777,
     "max": 51.2066
   }
-}=== /media/ammar/phd/omrpr/results/step03/e20_320rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step03/e20_320rpm/cam3/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam3",
@@ -2417,7 +2417,7 @@ OUT
     "min": 20.8347,
     "max": 39.5289
   }
-}=== /media/ammar/phd/omrpr/results/step04/e20_320rpm/cam1/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step04/e20_320rpm/cam1/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam1",
@@ -2432,7 +2432,7 @@ OUT
   "bad_reproj_count": 0,
   "reproj_warn_thresh": 3.0,
   "reproj_bad_thresh": 10.0
-}=== /media/ammar/phd/omrpr/results/step04/e20_320rpm/cam2/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step04/e20_320rpm/cam2/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam2",
@@ -2447,7 +2447,7 @@ OUT
   "bad_reproj_count": 0,
   "reproj_warn_thresh": 3.0,
   "reproj_bad_thresh": 10.0
-}=== /media/ammar/phd/omrpr/results/step04/e20_320rpm/cam3/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step04/e20_320rpm/cam3/summary.json ===
 {
   "condition": "e20_320rpm",
   "cam": "cam3",
@@ -2462,7 +2462,7 @@ OUT
   "bad_reproj_count": 0,
   "reproj_warn_thresh": 3.0,
   "reproj_bad_thresh": 10.0
-}=== /media/ammar/phd/omrpr/results/step05/e20_320rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e20_320rpm/summary.json ===
 {
   "condition": "e20_320rpm",
   "n_frames_synced": 1821,
@@ -2490,7 +2490,7 @@ OUT
       "z_w_mean_m": 1.740021
     }
   }
-}=== /media/ammar/phd/omrpr/results/step06/e20_320rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step06/e20_320rpm/summary.json ===
 {
   "condition": "e20_320rpm",
   "n_frames": 1821,
@@ -2545,7 +2545,7 @@ OUT
     "cam2": 9.8314,
     "cam3": 2.1945
   }
-}=== /media/ammar/phd/omrpr/results/step07/e20_320rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e20_320rpm/summary.json ===
 {
   "condition": "e20_320rpm",
   "n_frames": 1821,
@@ -2565,72 +2565,72 @@ OUT
 }
 Bash Find detection scripts
 IN
-find /media/ammar/phd/omrpr -name "step02*" -o -name "*detect*" | grep -v results | grep -v __pycache__ | sort
+find /media/ammar/phd/fin_phd/omrpr_fin -name "step02*" -o -name "*detect*" | grep -v results | grep -v __pycache__ | sort
 
 OUT
-/media/ammar/phd/omrpr/data/LDV/TESolution/Video Measurement/tesol_ws/.catkin_tools/profiles/default/packages/aruco_detect
-/media/ammar/phd/omrpr/data/LDV/TESolution/Video Measurement/tesol_ws/.catkin_tools/profiles/default/packages/stag_detect
-/media/ammar/phd/omrpr/data/LDV/TESolution/Video Measurement/tesol_ws/.catkin_tools/profiles/default/packages/tesol_detect
-/media/ammar/phd/omrpr/data/LDV/TESolution/Video Measurement/tesol_ws/src/offline_apriltag/scripts/offline_detector.py
-/media/ammar/phd/omrpr/data/LDV/TESolution/Video Measurement/tesol_ws/src/tesol_detect
-/media/ammar/phd/omrpr/data/LDV/TESolution/Video Measurement/tesol_ws/src/tesol_detect/scripts/backup/aruco_detector.py
-/media/ammar/phd/omrpr/data/LDV/TESolution/Video Measurement/tesol_ws/src/tesol_detect/scripts/backup/detect_.py
-/media/ammar/phd/omrpr/data/LDV/TESolution/Video Measurement/tesol_ws/src/tesol_detect.zip
-/media/ammar/phd/omrpr/data/static_bags/cam1/detection_rate_summary.png
-/media/ammar/phd/omrpr/data/static_bags/cam2/detection_rate_summary.png
-/media/ammar/phd/omrpr/data/static_bags/cam3/detection_rate_summary.png
-/media/ammar/phd/omrpr/src/step02_detect_apriltag.py
+/media/ammar/phd/fin_phd/omrpr_fin/data/LDV/TESolution/Video Measurement/tesol_ws/.catkin_tools/profiles/default/packages/aruco_detect
+/media/ammar/phd/fin_phd/omrpr_fin/data/LDV/TESolution/Video Measurement/tesol_ws/.catkin_tools/profiles/default/packages/stag_detect
+/media/ammar/phd/fin_phd/omrpr_fin/data/LDV/TESolution/Video Measurement/tesol_ws/.catkin_tools/profiles/default/packages/tesol_detect
+/media/ammar/phd/fin_phd/omrpr_fin/data/LDV/TESolution/Video Measurement/tesol_ws/src/offline_apriltag/scripts/offline_detector.py
+/media/ammar/phd/fin_phd/omrpr_fin/data/LDV/TESolution/Video Measurement/tesol_ws/src/tesol_detect
+/media/ammar/phd/fin_phd/omrpr_fin/data/LDV/TESolution/Video Measurement/tesol_ws/src/tesol_detect/scripts/backup/aruco_detector.py
+/media/ammar/phd/fin_phd/omrpr_fin/data/LDV/TESolution/Video Measurement/tesol_ws/src/tesol_detect/scripts/backup/detect_.py
+/media/ammar/phd/fin_phd/omrpr_fin/data/LDV/TESolution/Video Measurement/tesol_ws/src/tesol_detect.zip
+/media/ammar/phd/fin_phd/omrpr_fin/data/static_bags/cam1/detection_rate_summary.png
+/media/ammar/phd/fin_phd/omrpr_fin/data/static_bags/cam2/detection_rate_summary.png
+/media/ammar/phd/fin_phd/omrpr_fin/data/static_bags/cam3/detection_rate_summary.png
+/media/ammar/phd/fin_phd/omrpr_fin/src/step02_detect_apriltag.py
 Bash Compare step05 sync frame counts and z-disagreement across conditions
 IN
-find /media/ammar/phd/omrpr/results/step05 -name "summary.json" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d[\"condition\"], \"frames:\", d[\"n_frames_synced\"], \"cam1_cam2_z_disagree_raw:\", d[\"raw_z_disagreement_mm\"][\"cam1_cam2\"])"'
+find /media/ammar/phd/fin_phd/omrpr_fin/results/step05 -name "summary.json" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d[\"condition\"], \"frames:\", d[\"n_frames_synced\"], \"cam1_cam2_z_disagree_raw:\", d[\"raw_z_disagreement_mm\"][\"cam1_cam2\"])"'
 
 OUT
-=== /media/ammar/phd/omrpr/results/step05/e0_0rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e0_0rpm/summary.json ===
 e0_0rpm frames: 1832 cam1_cam2_z_disagree_raw: 387.65
-=== /media/ammar/phd/omrpr/results/step05/e10_120rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e10_120rpm/summary.json ===
 e10_120rpm frames: 1829 cam1_cam2_z_disagree_raw: 387.45
-=== /media/ammar/phd/omrpr/results/step05/e11_140rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e11_140rpm/summary.json ===
 e11_140rpm frames: 1832 cam1_cam2_z_disagree_raw: 388.09
-=== /media/ammar/phd/omrpr/results/step05/e1_20rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e1_20rpm/summary.json ===
 e1_20rpm frames: 1830 cam1_cam2_z_disagree_raw: 387.67
-=== /media/ammar/phd/omrpr/results/step05/e12_160rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e12_160rpm/summary.json ===
 e12_160rpm frames: 1831 cam1_cam2_z_disagree_raw: 387.59
-=== /media/ammar/phd/omrpr/results/step05/e13_180rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e13_180rpm/summary.json ===
 e13_180rpm frames: 1828 cam1_cam2_z_disagree_raw: 387.33
-=== /media/ammar/phd/omrpr/results/step05/e14_200rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e14_200rpm/summary.json ===
 e14_200rpm frames: 1829 cam1_cam2_z_disagree_raw: 387.28
-=== /media/ammar/phd/omrpr/results/step05/e15_220rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e15_220rpm/summary.json ===
 e15_220rpm frames: 1828 cam1_cam2_z_disagree_raw: 387.78
-=== /media/ammar/phd/omrpr/results/step05/e16_240rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e16_240rpm/summary.json ===
 e16_240rpm frames: 1828 cam1_cam2_z_disagree_raw: 387.28
-=== /media/ammar/phd/omrpr/results/step05/e17_260rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e17_260rpm/summary.json ===
 e17_260rpm frames: 1832 cam1_cam2_z_disagree_raw: 387.29
-=== /media/ammar/phd/omrpr/results/step05/e18_280rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e18_280rpm/summary.json ===
 e18_280rpm frames: 1830 cam1_cam2_z_disagree_raw: 387.37
-=== /media/ammar/phd/omrpr/results/step05/e19_300rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e19_300rpm/summary.json ===
 e19_300rpm frames: 1831 cam1_cam2_z_disagree_raw: 387.45
-=== /media/ammar/phd/omrpr/results/step05/e20_320rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e20_320rpm/summary.json ===
 e20_320rpm frames: 1821 cam1_cam2_z_disagree_raw: 383.34
-=== /media/ammar/phd/omrpr/results/step05/e2_40rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e2_40rpm/summary.json ===
 e2_40rpm frames: 1829 cam1_cam2_z_disagree_raw: 387.68
-=== /media/ammar/phd/omrpr/results/step05/e3_50rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e3_50rpm/summary.json ===
 e3_50rpm frames: 1830 cam1_cam2_z_disagree_raw: 387.62
-=== /media/ammar/phd/omrpr/results/step05/e4_60rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e4_60rpm/summary.json ===
 e4_60rpm frames: 1830 cam1_cam2_z_disagree_raw: 387.54
-=== /media/ammar/phd/omrpr/results/step05/e5_70rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e5_70rpm/summary.json ===
 e5_70rpm frames: 1829 cam1_cam2_z_disagree_raw: 388.08
-=== /media/ammar/phd/omrpr/results/step05/e6_80rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e6_80rpm/summary.json ===
 e6_80rpm frames: 1830 cam1_cam2_z_disagree_raw: 387.8
-=== /media/ammar/phd/omrpr/results/step05/e7_90rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e7_90rpm/summary.json ===
 e7_90rpm frames: 1829 cam1_cam2_z_disagree_raw: 388.0
-=== /media/ammar/phd/omrpr/results/step05/e8_100rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e8_100rpm/summary.json ===
 e8_100rpm frames: 1830 cam1_cam2_z_disagree_raw: 387.46
-=== /media/ammar/phd/omrpr/results/step05/e9_110rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step05/e9_110rpm/summary.json ===
 e9_110rpm frames: 1830 cam1_cam2_z_disagree_raw: 387.43
 Read step02_detect_apriltag.py
 Bash Compare step05 full summaries for e19 and e20
 IN
-find /media/ammar/phd/omrpr/results/step05 -name "summary.json" -path "*e20*" | xargs cat ; find /media/ammar/phd/omrpr/results/step05 -name "summary.json" -path "*e19*" | xargs cat
+find /media/ammar/phd/fin_phd/omrpr_fin/results/step05 -name "summary.json" -path "*e20*" | xargs cat ; find /media/ammar/phd/fin_phd/omrpr_fin/results/step05 -name "summary.json" -path "*e19*" | xargs cat
 
 OUT
 {
@@ -2692,10 +2692,10 @@ Now let me look at the sync/interpolation step and the final results cascade:
 
 Bash All step07 bending/torsion results for comparison
 IN
-find /media/ammar/phd/omrpr/results/step07 -name "summary.json" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
+find /media/ammar/phd/fin_phd/omrpr_fin/results/step07 -name "summary.json" | sort | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
 
 OUT
-=== /media/ammar/phd/omrpr/results/step07/e0_0rpm/summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e0_0rpm/summary.json ===
 {
   "condition": "e0_0rpm",
   "n_frames": 1832,
@@ -2712,7 +2712,7 @@ OUT
     "peak_mm": 0.0276,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e10_120rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e10_120rpm/summary.json ===
 {
   "condition": "e10_120rpm",
   "n_frames": 1829,
@@ -2729,7 +2729,7 @@ OUT
     "peak_mm": 0.4248,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e11_140rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e11_140rpm/summary.json ===
 {
   "condition": "e11_140rpm",
   "n_frames": 1832,
@@ -2746,7 +2746,7 @@ OUT
     "peak_mm": 2.0786,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e1_20rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e1_20rpm/summary.json ===
 {
   "condition": "e1_20rpm",
   "n_frames": 1830,
@@ -2763,7 +2763,7 @@ OUT
     "peak_mm": 0.0383,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e12_160rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e12_160rpm/summary.json ===
 {
   "condition": "e12_160rpm",
   "n_frames": 1831,
@@ -2780,7 +2780,7 @@ OUT
     "peak_mm": 3.4302,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e13_180rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e13_180rpm/summary.json ===
 {
   "condition": "e13_180rpm",
   "n_frames": 1828,
@@ -2797,7 +2797,7 @@ OUT
     "peak_mm": 4.1505,
     "mean_mm": 1e-06
   }
-}=== /media/ammar/phd/omrpr/results/step07/e14_200rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e14_200rpm/summary.json ===
 {
   "condition": "e14_200rpm",
   "n_frames": 1829,
@@ -2814,7 +2814,7 @@ OUT
     "peak_mm": 4.3546,
     "mean_mm": -1e-06
   }
-}=== /media/ammar/phd/omrpr/results/step07/e15_220rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e15_220rpm/summary.json ===
 {
   "condition": "e15_220rpm",
   "n_frames": 1828,
@@ -2831,7 +2831,7 @@ OUT
     "peak_mm": 3.5681,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e16_240rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e16_240rpm/summary.json ===
 {
   "condition": "e16_240rpm",
   "n_frames": 1828,
@@ -2848,7 +2848,7 @@ OUT
     "peak_mm": 1.4946,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e17_260rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e17_260rpm/summary.json ===
 {
   "condition": "e17_260rpm",
   "n_frames": 1832,
@@ -2865,7 +2865,7 @@ OUT
     "peak_mm": 1.5989,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e18_280rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e18_280rpm/summary.json ===
 {
   "condition": "e18_280rpm",
   "n_frames": 1830,
@@ -2882,7 +2882,7 @@ OUT
     "peak_mm": 2.3508,
     "mean_mm": -0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e19_300rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e19_300rpm/summary.json ===
 {
   "condition": "e19_300rpm",
   "n_frames": 1831,
@@ -2899,7 +2899,7 @@ OUT
     "peak_mm": 2.3931,
     "mean_mm": -1e-06
   }
-}=== /media/ammar/phd/omrpr/results/step07/e20_320rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e20_320rpm/summary.json ===
 {
   "condition": "e20_320rpm",
   "n_frames": 1821,
@@ -2916,7 +2916,7 @@ OUT
     "peak_mm": 16.7548,
     "mean_mm": -1e-06
   }
-}=== /media/ammar/phd/omrpr/results/step07/e2_40rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e2_40rpm/summary.json ===
 {
   "condition": "e2_40rpm",
   "n_frames": 1829,
@@ -2933,7 +2933,7 @@ OUT
     "peak_mm": 0.0277,
     "mean_mm": -1e-06
   }
-}=== /media/ammar/phd/omrpr/results/step07/e3_50rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e3_50rpm/summary.json ===
 {
   "condition": "e3_50rpm",
   "n_frames": 1830,
@@ -2950,7 +2950,7 @@ OUT
     "peak_mm": 0.0387,
     "mean_mm": -0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e4_60rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e4_60rpm/summary.json ===
 {
   "condition": "e4_60rpm",
   "n_frames": 1830,
@@ -2967,7 +2967,7 @@ OUT
     "peak_mm": 0.0511,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e5_70rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e5_70rpm/summary.json ===
 {
   "condition": "e5_70rpm",
   "n_frames": 1829,
@@ -2984,7 +2984,7 @@ OUT
     "peak_mm": 0.6591,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e6_80rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e6_80rpm/summary.json ===
 {
   "condition": "e6_80rpm",
   "n_frames": 1830,
@@ -3001,7 +3001,7 @@ OUT
     "peak_mm": 0.4559,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e7_90rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e7_90rpm/summary.json ===
 {
   "condition": "e7_90rpm",
   "n_frames": 1829,
@@ -3018,7 +3018,7 @@ OUT
     "peak_mm": 2.351,
     "mean_mm": 0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e8_100rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e8_100rpm/summary.json ===
 {
   "condition": "e8_100rpm",
   "n_frames": 1830,
@@ -3035,7 +3035,7 @@ OUT
     "peak_mm": 0.4586,
     "mean_mm": -0.0
   }
-}=== /media/ammar/phd/omrpr/results/step07/e9_110rpm/summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step07/e9_110rpm/summary.json ===
 {
   "condition": "e9_110rpm",
   "n_frames": 1830,
@@ -3056,13 +3056,13 @@ OUT
 Read step05_sync.py
 Bash Find step05 sync script
 IN
-find /media/ammar/phd/omrpr/src -name "step05*" | sort
+find /media/ammar/phd/fin_phd/omrpr_fin/src -name "step05*" | sort
 
 OUT
-/media/ammar/phd/omrpr/src/step05_synchronize.py
+/media/ammar/phd/fin_phd/omrpr_fin/src/step05_synchronize.py
 Bash Analyze detection gaps in e20_320rpm cam1
 IN
-find /media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1 -name "*.csv" | head -1 | xargs -I{} python3 -c "
+find /media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1 -name "*.csv" | head -1 | xargs -I{} python3 -c "
 import csv
 rows = list(csv.DictReader(open('{}')))
 margins = [float(r['decision_margin']) for r in rows]
@@ -3086,7 +3086,7 @@ IN
 python3 -c "
 import csv
 
-rows = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+rows = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 idxs = sorted(int(r['frame_idx']) for r in rows)
 
 # Analyze gap pattern — how many frames in each gap?
@@ -3123,8 +3123,8 @@ python3 -c "
 import csv
 
 # Compare decision margins between e20_320rpm and e19_300rpm cam1
-e20 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
-e19 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e19_300rpm/cam1/detections.csv')))
+e20 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
+e19 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e19_300rpm/cam1/detections.csv')))
 
 m20 = [float(r['decision_margin']) for r in e20]
 m19 = [float(r['decision_margin']) for r in e19]
@@ -3168,19 +3168,19 @@ Miss frames per run avg: 3.38
 Frames per revolution at 320rpm@60fps: 11.25
 Bash All downstream step summaries for e20_320rpm steps 8-12
 IN
-find /media/ammar/phd/omrpr/results/step08 -name "summary.json" -path "*e20*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/omrpr/results/step09 -name "summary.json" -path "*e20*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/omrpr/results/step10 -name "summary.json" -path "*e20*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/omrpr/results/step11 -name "summary.json" -path "*e20*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/omrpr/results/step12 -name "*.json" -path "*e20*" 2>/dev/null | xargs cat 2>/dev/null
+find /media/ammar/phd/fin_phd/omrpr_fin/results/step08 -name "summary.json" -path "*e20*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/fin_phd/omrpr_fin/results/step09 -name "summary.json" -path "*e20*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/fin_phd/omrpr_fin/results/step10 -name "summary.json" -path "*e20*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/fin_phd/omrpr_fin/results/step11 -name "summary.json" -path "*e20*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/fin_phd/omrpr_fin/results/step12 -name "*.json" -path "*e20*" 2>/dev/null | xargs cat 2>/dev/null
 
 OUT
 (Bash completed with no output)
 Bash Downstream steps for e19_300rpm for comparison
 IN
-find /media/ammar/phd/omrpr/results/step08 -name "summary.json" -path "*e19*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/omrpr/results/step10 -name "summary.json" -path "*e19*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/omrpr/results/step11 -name "summary.json" -path "*e19*" 2>/dev/null | xargs cat 2>/dev/null
+find /media/ammar/phd/fin_phd/omrpr_fin/results/step08 -name "summary.json" -path "*e19*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/fin_phd/omrpr_fin/results/step10 -name "summary.json" -path "*e19*" 2>/dev/null | xargs cat 2>/dev/null; find /media/ammar/phd/fin_phd/omrpr_fin/results/step11 -name "summary.json" -path "*e19*" 2>/dev/null | xargs cat 2>/dev/null
 
 OUT
 (Bash completed with no output)
 Bash List all pipeline result steps
 IN
-ls /media/ammar/phd/omrpr/results/ | sort
+ls /media/ammar/phd/fin_phd/omrpr_fin/results/ | sort
 
 OUT
 overnight_done2.txt
@@ -3213,10 +3213,10 @@ step11
 step12
 Bash Check what step08-12 summaries look like
 IN
-find /media/ammar/phd/omrpr/results/step08 -name "summary.json" | head -3 | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'; find /media/ammar/phd/omrpr/results/step10 -name "summary.json" | head -3 | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'; find /media/ammar/phd/omrpr/results/step11 -name "*.json" | head -5 | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'; find /media/ammar/phd/omrpr/results/step12 -name "*.json" | head -5 | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
+find /media/ammar/phd/fin_phd/omrpr_fin/results/step08 -name "summary.json" | head -3 | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'; find /media/ammar/phd/fin_phd/omrpr_fin/results/step10 -name "summary.json" | head -3 | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'; find /media/ammar/phd/fin_phd/omrpr_fin/results/step11 -name "*.json" | head -5 | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'; find /media/ammar/phd/fin_phd/omrpr_fin/results/step12 -name "*.json" | head -5 | xargs -I{} sh -c 'echo "=== {} ==="; cat "{}"'
 
 OUT
-=== /media/ammar/phd/omrpr/results/step11/step11_summary.json ===
+=== /media/ammar/phd/fin_phd/omrpr_fin/results/step11/step11_summary.json ===
 {
   "step": "step11_rts_smoothing",
   "status": "PASS",
@@ -3234,7 +3234,7 @@ OUT
     "amplitude_ratio_min": 0.95
   },
   "note_non_causal": "RTS backward pass uses future observations. Only valid offline. Never claim real-time capability."
-}=== /media/ammar/phd/omrpr/results/step11/e0_0rpm/smoothing_diagnostics.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step11/e0_0rpm/smoothing_diagnostics.json ===
 {
   "bending_raw_rms_mm": 0.005800699544467259,
   "bending_smoothed_rms_mm": 0.005574196756854385,
@@ -3263,7 +3263,7 @@ OUT
   "n_frames": 1832,
   "process_noise_std": 10.0,
   "measurement_noise_std": 0.05
-}=== /media/ammar/phd/omrpr/results/step11/e10_120rpm/smoothing_diagnostics.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step11/e10_120rpm/smoothing_diagnostics.json ===
 {
   "bending_raw_rms_mm": 0.24314704968947917,
   "bending_smoothed_rms_mm": 0.24302486353211775,
@@ -3292,7 +3292,7 @@ OUT
   "n_frames": 1829,
   "process_noise_std": 10.0,
   "measurement_noise_std": 0.05
-}=== /media/ammar/phd/omrpr/results/step11/e11_140rpm/smoothing_diagnostics.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step11/e11_140rpm/smoothing_diagnostics.json ===
 {
   "bending_raw_rms_mm": 1.4147735725191113,
   "bending_smoothed_rms_mm": 1.4135833131357882,
@@ -3321,7 +3321,7 @@ OUT
   "n_frames": 1832,
   "process_noise_std": 10.0,
   "measurement_noise_std": 0.05
-}=== /media/ammar/phd/omrpr/results/step11/e12_160rpm/smoothing_diagnostics.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step11/e12_160rpm/smoothing_diagnostics.json ===
 {
   "bending_raw_rms_mm": 2.344960169079095,
   "bending_smoothed_rms_mm": 2.342973838880382,
@@ -3350,7 +3350,7 @@ OUT
   "n_frames": 1831,
   "process_noise_std": 10.0,
   "measurement_noise_std": 0.05
-}=== /media/ammar/phd/omrpr/results/step12/step12_summary.json ===
+}=== /media/ammar/phd/fin_phd/omrpr_fin/results/step12/step12_summary.json ===
 {
   "step": "step12_figures_tables",
   "status": "PASS",
@@ -3374,7 +3374,7 @@ OUT
 }
 Bash Step11 smoothing diagnostics for e20_320rpm
 IN
-cat /media/ammar/phd/omrpr/results/step11/e20_320rpm/smoothing_diagnostics.json
+cat /media/ammar/phd/fin_phd/omrpr_fin/results/step11/e20_320rpm/smoothing_diagnostics.json
 
 OUT
 {
@@ -3698,7 +3698,7 @@ The evidence is sitting in your step01 PNG frames. You do not need to rerun anyt
 Step 1 — Find a miss burst in your step02 detections.csv for e20 cam1.
 You already know the first big gap is frames 9–14 (a burst of 5 missed frames). Find the frames just before (frame 8) and just after (frame 14) where detection resumes.
 Step 2 — Look at the actual PNG images.
-bashls /media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/frames/ | head -20
+bashls /media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/frames/ | head -20
 Find frames 007, 008, 009, 010, 011, 012, 013, 014 and open them. In frame 8 you should see the tag. In frames 9–13 it should be absent or at the very edge. In frame 14 it should reappear.
 Can you run that and tell me what you see? Specifically:
 
@@ -3754,7 +3754,7 @@ Write that down. That is your viva answer and your manuscript sentence at the sa
 Now one more thing before code
 You proposed investigating the actual PNG frames to confirm the out-of-frame hypothesis. That is the right instinct — and it is a 10-minute check that either confirms or refutes the entire physical argument.
 Before I write any code, I need you to do this manually first:
-bashls /media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/frames/ | grep -E "frame_00(07|08|09|10|11|12|13|14)"
+bashls /media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/frames/ | grep -E "frame_00(07|08|09|10|11|12|13|14)"
 Open frames 008 (last detected before first gap) and 009, 010, 011 (missed frames) in any image viewer. Tell me what you see:
 
 Is the tag visible in frame 008? Where in the frame — centre, edge?
@@ -3767,7 +3767,7 @@ Let me do the actual investigation properly — I need to look at the real image
 
 Bash Check if step01 frames exist for e20_320rpm
 IN
-ls /media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/ 2>/dev/null | head -5; ls /media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/frames/ 2>/dev/null | head -20; find /media/ammar/phd/omrpr/results/step01/e20_320rpm -name "frame_*.png" | head -5
+ls /media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/ 2>/dev/null | head -5; ls /media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/frames/ 2>/dev/null | head -20; find /media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm -name "frame_*.png" | head -5
 
 OUT
 frame_000000.png
@@ -3775,16 +3775,16 @@ frame_000001.png
 frame_000002.png
 frame_000003.png
 frame_000004.png
-/media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/frame_001802.png
-/media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/frame_001803.png
-/media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/frame_001804.png
-/media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/frame_001805.png
-/media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1/frame_001806.png
+/media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/frame_001802.png
+/media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/frame_001803.png
+/media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/frame_001804.png
+/media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/frame_001805.png
+/media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1/frame_001806.png
 Bash List first 20 miss gaps with exact frame numbers
 IN
 python3 -c "
 import csv
-rows = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+rows = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 idxs_detected = set(int(r['frame_idx']) for r in rows)
 
 # Find all gaps, list the first 15 with context
@@ -3831,7 +3831,7 @@ python3 -c "
 import csv
 import numpy as np
 
-rows = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+rows = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 idxs = [int(r['frame_idx']) for r in rows]
 cx = [float(r['cx']) for r in rows]
 cy = [float(r['cy']) for r in rows]
@@ -3907,8 +3907,8 @@ import csv
 import numpy as np
 
 # Compare centroid position e19 vs e20 for cam1
-e19 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e19_300rpm/cam1/detections.csv')))
-e20 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+e19 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e19_300rpm/cam1/detections.csv')))
+e20 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 
 e19_cx = np.array([float(r['cx']) for r in e19])
 e19_cy = np.array([float(r['cy']) for r in e19])
@@ -3952,8 +3952,8 @@ python3 -c "
 import csv
 import numpy as np
 
-e20 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
-e19 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e19_300rpm/cam1/detections.csv')))
+e20 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
+e19 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e19_300rpm/cam1/detections.csv')))
 
 # Compute tag size in pixels from corner distances
 def tag_size_px(r):
@@ -4032,8 +4032,8 @@ python3 -c "
 import csv
 import numpy as np
 
-e20 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
-e19 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e19_300rpm/cam1/detections.csv')))
+e20 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
+e19 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e19_300rpm/cam1/detections.csv')))
 
 # Sort by frame index
 e20.sort(key=lambda r: int(r['frame_idx']))
@@ -4106,7 +4106,7 @@ IN
 python3 -c "
 import csv, numpy as np
 
-e20 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+e20 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 e20.sort(key=lambda r: int(r['frame_idx']))
 fi = [int(r['frame_idx']) for r in e20]
 cy = [float(r['cy']) for r in e20]
@@ -4169,8 +4169,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
-e20 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
-e19 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e19_300rpm/cam1/detections.csv')))
+e20 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
+e19 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e19_300rpm/cam1/detections.csv')))
 e20.sort(key=lambda r: int(r['frame_idx']))
 e19.sort(key=lambda r: int(r['frame_idx']))
 
@@ -4273,7 +4273,7 @@ ax.annotate('cam3 only\n(100% det.)\n2.19mm',
 ax.scatter([3], [2.19], marker='*', s=120, c='blue', zorder=10, label='cam3 (100% det.) 2.19mm')
 
 plt.tight_layout(pad=2.5)
-plt.savefig('/media/ammar/phd/omrpr/results/e20_outlier_diagnostic.png', dpi=150, bbox_inches='tight')
+plt.savefig('/media/ammar/phd/fin_phd/omrpr_fin/results/e20_outlier_diagnostic.png', dpi=150, bbox_inches='tight')
 print('Saved: e20_outlier_diagnostic.png')
 EOF
 
@@ -4286,11 +4286,11 @@ import cv2, numpy as np, csv
 
 # Load the frame just before the first gap (frame 9, tag at top = slow)
 # and the first missed frame (frame 10, tag should be blurred)
-base = '/media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1'
+base = '/media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1'
 
 # Detection info for frame 9
 det9 = None
-for r in csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')):
+for r in csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')):
     if int(r['frame_idx']) == 9:
         det9 = r
         break
@@ -4331,8 +4331,8 @@ IN
 python3 << 'EOF'
 import cv2, numpy as np, csv
 
-base = '/media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1'
-det_path = '/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv'
+base = '/media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1'
+det_path = '/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv'
 
 dets = {int(r['frame_idx']): r for r in csv.DictReader(open(det_path))}
 
@@ -4414,13 +4414,13 @@ panel_w = 430  # cy range
 
 # Stack horizontally
 combined = np.hstack(imgs_cropped)
-cv2.imwrite('/media/ammar/phd/omrpr/results/e20_gap_frames_annotated.png', combined)
+cv2.imwrite('/media/ammar/phd/fin_phd/omrpr_fin/results/e20_gap_frames_annotated.png', combined)
 print(f'Saved: e20_gap_frames_annotated.png, size={combined.shape}')
 
 # Also save individual frames
-cv2.imwrite('/media/ammar/phd/omrpr/results/e20_frame009_detected.png', imgs_cropped[0])
-cv2.imwrite('/media/ammar/phd/omrpr/results/e20_frame010_missed.png', imgs_cropped[1])
-cv2.imwrite('/media/ammar/phd/omrpr/results/e20_frame014_detected.png', imgs_cropped[2])
+cv2.imwrite('/media/ammar/phd/fin_phd/omrpr_fin/results/e20_frame009_detected.png', imgs_cropped[0])
+cv2.imwrite('/media/ammar/phd/fin_phd/omrpr_fin/results/e20_frame010_missed.png', imgs_cropped[1])
+cv2.imwrite('/media/ammar/phd/fin_phd/omrpr_fin/results/e20_frame014_detected.png', imgs_cropped[2])
 
 # Also measure actual blur in frame 10 vs frame 9
 # Use Laplacian variance as sharpness metric
@@ -4453,8 +4453,8 @@ IN
 python3 << 'EOF'
 import cv2, numpy as np, csv
 
-base = '/media/ammar/phd/omrpr/results/step01/e20_320rpm/cam1'
-det_path = '/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv'
+base = '/media/ammar/phd/fin_phd/omrpr_fin/results/step01/e20_320rpm/cam1'
+det_path = '/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv'
 dets = {int(r['frame_idx']): r for r in csv.DictReader(open(det_path))}
 
 r9  = dets[9]   # detected, tag near top (y~263)
@@ -4546,7 +4546,7 @@ def pad_w(img, w):
     return img
 
 side_by_side = np.hstack([pad_w(crop9r,w), np.ones((target_h,4,3),dtype=np.uint8)*200, pad_w(crop10r,w)])
-cv2.imwrite('/media/ammar/phd/omrpr/results/e20_blur_comparison.png', side_by_side)
+cv2.imwrite('/media/ammar/phd/fin_phd/omrpr_fin/results/e20_blur_comparison.png', side_by_side)
 print(f'\nSaved: e20_blur_comparison.png ({side_by_side.shape})')
 EOF
 
@@ -4567,8 +4567,8 @@ python3 << 'EOF'
 import csv, numpy as np
 
 # Check cam3 step02 for e20 - what is its cy amplitude?
-e20_c3 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam3/detections.csv')))
-e19_c3 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e19_300rpm/cam3/detections.csv')))
+e20_c3 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam3/detections.csv')))
+e19_c3 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e19_300rpm/cam3/detections.csv')))
 
 cy3_e20 = np.array([float(r['cy']) for r in e20_c3])
 cy3_e19 = np.array([float(r['cy']) for r in e19_c3])
@@ -4587,7 +4587,7 @@ print(f'cam3 tag width: mean={e20_c3_widths.mean():.1f}px')
 
 print()
 # Periodicity analysis: gap interval
-e20_c1 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+e20_c1 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 e20_c1.sort(key=lambda r: int(r['frame_idx']))
 fi = [int(r['frame_idx']) for r in e20_c1]
 all_fi = set(range(1829))
@@ -4658,9 +4658,9 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from matplotlib.patches import FancyArrowPatch, Rectangle
 
-e20_c1 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
-e19_c1 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e19_300rpm/cam1/detections.csv')))
-e20_c3 = list(csv.DictReader(open('/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam3/detections.csv')))
+e20_c1 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
+e19_c1 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e19_300rpm/cam1/detections.csv')))
+e20_c3 = list(csv.DictReader(open('/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam3/detections.csv')))
 
 e20_c1.sort(key=lambda r: int(r['frame_idx']))
 e19_c1.sort(key=lambda r: int(r['frame_idx']))
@@ -4790,7 +4790,7 @@ plt.suptitle('e20_320rpm Outlier Diagnosis — Motion-Blur-Induced Detection Fai
              'cam1/cam2 oscillation amplitude ±221px → peak velocity 67.8px/frame > 1-cell blur threshold (32.5px) → 39% miss rate',
              fontsize=11, fontweight='bold', y=1.01)
 
-plt.savefig('/media/ammar/phd/omrpr/results/e20_full_diagnostic.png', dpi=150, bbox_inches='tight')
+plt.savefig('/media/ammar/phd/fin_phd/omrpr_fin/results/e20_full_diagnostic.png', dpi=150, bbox_inches='tight')
 print('Saved: e20_full_diagnostic.png')
 EOF
 

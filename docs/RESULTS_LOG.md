@@ -141,6 +141,33 @@ See `docs/e20_outlier_analysis.md` for full diagnosis.
   - This is a positive finding: the system does not misidentify structured noise as signal
 - Dominant peaks and nearest reference bins reported separately (they often differ)
 
+**2026-07-06 RESOLVED — f_h/f_α/damping provenance confirmed.** These model dynamic-property values
+(f_h=1.4323 Hz, f_α=3.0827 Hz, ratio=2.152, ζ_b=0.312%, ζ_t=0.309%) had been flagged UNVERIFIED
+pending a provenance check in `README.md`/`pipeline_diagram.md`/`PROJECT_CONTEXT.md`. Resolution:
+1. **Source located and confirmed:** TESolution vendor-delivered raw LDV files `Bd1`/`Td1`
+   (`data/LDV/TESolution/laser_displacement/자유진동/`), sitting in the same directory as the 2025
+   standalone LDV session's own D00–D20 wind-test data (`등류/영각00`) — confirming these are that
+   session's free-vibration measurement, consistent with existing manuscript attribution.
+2. **Method verified against vendor scripts:** `src/free_vib_analysis.py` is a documented Python
+   translation of TESolution's own MATLAB analysis (`fqb.m`/`fqt.m`, same directory: FFT peak
+   frequency + log-decrement damping from positive/negative peak envelopes). Running it reproduces
+   the manuscript's locked values exactly (fn_b=1.4323 Hz, fn_t=3.0827 Hz, ζ_b=0.312%, ζ_t=0.309%).
+3. **Minor code-hygiene fix (no numeric impact):** the script's bandpass filter-centre/width
+   constants were inline-commented as sourced from `fqB.m`/`fqT.m` (capital, a *different* vendor
+   script pair belonging to a separate 2024-session free-vibration dataset in
+   `Video Measurement/RAW_Data/laser_displacement/free_vibration/`) rather than the correct local
+   `fqb.m`/`fqt.m`. Verified this mismatch has no material effect: re-running with the correct
+   locally-paired vendor parameters (f_centre=1.4358 Hz/band=0.1 bending, f_centre=3.1084 Hz/band=0.1
+   torsion, vs. the script's 1.4299/3.1098 Hz at band=0.01) changes fn by only 0.0003–0.0007 Hz
+   (<0.03%) and ζ by <0.003 percentage points — within noise. Comment corrected in the source file;
+   locked numbers unchanged.
+4. **Independent cross-validation:** the separate 2024-session free-vibration dataset (3-channel,
+   100 s, in `Video Measurement/RAW_Data/laser_displacement/free_vibration/Bd1`/`Td1`) gives
+   fn_b=1.4299 Hz, fn_t=3.1098 Hz — within 0.2%/0.9% of the 2025-session values. Combined with the
+   already-documented camera-based FFT corroboration (fn_b=1.4290 Hz, fn_t=3.0990 Hz), three
+   independent measurements of the same physical model cluster tightly, confirming these are
+   genuine, stable structural properties rather than a mislabeling or measurement artifact.
+
 ---
 
 ## Step 09 — Uncertainty Quantification (2026-06-16; corrected 2026-06-20) ✓ PASS (all 4 gates)

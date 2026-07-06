@@ -1,5 +1,14 @@
 # TESolution — 2025 Datasets: LDV Campaign (Tunnel B) and WTT Offline Bags (Tunnel A)
 
+> **CORRECTION (2026-07-03, added 2026-07-06):** "Tunnel B" throughout this document was a facility
+> mislabel. Vendor-verified provenance work confirmed all 2024/2025 camera and LDV sessions were
+> recorded at the **same physical wind-tunnel facility** — the "2025 LDV Campaign" below is a
+> separate *session* at that facility with a repositioned sensor rig, not a different lab. Read
+> every "Tunnel B" reference below as "2025 standalone LDV session." The technical findings (dp,
+> dside, session duration, geometry differences between sessions) remain valid as a same-facility,
+> different-session comparison. See `omrpr_fin/docs/RESULTS_LOG.md` "2026-07-03 RESOLVED" entry and
+> `omrpr_fin/docs/claim_boundary.md` for the current canonical framing and locked numbers.
+
 **Last updated:** 2026-06-09  
 **Purpose:** Document the two datasets collected in 2025. These are the newest data and were not covered in the original .md files (which only documented the 2024 WTT campaign).
 

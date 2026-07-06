@@ -1,5 +1,15 @@
 # TESolution — Master Map: Four Experiments, Two Wind Tunnels
 
+> **CORRECTION (2026-07-03, added 2026-07-06):** Despite this file's own "authoritative
+> cross-reference" status below, and despite `RESULTS_LOG.md`'s 2026-07-03 entry claiming this file
+> "has been corrected," the "Tunnel B"/"Two Wind Tunnels" framing throughout was never actually
+> updated here. It is a facility mislabel: all 2024/2025 camera and LDV sessions were vendor-verified
+> to be at the **same physical wind-tunnel facility**. "Experiment 3 — 2025 LDV Campaign" is a
+> separate *session* with a repositioned sensor rig, not a second tunnel/lab. Read every "Tunnel B"
+> reference below as "2025 standalone LDV session." The technical geometry/session-duration findings
+> remain valid as a same-facility, different-session comparison. See
+> `omrpr_fin/docs/claim_boundary.md` for current canonical framing and locked numbers.
+
 **Status:** Authoritative cross-reference. Supersedes any partial references in other files.  
 **Last updated:** 2026-06-09  
 **Purpose:** Single-source-of-truth for understanding which data belongs to which experiment, which wind tunnel, and what is available for publication.

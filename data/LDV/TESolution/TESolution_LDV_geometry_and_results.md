@@ -1,5 +1,14 @@
 # TESolution LDV — Geometry, Calibration, and Complete Results
 
+> **CORRECTION (2026-07-03, added 2026-07-06):** Section 8's "Tunnel B" framing was a facility
+> mislabel. Vendor-verified provenance work confirmed all 2024/2025 camera and LDV sessions were
+> recorded at the **same physical wind-tunnel facility** — Section 8's "2025 LDV Campaign" is a
+> separate *session* with a repositioned sensor rig, not a different lab. Read every "Tunnel B"
+> reference in Section 8 as "2025 standalone LDV session." The geometry/calibration findings
+> themselves remain valid. See `omrpr_fin/docs/claim_boundary.md` for current canonical framing and
+> locked numbers (Section 8's dp=1.538/dside=13cm result does NOT apply to the manuscript's Option B
+> canonical geometry, dp=2.0/dside=100mm, which is from the separate 2024 paired session).
+
 **Source files:**  
 - MATLAB: `RAW_Data/laser_displacement/2D_WTT/BRID2D1_choi.m` (Ver 2.1, 2024-11-11 CHOI)  
 - Raw data: `RAW_Data/laser_displacement/2D_WTT/D0`–`D38`  

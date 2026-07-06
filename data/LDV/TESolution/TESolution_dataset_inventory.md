@@ -1,7 +1,14 @@
 # TESolution Wind Tunnel Dataset — Complete Inventory
 
+> **CORRECTION (2026-07-03, added 2026-07-06):** The "Tunnel B" framing throughout this document
+> (Section 10 and the comparison tables) was a facility mislabel. Vendor-verified provenance work
+> confirmed all 2024/2025 camera and LDV sessions were recorded at the **same physical wind-tunnel
+> facility** — the "2025 LDV Campaign" is a separate *session* with a repositioned sensor rig, not a
+> different lab. Read every "Tunnel B" reference below as "2025 standalone LDV session." See
+> `omrpr_fin/docs/claim_boundary.md` for current canonical framing and locked numbers.
+
 **Last updated:** 2026-06-09  
-**Dataset location:** `context_data/TESolution/`  
+**Dataset location:** `data/LDV/TESolution/` (camera/video + LDV raw data) and `data/context_data/` (session notes); moved from the retired `context_data/TESolution/` layout, 2026-07  
 **Reference paper:** Lee et al. (2016), SPIE 9803, 98032X — see `TESolution_citation_novelty.md`
 
 ---

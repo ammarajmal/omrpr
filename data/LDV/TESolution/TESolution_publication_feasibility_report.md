@@ -1,5 +1,14 @@
 # Publication Feasibility Report — TESolution WTT Dataset
 
+> **CORRECTION (2026-07-03, added 2026-07-06):** This report's "Tunnel B" reference (comparison
+> table) was a facility mislabel. Vendor-verified provenance work confirmed all 2024/2025 camera and
+> LDV sessions were recorded at the **same physical wind-tunnel facility** — read "Tunnel B" as
+> "2025 standalone LDV session." This report otherwise reflects a 2026-06-09 snapshot; the actual
+> publication path since taken is the Option B canonical result (bending r≈0.960, torsion r≈0.968,
+> 19 stable conditions) — see `omrpr_fin/docs/claim_boundary.md` and
+> `omrpr_outputs_review/FINALIZATION_PLAN.md` for current status, which has progressed well past
+> this report's "borderline yes" assessment.
+
 **Date:** 2026-06-09  
 **Question:** Can the TESolution wind tunnel dataset (LDV reference + 3D video system, October 2024) support a new peer-reviewed publication in an impact-factor journal, without further laboratory or wind tunnel experiments?
 

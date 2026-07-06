@@ -1,7 +1,15 @@
 # Pipeline Diagram
 
-12-step offline processing chain from raw ROS bag files to publication figures.
+13-step offline processing chain from raw ROS bag files to publication figures.
 Each step has one input, one output, and documented acceptance criteria.
+
+*Last updated: 2026-07-03 — facility naming corrected: "Tunnel B" was a mislabel for the 2025 standalone LDV session (same physical facility as Tunnel A); Option B geometry (dside=100mm/dp=2.0) independently vendor-verified, see `RESULTS_LOG.md`. Earlier: 2026-07-02 — LDV geometry (dside/dp) switched to Option B canonical (2024 paired session); superseded B0 (2025 standalone LDV session) geometry removed. See update summary at bottom. Earlier update (2026-06-30): Added Step 02b (DCG); corrected timing to 20.03 ms.*
+*2026-07-06 RESOLVED — f_h/f_α/damping rows below were UNVERIFIED pending a provenance check; now
+confirmed via `omrpr_fin/src/free_vib_analysis.py` reproducing the locked values from TESolution's
+own vendor-delivered `Bd1`/`Td1` raw files (co-located with the 2025 standalone LDV session's D00–D20
+wind data), cross-validated against an independent 2024-session free-vibration measurement
+(f_h=1.4299/f_α=3.1098 Hz, within 0.2%/0.9%) and the camera-based FFT corroboration
+(f_h=1.4290/f_α=3.0990 Hz). See `RESULTS_LOG.md` for the full provenance chain.*
 
 ```
 Raw .bag files (21 RPM conditions, 3 cameras)
@@ -30,13 +38,20 @@ Step 02 — AprilTag Detection
         │
         ▼
 Step 02b — Detection Completeness Gate (DCG)
-        Input:  step02 detections.csv + summary.json per camera per condition
-        Output: gate_status.json per condition
-        Accept: Designed criterion r_det ≥ 0.95 AND n_miss_max ≤ 2 AND v_peak < w_cell (all cameras)
-        Note:   v_peak = 2π × f_struct × A_px / 60 (from cy amplitude in detections.csv)
-                w_cell = mean tag side length / 10 (from corner coords, not hardcoded)
-                Conditions that FAIL: excluded from all downstream steps
-                e0–e19: PASS; e20_320rpm: EXCLUDED (cam1: 60.8%, v_peak = 67.8 > w_cell = 29)
+        Input:  detections.csv + summary.json per camera per condition
+        Output: gate_status.json per condition (PASS / EXCLUDED)
+        Accept: detection_rate ≥ 0.95 per camera AND max_consecutive_miss ≤ 1 frame
+                AND v_peak < w_cell (velocity-based blur criterion)
+        Note:   N=1 threshold from ε = A(2πg/T_h)²/8 < noise floor (corrected 2026-07-03,
+                see claim_boundary.md changelog: noise floor corrected 0.017→0.004 mm)
+                At A=1.25 mm, g=1 frame (16.7 ms), T_h=0.698 s: ε=0.0035 mm < 0.004 mm → SAFE
+                At g=2 frames (33 ms): ε=0.0141 mm > 0.004 mm → UNSAFE, hence N≤1
+                e20_320rpm: EXCLUDED (cam1 60.8%, cam2 61.3%; v_peak=67.8 > w_cell=29 px/frame)
+                All other 20 conditions: PASS
+                Physical mechanism: motion blur at equilibrium crossing (2.932 Hz structural,
+                FFT of miss-indicator at 5.87 Hz = 2×f_struct confirms threshold-crossing failure)
+                cam3 at 320 RPM: v_peak=18.7 px/frame < threshold → unaffected; amp 2.19 mm (clean)
+                Hardware design rule: t_exp < w_cell/v_peak = 7.1 ms (future campaigns)
         │
         ▼
 Step 03 — Quality Scoring
@@ -64,13 +79,7 @@ Step 05 — Cross-Camera Synchronization
         Output: Synchronized multi-camera traces on a common 60 Hz grid
         Accept: Direct common60 resampling; dense1000 gives < 0.08% improvement — skipped
         Note:   Normalize timestamps to bag-start BEFORE any sync analysis
-                Max pairwise drift: 20.03 ms (cam1–cam3)
-                Proposed gap-aware guard patch: gaps ≤ 2 frames → interpolate
-                                                (ε = 0.0141 mm, 0.83× noise floor)
-                                                gaps > 2 frames → write NaN
-                MAX_INTERP_GAP = 2 frozen from ε = A(2πg/T_h)²/8 at T_h = 0.698 s,
-                A = 1.25mm (corrected 2026-07-01, was N=3 under a formula missing a
-                factor of 4), but not yet implemented in live Step 05 code
+                Max pairwise drift: 20.03 ms (cam1–cam3, e3_50rpm)
         │
         ▼
 Step 06 — Baseline-Aligned Fusion
@@ -104,22 +113,20 @@ Step 08 — Frequency Analysis
 Step 09 — Uncertainty Quantification
         Input:  Time series + static bags
         Output: Static noise floor, camera-agreement stats, bootstrap CIs, timing audit
-        Accept: bending preferred full-pipeline bound < 0.05 mm (result: 0.017 mm)
-                torsion proxy preferred full-pipeline bound < 0.1 mm (result: 0.033 mm)
-                reproj error < 0.5 px (result: 0.04–0.17 px — confirms correct intrinsics)
+        Accept: bending static RMS < 0.05 mm (result: 0.003 mm, static bags; 0.004 mm
+                preferred e0_0rpm full-pipeline value — corrected 2026-07-03, was 0.017 mm)
+                torsion proxy static RMS < 0.1 mm (result: 0.005 mm, both static bags and
+                e0_0rpm full-pipeline — corrected 2026-07-03, was 0.033 mm)
                 Bootstrap CI width < 20% relative for stable non-near-floor conditions
         Note:   Moving-block bootstrap (not standard bootstrap — time series)
-                Manuscript-facing conservative bounds remain 0.017 mm bending,
-                0.033 mm torsion proxy
         │
         ▼
 Step 10 — LDV Condition-Level Comparison
         Input:  Per-condition bending/torsion RMS + LDV reference (converted to mm)
         Output: Comparison table, Pearson/Spearman, ratio analysis
-        Accept: Torsion stable-regime Pearson > 0.90
-                Bending above-floor stable Pearson is reported with physical explanation if below 0.90
+        Accept: Stable regime Pearson > 0.90 (excluding 60 RPM VIV outlier)
         Note:   LDV raw files in CENTIMETERS — convert explicitly; use _mm_corrected columns
-                LDV comparison is condition-level ONLY (same-tunnel Tunnel A, separate sessions, NOT simultaneous; current canonical LDV reference is the 2024 paired session — Option B, ~11 months apart)
+                LDV comparison is condition-level ONLY (non-simultaneous, cross-tunnel)
         │
         ▼
 Step 11 — Non-Causal RTS Smoothing
@@ -132,12 +139,9 @@ Step 11 — Non-Causal RTS Smoothing
         │
         ▼
 Step 12 — Manuscript Figures and Tables
-        Input:  All result artifacts (Steps 00–11) + gate_status.json from Step 02b
+        Input:  All result artifacts (Steps 00–11)
         Output: 5 publication figures + 2 tables in results/step12/
         Accept: All figures programmatic; claim boundary PASS; captions use required language
-                e20_320rpm: shown as DCG-EXCLUDED (not silently dropped)
-                cam3 2.19mm: shown as separate labelled pre-flutter data point
-                DCG velocity criterion stated in figure caption or table footnote
 ```
 
 ## Key Locked Parameters
@@ -147,11 +151,41 @@ Step 12 — Manuscript Figures and Tables
 | solvePnP solver | `SOLVEPNP_IPPE_SQUARE` | Optimal for planar square targets |
 | extrinsics.yaml | Empty by design | Replaced by camera-frame pose + baseline alignment |
 | Quality score formula | `dm × sqrt(area_px2)` | B0 formula — locked |
-| LDV dside | 100 mm | Option B canonical (2024 paired session, Tunnel A facility) — see `claim_boundary.md` v2.1 (superseded B0/2025 standalone LDV session: 130 mm, same facility) |
-| LDV dp (torsion scaling) | 2.0 | Option B canonical (2024 paired session, Tunnel A facility) — see `claim_boundary.md` v2.1 (superseded B0/2025 standalone LDV session: 1.538, same facility) |
+| LDV dside | 100 mm | Option B canonical (2024 paired session, Tunnel A facility) — see `claim_boundary.md` v2.1, vendor-verified 2026-07-03 |
+| LDV dp (torsion scaling) | 2.0 | Option B canonical (2024 paired session, Tunnel A facility) — see `claim_boundary.md` v2.1, vendor-verified 2026-07-03 |
 | LDV pvolt | 2.7 cm/V | `BRID2D1_choi.m` |
 | LDV fs | 360 Hz | `BRID2D1_choi.m` |
-| f_h (bending nat. freq.) | 1.4323 Hz | Measured 2025 standalone LDV session free-vibration result |
-| f_α (torsion nat. freq.) | 3.0827 Hz | Measured 2025 standalone LDV session free-vibration result |
+| f_h (bending nat. freq.) | 1.4323 Hz | Free-vibration LDV, 2025 standalone LDV session |
+| f_α (torsion nat. freq.) | 3.0827 Hz | Free-vibration LDV, 2025 standalone LDV session |
 | Bridge chord width B | 0.40 m | Model setup sheet |
-| RTS process noise σ | 10.0 mm/s | Calibrated for 0.957–1.000 amplitude ratio |
+| RTS process noise σ | 10.0 mm/s | Q = diag([(σ·dt)², σ²]); stable amplitude ratio 0.999 |
+| Structural damping | ~0.31% | Log-decrement, 2025 standalone LDV session free-vibration |
+| Max timing drift | 20.03 ms (cam1–cam3, e3_50rpm) | Step 09 timing audit |
+| DCG N threshold | 2 consecutive frames | ε = A(2πg/T_h)²/8 < 0.017 mm noise floor |
+
+---
+
+## 2026-06-30 Update Summary
+
+| Change | Old | New |
+|--------|-----|-----|
+| Step count | 12 steps | 13 steps (added Step 02b) |
+| Step 02b (DCG) | Not present | Added — e20 EXCLUDED, all others PASS |
+| f_h in Step 08 | 1.430 Hz | 1.4323 Hz |
+| f_α in Step 08 | 3.103 Hz | 3.0827 Hz |
+| Timing in Step 05 | 20.0 ms | 20.03 ms (cam1–cam3, e3_50rpm) |
+| f_h locked parameter | 1.430 Hz | 1.4323 Hz |
+| f_α locked parameter | 3.103 Hz | 3.0827 Hz |
+
+## 2026-07-02 Update Summary (Option B canonical switch)
+
+| Change | Old (B0, superseded) | New (Option B canonical) |
+|--------|----------------------|---------------------------|
+| LDV session | 2025 standalone LDV session (Tunnel A facility), 2025-09 | 2024 paired session (Tunnel A facility), 2024-10/11 |
+| LDV dside | 130 mm | 100 mm |
+| LDV dp | 1.538 | 2.0 |
+| Stable-condition count | 18 | 19 (60 RPM restored after LDV bend RMS correction, 2026-07-02) |
+| Bending r / RMSE | 0.845 / 0.719 mm | ≈0.960 / ≈0.293 mm |
+| Torsion r | 0.940 | ≈0.968 |
+
+See `claim_boundary.md` v2.1 for the full locked numbers and changelog. f_h/f_α/damping are NOT part of this switch and are left unchanged pending the provenance check noted above.

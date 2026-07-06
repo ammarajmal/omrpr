@@ -53,7 +53,7 @@ camera's field of view.
 ```python
 import csv
 rows = list(csv.DictReader(open(
-    '/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+    '/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 rows.sort(key=lambda r: int(r['frame_idx']))
 
 boundary_warns = []
@@ -81,7 +81,7 @@ The missed frames were then further checked:
 import csv, numpy as np
 
 rows = list(csv.DictReader(open(
-    '/media/ammar/phd/omrpr/results/step02/e20_320rpm/cam1/detections.csv')))
+    '/media/ammar/phd/fin_phd/omrpr_fin/results/step02/e20_320rpm/cam1/detections.csv')))
 all_fi = set(range(1829))
 det_fi = set(int(r['frame_idx']) for r in rows)
 miss_fi = sorted(all_fi - det_fi)

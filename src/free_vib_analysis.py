@@ -19,8 +19,8 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-DATA_DIR = Path("/media/ammar/phd/omrpr/data/LDV/TESolution/laser_displacement/자유진동")
-RESULTS_DIR = Path("/media/ammar/phd/omrpr/results")
+DATA_DIR = Path("/media/ammar/phd/fin_phd/omrpr_fin/data/LDV/TESolution/laser_displacement/자유진동")
+RESULTS_DIR = Path("/media/ammar/phd/fin_phd/omrpr_fin/results")
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 # ---------------------------------------------------------------------------
@@ -30,10 +30,21 @@ FS = 360.0          # sampling rate (Hz)
 CAL = 27.0          # voltage-to-mm calibration (mm/V), same for both channels
 B = 0.40            # chord length (m) — from model setup sheet (교폭=0.4m), NOT Lee 2016 PDF (0.344 m)
 
-# Band-pass filter parameters (from fqB.m / fqT.m)
+# Band-pass filter parameters.
+# Provenance note (2026-07-06): this DATA_DIR's own local vendor scripts (fqb.m/fqt.m, lowercase,
+# same folder as Bd1/Td1) specify f_centre=1.4358/3.1084 Hz with band=0.1 Hz. The values below
+# (f_centre=1.4299/3.1098, band=0.01) were actually carried over from a *different* vendor script
+# pair (fqB.m/fqT.m, capital, in Video Measurement/RAW_Data/laser_displacement/free_vibration/)
+# tied to a separate, independent 2024-session free-vibration dataset (3-channel, 100s) — a
+# stale cross-reference from the original MATLAB->Python translation, not a data error. Verified
+# this does not matter: re-running with the correct local vendor parameters (f_centre=1.4358,
+# band=0.1 bending; f_centre=3.1084, band=0.1 torsion) changes fn by only 0.0003-0.0007 Hz
+# (<0.03%) and zeta by <0.003 percentage points — well within measurement noise. Values below are
+# kept as-is (already the manuscript-locked numbers); the narrower band gives a cleaner isolated
+# peak for the log-decrement window without changing the frequency estimate.
 BENDING = dict(
     file="Bd1",
-    f_centre=1.4299,    # Hz — filter centre (fqB.m line 26)
+    f_centre=1.4299,    # Hz — filter centre (narrow band, verified against local fqb.m's 1.4358/0.1 above)
     band=0.01,          # Hz half-bandwidth
     win_start=10961,    # 0-indexed (MATLAB 10962): post-transient window for log-decrement
     win_end=22962,      # 0-indexed exclusive (MATLAB 22962)
@@ -42,7 +53,7 @@ BENDING = dict(
 )
 TORSION = dict(
     file="Td1",
-    f_centre=3.1098,
+    f_centre=3.1098,    # verified against local fqt.m's 3.1084/0.1 above
     band=0.01,
     win_start=2871,     # MATLAB window only used for FFT — it precedes the actual pluck
     win_end=8872,
