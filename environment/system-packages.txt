@@ -1,0 +1,6 @@
+build-essential
+cmake
+ninja-build
+pkg-config
+git
+rsync

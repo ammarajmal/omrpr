@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/AprilRobotics/apriltag.git",
+  "release": "v3.4.5",
+  "commit": "94be783968e5091bcc9972c72c84fd63efce2935",
+  "source": "/home/ammar/.local/src/apriltag-v3.4.5",
+  "prefix": "/home/ammar/.local/opt/apriltag/3.4.5"
+}

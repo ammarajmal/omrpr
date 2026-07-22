@@ -1,0 +1,52 @@
+# Python and tools
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Local configuration and upgrade backups
+.env
+.env.*
+!.env.example
+.envrc
+.local/
+.upgrade_backups/
+
+# External data links and data payloads
+data/raw/source
+data/interim/source
+data/processed/source
+data/metadata/source
+*.bag
+*.db3
+*.mcap
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Generated outputs
+outputs/**
+!outputs/**/.gitkeep
+manuscript/generated/**
+!manuscript/generated/**/.gitkeep
+manuscript/submission/**
+!manuscript/submission/**/.gitkeep
+state/gates/*.json
+
+# MATLAB
+*.asv
+*.m~
+slprj/
+codegen/
+*.mex*
+
+# Editors
+.vscode/
+.idea/
+.DS_Store
