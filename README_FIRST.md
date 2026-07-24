@@ -1,48 +1,48 @@
-# OMRPR Clean-Room Starter Kit v2.0.0
+# README First — OMRPR Mastery Baseline v3.0.0
 
-This package updates or creates the OMRPR analysis project without deleting raw
-research data. It is designed to be rerunnable: existing directories, stubs,
-Git history, external datasets, and pipeline gates are preserved unless you
-explicitly request replacement.
+This package updates an existing OMRPR repository or creates it from scratch.
+It preserves raw datasets, Git history, pipeline gates, outputs, notebooks, and
+manuscript work. It replaces only framework-controlled trees so stale stubs do
+not survive upgrades.
 
-## First command
+## Fixed locations
+
+- Project: `/mnt/space/adev/projects/active/omrpr-analysis`
+- Dataset: `/mnt/space/adev/datasets/omrpr`
+- Runtime: `~/Projects-runtime/research/omrpr-analysis/.venv`
+- Backups: `/mnt/space/adev/backups/omrpr-analysis`
+
+## Run
 
 ```bash
-cd ~/Downloads/omrpr-cleanroom-starter-v2.0.0
 bash scripts/00_preflight.sh
+bash scripts/01_bootstrap_or_update.sh --recreate-env
 ```
 
-Then perform the update/install:
+The first installation creates `uv.lock` using Python 3.12.13. Commit that
+lockfile after all quality checks pass. Normal future installations use the
+committed lockfile with `--locked` and do not upgrade dependencies silently.
 
-```bash
-bash scripts/01_bootstrap_or_update.sh
-```
-
-The default locations are:
-
-- project: `/mnt/space/adev/projects/active/omrpr-analysis`
-- data: `/mnt/space/adev/datasets/omrpr`
-- virtual environment: `$HOME/.venvs/omrpr-analysis`
-
-The installer:
-
-1. backs up existing project-controlled files;
-2. updates template code and documentation;
-3. preserves `.git`, raw data, generated results, local configuration, and gates;
-4. recreates missing directories and repairs symlinks;
-5. installs the newest compatible Python with `uv`;
-6. resolves the latest compatible dependencies and writes `uv.lock`;
-7. runs formatting, linting, type checking, tests, and project diagnostics;
-8. does not commit unless `--commit` is supplied.
-
-Install the official detector after the project passes:
+## Verify
 
 ```bash
 cd /mnt/space/adev/projects/active/omrpr-analysis
 source scripts/activate-project.sh
-bash scripts/03_install_official_apriltag.sh
+make quality
+make readiness
 ```
 
-Never install or use `pupil_apriltags`, and never use `cv2.aruco` for tag
-detection. OpenCV is permitted only for calibration, image I/O, visualization,
-and optional pose cross-checking.
+## Install official AprilTag
+
+```bash
+make apriltag
+uv run omrpr verify-apriltag
+```
+
+## Start Step 00
+
+```bash
+uv run omrpr inventory
+uv run omrpr bag-audit
+uv run omrpr pipeline status
+```

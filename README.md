@@ -1,38 +1,30 @@
-# OMRPR Camera-LDV Clean-Room Analysis
+# OMRPR Clean-Room Analysis — Mastery Baseline v3.0.0
 
-A reproducible research-software project for auditing ROS 1 camera bags,
-recalibrating three cameras, detecting 20 mm `tag36h11` AprilTags with the
-official AprilRobotics C library, aligning detections by timestamp and tag ID,
-constructing bending and torsion-proxy responses, processing non-simultaneous
-LDV references, generating uncertainty-aware results, and preparing the
-manuscript for submission.
+Professional, reproducible camera–LDV analysis project for Ammar Ajmal's OMRPR
+wind-tunnel research. The package follows the validated Ammar Engineering
+Mastery workstation model: durable source and datasets on `/mnt/space`, a
+rebuildable Python runtime on `/home`, evidence-backed quality gates, deliberate
+dependency upgrades, and release-grade backups.
 
-Read these first:
+## Scientific constraints
 
-1. `AGENTS.md`
-2. `LEGACY_ANALYSIS_REPORT.md`
-3. `docs/MASTER_EXECUTION_ROADMAP.md`
-4. `docs/DATA_PLACEMENT.md`
+- Official AprilRobotics `apriltag` C library only.
+- Reviewed release `v3.4.5`; do not follow upstream `master` automatically.
+- `tag36h11`, physical tag size `0.020 m`.
+- Fresh camera calibration; no legacy intrinsic files.
+- Fusion strictly separated by tag ID.
+- Camera–LDV results are non-simultaneous condition-level benchmarking.
+- Tunnel B geometry uses `dside=0.13 m`, `db=0.20 m`, `dp=1.538...` when applicable.
+- Natural-frequency references are 1.430 Hz and 3.103 Hz.
+- High-wind `e20_320rpm` and the 60 RPM VIV diagnostic remain separately reported.
 
-## Hard scientific constraints
+## Engineering baseline
 
-- Fresh calibration only; no legacy camera intrinsics.
-- Official AprilRobotics AprilTag v3.4.5 or newer verified release.
-- Required family: `tag36h11`; measured tag size: `0.020 m`.
-- Static: one shared tag. WTT: tag 0 for cam1+cam2 and tag 1 for cam3.
-- Never pool detections across tag IDs.
-- Paper-2 LDV geometry: `dside=0.13 m`, `db=0.20 m`, `dp=1.538461538...`.
-- Model reference frequencies: bending `1.430 Hz`, torsion `3.103 Hz`.
-- Camera-LDV comparison is non-simultaneous condition-level benchmarking.
-- `e20_320rpm` remains separate from stable-regime statistics.
-- `e4_60rpm` remains an explicit VIV/onset diagnostic.
+- Python 3.12.13.
+- `uv` project management with a committed lockfile.
+- Runtime environment at `~/Projects-runtime/research/omrpr-analysis/.venv`.
+- Ruff, strict mypy, isolated pytest, pre-commit, environment evidence, Git bundles,
+  and idempotent controlled-tree upgrades.
 
-## Routine commands
-
-```bash
-source scripts/activate-project.sh
-uv run omrpr doctor
-uv run omrpr inventory
-uv run omrpr pipeline status
-make quality
-```
+Start with [START_HERE.md](START_HERE.md), then follow
+[docs/MASTER_EXECUTION_ROADMAP.md](docs/MASTER_EXECUTION_ROADMAP.md).

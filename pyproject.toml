@@ -1,9 +1,9 @@
 [project]
 name = "omrpr-analysis"
-version = "0.2.0"
+version = "0.3.0"
 description = "Clean-room camera-LDV analysis for OMRPR wind-tunnel research"
 readme = "README.md"
-requires-python = ">=3.13,<3.15"
+requires-python = ">=3.12,<3.13"
 authors = [{name = "Ammar Ajmal"}]
 dependencies = [
   "h5py>=3.13",
@@ -48,14 +48,14 @@ addopts = "-ra --strict-markers"
 
 [tool.ruff]
 line-length = 100
-target-version = "py313"
+target-version = "py312"
 exclude = ["data", "outputs", "manuscript/generated", ".upgrade_backups"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "RUF"]
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.12"
 strict = true
 packages = ["omrpr_analysis"]
 
