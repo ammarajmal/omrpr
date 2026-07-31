@@ -4,7 +4,8 @@
 
 - [x] Record bounded write authorization in both repositories.
 - [x] Preserve the knowledge-system evidence in a local commit.
-- [ ] Configure remotes and push preservation commits.
+- [x] Configure the registered remote, push the preservation branch, and open
+  draft PR #6; merge remains human-reviewed.
 - [x] Commit the inherited `omrpr-analysis` worktree as a named stabilization
   snapshot before feature edits.
 - [x] Repair `uv`/pytest isolation from system ROS plugins and prove package

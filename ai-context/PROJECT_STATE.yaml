@@ -10,7 +10,7 @@ write_scope:
   legacy_repositories: read_only
   manuscripts: read_only
 gates:
-  G0: {name: repository_stabilization, status: in_progress}
+  G0: {name: repository_stabilization, status: review_pending}
   G1: {name: data_and_observation_control, status: partial}
   G2: {name: image_plane_primary_measurement, status: not_started}
   G3: {name: precision_and_admissibility, status: not_started}
@@ -38,6 +38,9 @@ blockers:
   - id: B004
     description: klt_and_state_estimators_lack_preregistered_physical_validation
     owner: codex
-next_task: configure_remote_and_review_boundary_then_freeze_G1_observation_control
+next_task: review_and_merge_pr_6_then_freeze_G1_observation_control
 evidence_anchor:
   knowledge_repository_commit: 27f6c5c
+  stabilization_commit: d25029f
+  preservation_merge_commit: e96c4cf
+  stabilization_pull_request: https://github.com/ammarajmal/omrpr/pull/6
