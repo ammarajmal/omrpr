@@ -5,11 +5,11 @@
 - [x] Record bounded write authorization in both repositories.
 - [x] Preserve the knowledge-system evidence in a local commit.
 - [ ] Configure remotes and push preservation commits.
-- [ ] Commit the inherited `omrpr-analysis` worktree as a named stabilization
+- [x] Commit the inherited `omrpr-analysis` worktree as a named stabilization
   snapshot before feature edits.
-- [ ] Repair `uv`/pytest isolation from system ROS plugins and prove package
+- [x] Repair `uv`/pytest isolation from system ROS plugins and prove package
   import, tests, Ruff, and mypy from the locked environment.
-- [ ] Classify generated `outputs/` and `graphify-out/` retention policy.
+- [x] Classify generated `outputs/` and `graphify-out/` retention policy.
 
 ## Next — G1 to G3
 

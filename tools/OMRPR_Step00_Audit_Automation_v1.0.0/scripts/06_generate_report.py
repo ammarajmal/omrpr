@@ -55,6 +55,18 @@ def main() -> None:
         .round({"gap_s": 6, "before_time_s": 6})
     )
 
+    wind_tunnel_status = (
+        "All `wtt-main` and `wtt-5sec` audited topics passed the configured "
+        "structural and timing gates."
+        if wtt_nonpass.empty
+        else "One or more wind-tunnel topics require review; inspect `non_pass_records.csv`."
+    )
+    largest_gap_table = (
+        markdown_table(largest_view)
+        if not largest_view.empty
+        else "No gaps above the configured threshold were found."
+    )
+
     text = f"""# OMRPR Step 00 Audit Report
 
 - Run ID: `{run_dir.name}`
@@ -72,7 +84,7 @@ def main() -> None:
 
 Wind-tunnel non-PASS topic rows: **{len(wtt_nonpass)}**.
 
-{"All `wtt-main` and `wtt-5sec` audited topics passed the configured structural and timing gates." if wtt_nonpass.empty else "One or more wind-tunnel topics require review; inspect `non_pass_records.csv`."}
+{wind_tunnel_status}
 
 ## Static engineering review
 
@@ -84,7 +96,7 @@ and recordings with gaps should be analyzed using selected contiguous segments.
 
 ## Ten largest static gaps
 
-{markdown_table(largest_view) if not largest_view.empty else "No gaps above the configured threshold were found."}
+{largest_gap_table}
 
 ## Gate status
 

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+from itertools import pairwise
 from pathlib import Path
 
 import numpy as np
@@ -63,7 +64,7 @@ def main() -> None:
                 segment_durations = np.array(
                     [
                         relative[end - 1] - relative[start] if end > start else 0.0
-                        for start, end in zip(boundaries[:-1], boundaries[1:])
+                        for start, end in pairwise(boundaries)
                     ]
                 )
 

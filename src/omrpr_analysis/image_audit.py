@@ -84,20 +84,20 @@ def decode_raw(message: Any) -> tuple[np.ndarray, str]:
     if encoding in {"mono8", "8uc1"}:
         return cv2.cvtColor(rows[:, :width], cv2.COLOR_GRAY2BGR), encoding
     if encoding in {"mono16", "16uc1"}:
-        pixels = rows[:, : width * 2].copy().view(np.uint16).reshape(height, width)
-        scaled = cv2.convertScaleAbs(pixels, alpha=255.0 / max(1, int(pixels.max())))
+        pixels16 = rows[:, : width * 2].copy().view(np.uint16).reshape(height, width)
+        scaled = cv2.convertScaleAbs(pixels16, alpha=255.0 / max(1, int(pixels16.max())))
         return cv2.cvtColor(scaled, cv2.COLOR_GRAY2BGR), encoding
 
     channels = 4 if "a8" in encoding else 3
-    pixels = rows[:, : width * channels].reshape(height, width, channels)
+    color_pixels = rows[:, : width * channels].reshape(height, width, channels)
     conversions = {
         "rgb8": cv2.COLOR_RGB2BGR,
         "rgba8": cv2.COLOR_RGBA2BGR,
         "bgra8": cv2.COLOR_BGRA2BGR,
     }
     if encoding == "bgr8":
-        return pixels.copy(), encoding
-    return cv2.cvtColor(pixels, conversions[encoding]), encoding
+        return color_pixels.copy(), encoding
+    return cv2.cvtColor(color_pixels, conversions[encoding]), encoding
 
 
 def decode_message(message: Any, msgtype: str) -> tuple[np.ndarray, str]:

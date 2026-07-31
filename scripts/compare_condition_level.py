@@ -174,16 +174,22 @@ def main() -> None:
             laser_bend = np.array([r[3] for r in stable])
             cam_tors = np.array([r[2] for r in stable])
             laser_tors = np.array([r[4] for r in stable])
+            bend_pearson = pearson(cam_bend, laser_bend)
+            bend_spearman = spearman(cam_bend, laser_bend)
+            torsion_pearson = pearson(cam_tors, laser_tors)
+            torsion_spearman = spearman(cam_tors, laser_tors)
             report_lines.append(
-                f"- Bending Pearson r / Spearman rho: {pearson(cam_bend, laser_bend):.3f} / {spearman(cam_bend, laser_bend):.3f}"
+                f"- Bending Pearson r / Spearman rho: {bend_pearson:.3f} / {bend_spearman:.3f}"
             )
             report_lines.append(
-                f"- Torsion-proxy Pearson r / Spearman rho: {pearson(cam_tors, laser_tors):.3f} / {spearman(cam_tors, laser_tors):.3f}"
+                f"- Torsion-proxy Pearson r / Spearman rho: "
+                f"{torsion_pearson:.3f} / {torsion_spearman:.3f}"
             )
 
         report_lines.append("")
         report_lines.append(
-            "| rpm | camera bending RMS (mm) | laser bending RMS (mm) | camera torsion RMS (mm) | laser torsion RMS (mm) |"
+            "| rpm | camera bending RMS (mm) | laser bending RMS (mm) | "
+            "camera torsion RMS (mm) | laser torsion RMS (mm) |"
         )
         report_lines.append("|---|---|---|---|---|")
         for rpm, cb, ct, lb, lt in joined:

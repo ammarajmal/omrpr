@@ -24,20 +24,20 @@ gates:
 blockers:
   - id: B001
     description: no_git_remote_configured
-    owner: user
+    disposition: resolved_origin_configured_remote_history_requires_preservation_merge_review
   - id: B002
     description: pytest_environment_contaminated_by_system_ros_plugins
-    owner: codex
+    disposition: resolved_by_locked_python_module_invocation_and_plugin_isolation
   - id: B002b
     description: inherited_ruff_violations_remain
-    count: 20
-    owner: codex
+    count: 0
+    disposition: resolved_2026_08_01
   - id: B003
     description: fresh_physical_camera_calibration_unavailable
     disposition: image_plane_primary_and_sensitivity_only
   - id: B004
     description: klt_and_state_estimators_lack_preregistered_physical_validation
     owner: codex
-next_task: repair_test_isolation_and_snapshot_inherited_worktree
+next_task: configure_remote_and_review_boundary_then_freeze_G1_observation_control
 evidence_anchor:
   knowledge_repository_commit: 27f6c5c

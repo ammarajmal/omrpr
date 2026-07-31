@@ -39,6 +39,9 @@ manuscript/submission/**
 !manuscript/submission/**/.gitkeep
 state/gates/*.json
 
+# Disposable code-navigation cache; reviewed gate snapshots may remain tracked
+graphify-out/cache/
+
 # MATLAB
 *.asv
 *.m~

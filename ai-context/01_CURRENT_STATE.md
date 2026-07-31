@@ -4,7 +4,7 @@
 
 **Lifecycle:** active clean-room reconstruction, before production WTT replay
 
-**Current gate:** G0 — repository/worktree stabilization
+**Current gate:** G0 — repository/worktree stabilization (remote boundary remains)
 
 ## Established
 
@@ -32,24 +32,26 @@
   validated end-to-end production pipeline.
 - A Graphify snapshot exists, but it is generated navigation material rather
   than scientific evidence.
-- The worktree inherited 21 modified/untracked paths at authorization time.
-  They must be preserved in the stabilization snapshot and reviewed before
-  overlapping edits.
+- The inherited worktree is preserved in commit `7e0bc23`; subsequent G0
+  quality repairs are being reviewed as a separate bounded change.
 
 ## Current blockers
 
-- No Git remote is configured, so commits cannot yet be pushed.
-- The current `uv run pytest` resolves contaminated system/ROS pytest plugins
-  and fails collection with `ModuleNotFoundError: omrpr_analysis`; environment
-  isolation must be repaired before test status can be called green.
-- The preservation pre-commit run reports 20 remaining Ruff violations in
-  inherited camera/comparison/laser and packaged Step-00 scripts.
+- `origin` now points to `ammarajmal/omrpr`. Its historical `master` has no
+  common ancestor with this clean-room reconstruction and contains the prior
+  pipeline/results lineage. It must be joined by a preservation-only ancestry
+  merge on a review branch; its tree must not be imported as production code.
+- The locked Python 3.12 suite passes 10 tests with third-party pytest plugin
+  autoload disabled. Ruff passes all 99 Python files and strict mypy passes the
+  production package. Direct virtual-environment tool entry points are not
+  executable on this mounted workspace, so pytest/mypy are invoked with
+  `uv run python -m ...`; the Ruff binary was verified from uv's locked cache.
 - No new physical calibration can be collected.
 - Kalman/RTS and KLT have not passed preregistered physical-data validation.
 - The final metric-displacement and torsion-proxy claim boundaries remain gated.
 
 ## Next action
 
-Complete G0: snapshot the inherited worktree, restore isolated testing, freeze
-the observation manifest/config schema, and run Step 00/01 reproducibly before
-implementing the primary image-plane detector branch.
+Complete G0 by configuring the Git remote/review boundary and committing the
+quality repair. Then freeze the observation manifest/config schema and run Step
+00/01 reproducibly before implementing the primary image-plane detector branch.

@@ -69,7 +69,7 @@ def solve_tag_pose(
     image_points = corners_lb_rb_rt_lt.reshape(-1, 1, 2).astype(np.float64)
     undistorted = cv2.undistortPoints(image_points, intrinsics.k, intrinsics.d, P=intrinsics.k)
 
-    ok, rvec, tvec = cv2.solvePnP(
+    ok, _rvec, tvec = cv2.solvePnP(
         TAG_OBJECT_POINTS,
         undistorted,
         intrinsics.k,

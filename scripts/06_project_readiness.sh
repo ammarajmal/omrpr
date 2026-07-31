@@ -292,7 +292,7 @@ else
     bad "Ruff lint"
 fi
 
-if uv run mypy src/omrpr_analysis >/dev/null; then
+if uv run python -m mypy src/omrpr_analysis >/dev/null; then
     ok "mypy"
 else
     bad "mypy"
@@ -300,7 +300,7 @@ fi
 
 if env -u PYTHONPATH \
     PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
-    uv run pytest \
+    uv run python -m pytest \
         -p pytest_cov \
         -q \
         >/dev/null

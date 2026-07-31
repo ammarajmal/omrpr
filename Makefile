@@ -15,17 +15,17 @@ status:
 test:
 	env -u PYTHONPATH \
 	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
-	uv run pytest \
+	uv run python -m pytest \
 		-p pytest_cov \
 		-vv
 
 quality:
 	uv run ruff format --check .
 	uv run ruff check .
-	uv run mypy src/omrpr_analysis
+	uv run python -m mypy src/omrpr_analysis
 	env -u PYTHONPATH \
 	PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
-	uv run pytest \
+	uv run python -m pytest \
 		-p pytest_cov \
 		--cov=omrpr_analysis \
 		--cov-report=term-missing \
