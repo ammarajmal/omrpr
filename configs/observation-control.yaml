@@ -1,0 +1,84 @@
+schema_version: 1
+status: preregistered_before_clean_room_wtt_detection
+
+campaigns:
+  camera:
+    id: camera-2025-10
+    session: principal-camera-wtt
+    concurrency: internally_grouped_camera_bag
+    cross_instrument_alignment: condition_only
+    nominal_sampling_rate_hz: 60.0
+  ldv:
+    id: ldv-2024
+    session: D0-D38-principal-2024
+    concurrency_with_camera: false
+    cross_instrument_alignment: condition_only
+    sampling_rate_hz: 360.0
+
+camera_observations:
+  cam1:
+    expected_tag_id: 0
+    physical_location: documented_center_marker
+  cam2:
+    expected_tag_id: 0
+    physical_location: documented_center_marker
+  cam3:
+    expected_tag_id: 1
+    physical_location: documented_side_marker
+
+primary_observable:
+  name: image_plane_displacement
+  units: pixel
+  metric_pose_status: calibration_sensitivity_only
+  absolute_metric_claim_permitted: false
+
+acquisition_gates:
+  hard_min_fps_hz: 55.0
+  warning_fps_range_hz: [59.0, 61.0]
+  warning_max_gap_s: 0.10
+  fail_max_gap_s: 0.50
+
+detection_gates:
+  pass_min_detection_rate: 0.95
+  warning_min_detection_rate: 0.80
+  pass_max_consecutive_misses: 3
+  warning_max_consecutive_misses: 6
+  quality_score_threshold: null
+  image_plane_jump_threshold_px: null
+  notes: >-
+    Quality-score and jump thresholds remain unset until static-data distributions
+    are measured. They must not be borrowed from dimensionally incompatible legacy
+    tracker thresholds or selected using LDV agreement.
+
+admissibility:
+  pass:
+    permitted_uses: [image_plane_time_history, frequency, relative_condition_trend]
+  warning:
+    permitted_uses: [frequency, diagnostic_relative_trend]
+  fail:
+    permitted_uses: [failure_diagnostic]
+  aggregation_rule: all_contributing_streams_must_pass_declared_channel_gate
+  failed_stream_rule: never_average_through_failure
+
+special_conditions:
+  e4_60rpm:
+    role: viv_onset_diagnostic
+    stable_summary: false
+    reporting: separate_and_explicit
+  e20_320rpm:
+    role: high_wind_diagnostic
+    stable_summary: false
+    cam1: fail
+    cam2: fail
+    cam3: warning
+    permitted_output: cam3_image_plane_diagnostic_only
+    prohibited_output: multi_camera_composite
+
+ldv_channels:
+  bending:
+    operator: (center_plus_side)/2
+    permitted_use: instrument_specific_condition_summary
+  torsion_proxy:
+    operator: (side_minus_center)*2.0
+    geometry_status: candidate_human_confirmed_primary_rederivation_pending
+    permitted_use: instrument_specific_condition_summary_with_proxy_label
