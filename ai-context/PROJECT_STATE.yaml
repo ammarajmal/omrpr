@@ -38,10 +38,17 @@ blockers:
   - id: B004
     description: klt_and_state_estimators_lack_preregistered_physical_validation
     owner: codex
-next_task: freeze_G1_dataset_identities_and_measured_admissibility_inputs
+  - id: B005
+    description: step01_contact_sheets_and_146_stream_manual_review_rows_require_human_review
+    owner: user
+next_task: human_review_step01_contact_sheets_then_export_measured_admissibility
 evidence_anchor:
   knowledge_repository_commit: 27f6c5c
   stabilization_commit: d25029f
   preservation_merge_commit: e96c4cf
   stabilization_pull_request: https://github.com/ammarajmal/omrpr/pull/6
   stabilization_merge_commit: f605a05
+  step00_run: outputs/audit-runs/20260801_022002
+  step00_status: success_reused_canonical_topic_audit_with_fresh_static_gap_diagnostics
+  step01_run: outputs/image-audit-runs/20260801_022229
+  step01_status: success_1752_frames_zero_decode_failures_manual_review_pending

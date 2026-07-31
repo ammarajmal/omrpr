@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1 — 2026-08-01
+
+- Use the activated external runtime directly instead of invoking `uv run` and
+  triggering an unintended environment synchronization.
+- Validate the active Python executable rather than rejecting an inactive
+  repository-local environment directory.
+
 ## 1.0.0 — 2026-07-28
 
 - Added non-destructive Step 00 launcher.

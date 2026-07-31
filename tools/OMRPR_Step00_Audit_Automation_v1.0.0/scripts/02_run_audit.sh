@@ -18,8 +18,8 @@ if [[ "$MODE" == "reuse" ]]; then
   }
   echo "Reusing canonical audit CSV."
 else
-  echo "Running: uv run --active omrpr bag-audit"
-  uv run --active omrpr bag-audit || exit 4
+  echo "Running: $OMRPR_VENV/bin/omrpr bag-audit"
+  "$OMRPR_VENV/bin/omrpr" bag-audit || exit 4
 fi
 
 [[ -s "$CANONICAL" ]] || {
