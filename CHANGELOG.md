@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.0.1
+
+- Disable external pytest plugin auto-loading in the project activation script
+  and package verifier, preventing ROS 2 Lyrical Python 3.14 contamination.
+- Bound `uv_build` below 0.12 to remove the unsafe unbounded-build warning.
+- Let Step 01 fall back to the project-local `.venv` when the configured
+  external runtime environment is unavailable.
+- Add portable archive verification and a Step 01 results-inspection helper.
+
 ## 3.0.0
 
 - Align Python with validated Engineering Mastery baseline 3.12.13.

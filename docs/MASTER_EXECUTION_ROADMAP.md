@@ -4,7 +4,7 @@
 |---:|---|---|
 | 00 | Source inventory and bag audit | Canonical bags classified; timing report reviewed |
 | 01 | Calibration-input audit | Target dimensions and image suitability documented |
-| 02 | Fresh camera calibration | All three cameras pass plausibility and reprojection gates |
+| 02 | Calibration limitation and sensitivity | Image-plane primary observable locked; intrinsic scenarios bounded; metric claims gated |
 | 03 | Official AprilTag verification | Upstream v3.4.5+ import and tag36h11 fixture pass |
 | 04 | Static precision | Timing, detection, RMS, PSD, and axis-specific noise documented |
 | 05 | WTT detection and pose export | Per-camera/per-tag outputs with rejection reasons |

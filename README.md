@@ -11,10 +11,18 @@ dependency upgrades, and release-grade backups.
 - Official AprilRobotics `apriltag` C library only.
 - Reviewed release `v3.4.5`; do not follow upstream `master` automatically.
 - `tag36h11`, physical tag size `0.020 m`.
-- Fresh camera calibration; no legacy intrinsic files.
+- No legacy intrinsic file is accepted as governing calibration. Because a new
+  physical calibration cannot be acquired, image-plane displacement is primary
+  and metric outputs remain calibration-sensitive until bounded sensitivity
+  analysis supports them.
 - Fusion strictly separated by tag ID.
 - Camera–LDV results are non-simultaneous condition-level benchmarking.
-- Tunnel B geometry uses `dside=0.13 m`, `db=0.20 m`, `dp=1.538...` when applicable.
+- Laser geometry is campaign-specific. For the canonical 2024 laser campaign,
+  the current locked candidate is `dside=0.10 m`, `db=0.20 m`, and `dp=2.0`.
+  The earlier `dside=0.13 m`, `dp=1.538...` values belong to a superseded
+  standalone 2025 session. These constants remain subject to formal provenance
+  verification before quantitative torsion claims.
+
 - Natural-frequency references are 1.430 Hz and 3.103 Hz.
 - High-wind `e20_320rpm` and the 60 RPM VIV diagnostic remain separately reported.
 

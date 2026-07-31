@@ -12,6 +12,15 @@ those bugs is a regression, not a fresh mistake.
 
 ## Hard constraints
 
+### Write authorization and boundary (2026-07-31)
+
+The project owner explicitly authorizes bounded pipeline development in this
+repository. Codex may modify pipeline source, tests, configuration,
+reproducibility/provenance records, project-management documentation, and
+derived outputs. Raw datasets, legacy repositories, and manuscript repositories
+remain read-only. Preserve and classify the dirty worktree that existed at the
+time of authorization; do not overwrite unrelated or uncertain changes.
+
 - **AprilTag detection must use the official AprilRobotics `apriltag` C
   library** (built from source, v3.4.5+), never `pupil_apriltags` and never
   `cv2.aruco`. This is an explicit, non-negotiable user requirement — every
@@ -25,9 +34,14 @@ those bugs is a regression, not a fresh mistake.
   (tag ID 1) viewed by cam3 (monocular). Always fuse per tag ID explicitly;
   never pool detections across tag IDs (see report §5 for the exact legacy
   bug this avoids).
-- Do not import any legacy camera-intrinsics/calibration file. Recalibrate
-  from scratch — see report §1 for why every legacy intrinsics source is
-  provably wrong.
+- Do not treat any legacy camera-intrinsics/calibration file as valid production
+  calibration. Fresh physical calibration is currently unavailable. The
+  approved workaround is to keep image-plane displacement as the primary
+  defensible observable, quarantine absolute metric/pose claims, and run a
+  declared calibration-sensitivity analysis when metric results are explored.
+  Legacy intrinsic families may be used only as labelled sensitivity scenarios,
+  never selected by maximizing agreement with LDV. See report §1 for why the
+  historical intrinsics cannot be adopted as ground truth.
 - Raw dataset lives externally, symlinked in under `data/{raw,interim,
   processed,metadata}/source` → `/mnt/space/adev/datasets/omrpr/*`. Never
   copy from the legacy directories at `/mnt/data/DEV/shm-displacement-project*`
