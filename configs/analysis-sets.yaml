@@ -1,0 +1,9 @@
+primary_stable_regime:
+  exclude: [e20_320rpm]
+  notes: Include e4_60rpm in plots but report its VIV/onset behavior explicitly.
+high_wind_separate:
+  include: [e20_320rpm]
+viv_diagnostic:
+  include: [e4_60rpm, e5_70rpm]
+static_precision:
+  source: raw/camera/rosbag/static

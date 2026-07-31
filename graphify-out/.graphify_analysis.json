@@ -1,0 +1,502 @@
+{
+  "communities": {
+    "0": [
+      "command",
+      "scripts_steps_step00_bag_audit",
+      "scripts_steps_step00_inventory",
+      "src_omrpr_analysis_cli",
+      "src_omrpr_analysis_cli_bag_audit",
+      "src_omrpr_analysis_cli_doctor",
+      "src_omrpr_analysis_cli_inventory",
+      "src_omrpr_analysis_cli_pipeline_approve",
+      "src_omrpr_analysis_cli_pipeline_status",
+      "src_omrpr_analysis_cli_py_path",
+      "src_omrpr_analysis_cli_verify_apriltag",
+      "src_omrpr_analysis_cli_version",
+      "src_omrpr_analysis_init",
+      "src_omrpr_analysis_init_rationale_1",
+      "src_omrpr_analysis_inventory",
+      "src_omrpr_analysis_inventory_build_inventory",
+      "src_omrpr_analysis_inventory_py_path",
+      "src_omrpr_analysis_inventory_sha256",
+      "src_omrpr_analysis_paths",
+      "src_omrpr_analysis_paths_projectpaths",
+      "src_omrpr_analysis_paths_projectpaths_discover",
+      "src_omrpr_analysis_pipeline",
+      "src_omrpr_analysis_pipeline_approve",
+      "src_omrpr_analysis_pipeline_approved",
+      "src_omrpr_analysis_pipeline_gate_path",
+      "src_omrpr_analysis_pipeline_py_path",
+      "tests_python_test_inventory",
+      "tests_python_test_inventory_py_path",
+      "tests_python_test_inventory_test_sha256",
+      "tests_python_test_pipeline",
+      "tests_python_test_pipeline_test_all_steps_present"
+    ],
+    "1": [
+      "any",
+      "exception",
+      "scripts_steps_step01_image_decode_sampling_audit",
+      "scripts_steps_step01_image_decode_sampling_audit_main",
+      "src_omrpr_analysis_image_audit",
+      "src_omrpr_analysis_image_audit_audit_tree",
+      "src_omrpr_analysis_image_audit_data_bytes",
+      "src_omrpr_analysis_image_audit_decode_compressed",
+      "src_omrpr_analysis_image_audit_decode_message",
+      "src_omrpr_analysis_image_audit_decode_raw",
+      "src_omrpr_analysis_image_audit_deterministic_indices",
+      "src_omrpr_analysis_image_audit_failed_metric",
+      "src_omrpr_analysis_image_audit_frame_metric",
+      "src_omrpr_analysis_image_audit_framemetric",
+      "src_omrpr_analysis_image_audit_hamming",
+      "src_omrpr_analysis_image_audit_perceptual_hash",
+      "src_omrpr_analysis_image_audit_py_ndarray",
+      "src_omrpr_analysis_image_audit_py_path",
+      "src_omrpr_analysis_image_audit_safe_stream_name",
+      "src_omrpr_analysis_image_audit_write_contact_sheet",
+      "src_omrpr_analysis_image_audit_write_manual_review",
+      "src_omrpr_analysis_image_audit_write_metrics",
+      "src_omrpr_analysis_image_audit_write_stream_summary",
+      "tests_python_test_image_audit",
+      "tests_python_test_image_audit_test_decode_bgr8_with_row_padding",
+      "tests_python_test_image_audit_test_decode_compressed_jpeg",
+      "tests_python_test_image_audit_test_deterministic_indices_include_boundaries",
+      "tests_python_test_image_audit_test_perceptual_hash_is_stable"
+    ],
+    "2": [
+      "connection",
+      "int64",
+      "nanoseconds",
+      "reader",
+      "src_omrpr_analysis_bag_audit",
+      "src_omrpr_analysis_bag_audit_audit_bag",
+      "src_omrpr_analysis_bag_audit_audit_short_topic",
+      "src_omrpr_analysis_bag_audit_audit_topic",
+      "src_omrpr_analysis_bag_audit_audit_tree",
+      "src_omrpr_analysis_bag_audit_classify",
+      "src_omrpr_analysis_bag_audit_image_connections",
+      "src_omrpr_analysis_bag_audit_py_ndarray",
+      "src_omrpr_analysis_bag_audit_py_path",
+      "src_omrpr_analysis_bag_audit_rationale_106",
+      "src_omrpr_analysis_bag_audit_rationale_166",
+      "src_omrpr_analysis_bag_audit_rationale_19",
+      "src_omrpr_analysis_bag_audit_rationale_204",
+      "src_omrpr_analysis_bag_audit_rationale_39",
+      "src_omrpr_analysis_bag_audit_rationale_66",
+      "src_omrpr_analysis_bag_audit_rationale_77",
+      "src_omrpr_analysis_bag_audit_topicaudit",
+      "tests_python_test_bag_audit",
+      "tests_python_test_bag_audit_test_timing_gates"
+    ],
+    "3": [
+      "scripts_02_upgrade_dependencies",
+      "scripts_02_upgrade_dependencies_sh__entry",
+      "scripts_03_install_official_apriltag",
+      "scripts_03_install_official_apriltag_ld_library_path",
+      "scripts_03_install_official_apriltag_sh__entry",
+      "scripts_06_project_readiness",
+      "scripts_06_project_readiness_bad",
+      "scripts_06_project_readiness_ok",
+      "scripts_06_project_readiness_section",
+      "scripts_06_project_readiness_sh__entry",
+      "scripts_06_project_readiness_warnf",
+      "scripts_activate_project",
+      "scripts_activate_project_apriltag_prefix",
+      "scripts_activate_project_ld_library_path",
+      "scripts_activate_project_omrpr_data_root",
+      "scripts_activate_project_omrpr_project_root",
+      "scripts_activate_project_pytest_disable_plugin_autoload",
+      "scripts_activate_project_sh__entry",
+      "scripts_activate_project_uv_link_mode",
+      "scripts_activate_project_uv_project_environment",
+      "verify_automation_package",
+      "verify_automation_package_sh__entry"
+    ],
+    "4": [
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_omrpr_expected_bags",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_omrpr_expected_static",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_omrpr_expected_wtt_5sec",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_omrpr_expected_wtt_main",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_omrpr_gap_threshold_s",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_omrpr_project_root",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_omrpr_run_dir",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_omrpr_venv",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_on_error",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_sh__entry",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_usage",
+      "tools_omrpr_step00_audit_automation_v1_0_0_run_step00_uv_link_mode"
+    ],
+    "5": [
+      "scripts_01_bootstrap_or_update",
+      "scripts_01_bootstrap_or_update_backup_existing_project",
+      "scripts_01_bootstrap_or_update_ensure_link",
+      "scripts_01_bootstrap_or_update_omrpr_data_root",
+      "scripts_01_bootstrap_or_update_omrpr_project_root",
+      "scripts_01_bootstrap_or_update_replace_tree",
+      "scripts_01_bootstrap_or_update_sh__entry",
+      "scripts_01_bootstrap_or_update_usage",
+      "scripts_01_bootstrap_or_update_uv_link_mode",
+      "scripts_01_bootstrap_or_update_uv_project_environment"
+    ],
+    "6": [
+      "scripts_00_preflight",
+      "scripts_00_preflight_bad",
+      "scripts_00_preflight_ok",
+      "scripts_00_preflight_sh__entry",
+      "scripts_00_preflight_warnf"
+    ],
+    "7": [
+      "dataframe",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_06_generate_report",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_06_generate_report_main",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_06_generate_report_markdown_table"
+    ],
+    "8": [
+      "scripts_05_classify_existing_bags",
+      "scripts_05_classify_existing_bags_classify",
+      "scripts_05_classify_existing_bags_main",
+      "scripts_05_classify_existing_bags_py_path"
+    ],
+    "9": [
+      "scripts_08_inspect_step01_results",
+      "scripts_08_inspect_step01_results_main",
+      "scripts_08_inspect_step01_results_newest_run",
+      "scripts_08_inspect_step01_results_py_path"
+    ],
+    "10": [
+      "series",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_05_static_acceptance",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_05_static_acceptance_decision",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_05_static_acceptance_main"
+    ],
+    "11": [
+      "tests_python_test_constraints",
+      "tests_python_test_constraints_test_no_forbidden_detector_dependencies",
+      "tests_python_test_constraints_test_required_scientific_constants",
+      "tests_python_test_constraints_test_source_does_not_use_cv2_aruco"
+    ],
+    "12": [
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_04_static_gap_diagnostics",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_04_static_gap_diagnostics_camera_from_path",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_04_static_gap_diagnostics_main",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_04_static_gap_diagnostics_py_path"
+    ],
+    "13": [
+      "tools_omrpr_step00_audit_automation_v1_0_0_tests_test_with_fixture",
+      "tools_omrpr_step00_audit_automation_v1_0_0_tests_test_with_fixture_omrpr_expected_bags",
+      "tools_omrpr_step00_audit_automation_v1_0_0_tests_test_with_fixture_omrpr_run_dir",
+      "tools_omrpr_step00_audit_automation_v1_0_0_tests_test_with_fixture_sh__entry"
+    ],
+    "14": [
+      "tools_omrpr_step01_image_audit_automation_v1_0_0_run_step01",
+      "tools_omrpr_step01_image_audit_automation_v1_0_0_run_step01_on_error",
+      "tools_omrpr_step01_image_audit_automation_v1_0_0_run_step01_pytest_disable_plugin_autoload",
+      "tools_omrpr_step01_image_audit_automation_v1_0_0_run_step01_sh__entry"
+    ],
+    "15": [
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_01_preflight",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_01_preflight_count_bags",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_01_preflight_sh__entry"
+    ],
+    "16": [
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_03_summarize_audit",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_03_summarize_audit_dataset_group",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_03_summarize_audit_main"
+    ],
+    "17": [
+      "run_pipeline",
+      "run_pipeline_sh__entry"
+    ],
+    "18": [
+      "scripts_04_data_placement_assistant",
+      "scripts_04_data_placement_assistant_sh__entry"
+    ],
+    "19": [
+      "scripts_07_backup_project",
+      "scripts_07_backup_project_sh__entry"
+    ],
+    "20": [
+      "scripts_write_environment_report",
+      "scripts_write_environment_report_command_output"
+    ],
+    "21": [
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_02_run_audit",
+      "tools_omrpr_step00_audit_automation_v1_0_0_scripts_02_run_audit_sh__entry"
+    ],
+    "22": [
+      "tools_omrpr_step01_image_audit_automation_v1_0_0_scripts_generate_report",
+      "tools_omrpr_step01_image_audit_automation_v1_0_0_scripts_generate_report_main"
+    ],
+    "23": [
+      "verify_download",
+      "verify_download_sh__entry"
+    ],
+    "24": [
+      "pkg_omrpr_analysis"
+    ],
+    "25": [
+      "scripts_steps_step01_calibration_input_audit"
+    ],
+    "26": [
+      "scripts_steps_step02_camera_calibration"
+    ],
+    "27": [
+      "scripts_steps_step03_apriltag_verification"
+    ],
+    "28": [
+      "scripts_steps_step04_static_precision"
+    ],
+    "29": [
+      "scripts_steps_step05_wtt_detection"
+    ],
+    "30": [
+      "scripts_steps_step06_fusion"
+    ],
+    "31": [
+      "scripts_steps_step07_response_channels"
+    ],
+    "32": [
+      "scripts_steps_step08_ldv_processing"
+    ],
+    "33": [
+      "scripts_steps_step09_condition_benchmark"
+    ],
+    "34": [
+      "scripts_steps_step10_uncertainty"
+    ],
+    "35": [
+      "scripts_steps_step11_manuscript_outputs"
+    ],
+    "36": [
+      "scripts_steps_step12_submission_readiness"
+    ],
+    "37": [
+      "src_python_omrpr_cli"
+    ],
+    "38": [
+      "src_python_omrpr_config"
+    ],
+    "39": [
+      "src_python_omrpr_init"
+    ],
+    "40": [
+      "src_python_omrpr_io"
+    ],
+    "41": [
+      "src_python_omrpr_metadata"
+    ],
+    "42": [
+      "src_python_omrpr_metrics"
+    ],
+    "43": [
+      "src_python_omrpr_plotting"
+    ],
+    "44": [
+      "src_python_omrpr_preprocessing"
+    ],
+    "45": [
+      "src_python_omrpr_provenance"
+    ],
+    "46": [
+      "src_python_omrpr_signals"
+    ],
+    "47": [
+      "src_python_omrpr_statistics"
+    ],
+    "48": [
+      "src_python_omrpr_synchronization"
+    ],
+    "49": [
+      "src_python_omrpr_validation"
+    ]
+  },
+  "cohesion": {
+    "0": 0.13118279569892474,
+    "1": 0.17989417989417988,
+    "2": 0.1422924901185771,
+    "3": 0.10822510822510822,
+    "4": 0.16666666666666666,
+    "5": 0.28888888888888886,
+    "6": 0.7,
+    "7": 0.6666666666666666,
+    "8": 0.8333333333333334,
+    "9": 0.6666666666666666,
+    "10": 0.6666666666666666,
+    "11": 0.5,
+    "12": 0.8333333333333334,
+    "13": 0.5,
+    "14": 0.5,
+    "15": 0.6666666666666666,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 1.0,
+    "49": 1.0
+  },
+  "gods": [
+    {
+      "id": "src_omrpr_analysis_image_audit_audit_tree",
+      "label": "audit_tree()",
+      "degree": 13
+    },
+    {
+      "id": "src_omrpr_analysis_bag_audit_audit_short_topic",
+      "label": "_audit_short_topic()",
+      "degree": 8
+    },
+    {
+      "id": "src_omrpr_analysis_bag_audit_audit_topic",
+      "label": "_audit_topic()",
+      "degree": 8
+    },
+    {
+      "id": "src_omrpr_analysis_bag_audit_audit_bag",
+      "label": "audit_bag()",
+      "degree": 8
+    },
+    {
+      "id": "src_omrpr_analysis_image_audit_framemetric",
+      "label": "FrameMetric",
+      "degree": 7
+    },
+    {
+      "id": "src_omrpr_analysis_bag_audit_audit_tree",
+      "label": "audit_tree()",
+      "degree": 6
+    },
+    {
+      "id": "src_omrpr_analysis_image_audit_decode_compressed",
+      "label": "decode_compressed()",
+      "degree": 6
+    },
+    {
+      "id": "src_omrpr_analysis_image_audit_decode_raw",
+      "label": "decode_raw()",
+      "degree": 6
+    },
+    {
+      "id": "src_omrpr_analysis_image_audit_decode_message",
+      "label": "decode_message()",
+      "degree": 6
+    },
+    {
+      "id": "src_omrpr_analysis_image_audit_frame_metric",
+      "label": "frame_metric()",
+      "degree": 6
+    }
+  ],
+  "surprises": [
+    {
+      "source": "main()",
+      "target": "audit_tree()",
+      "source_files": [
+        "scripts/steps/step01_image_decode_sampling_audit.py",
+        "src/omrpr_analysis/image_audit.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `main()` unexpectedly reaches hub `audit_tree()`"
+    },
+    {
+      "source": "test_decode_compressed_jpeg()",
+      "target": "decode_compressed()",
+      "source_files": [
+        "tests/python/test_image_audit.py",
+        "src/omrpr_analysis/image_audit.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `test_decode_compressed_jpeg()` unexpectedly reaches hub `decode_compressed()`"
+    },
+    {
+      "source": "test_decode_bgr8_with_row_padding()",
+      "target": "decode_raw()",
+      "source_files": [
+        "tests/python/test_image_audit.py",
+        "src/omrpr_analysis/image_audit.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `test_decode_bgr8_with_row_padding()` unexpectedly reaches hub `decode_raw()`"
+    },
+    {
+      "source": "test_timing_gates()",
+      "target": "classify()",
+      "source_files": [
+        "tests/python/test_bag_audit.py",
+        "src/omrpr_analysis/bag_audit.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories"
+    },
+    {
+      "source": "test_deterministic_indices_include_boundaries()",
+      "target": "deterministic_indices()",
+      "source_files": [
+        "tests/python/test_image_audit.py",
+        "src/omrpr_analysis/image_audit.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `audit_tree()` connect `bag_audit.py` to `omrpr_analysis/cli.py`?",
+      "why": "High betweenness centrality (0.007) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `VERIFY_DOWNLOAD.sh script`, `omrpr-analysis`, `run_pipeline.sh script` to the rest of the system?",
+      "why": "37 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `omrpr_analysis/cli.py` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.13118279569892474 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `bag_audit.py` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.1422924901185771 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `activate-project.sh` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.10822510822510822 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

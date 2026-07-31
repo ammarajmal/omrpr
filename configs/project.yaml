@@ -1,0 +1,33 @@
+schema_version: 2
+project:
+  name: omrpr-analysis
+  analysis_type: non_simultaneous_condition_level_benchmarking
+camera:
+  count: 3
+  nominal_sampling_rate_hz: 60.0
+  tag_family: tag36h11
+  tag_size_m: 0.020
+  detector: official_aprilrobotics_c_library
+  official_apriltag_release: v3.4.5
+markers:
+  static:
+    tag_ids: [0]
+    cameras: [cam1, cam2, cam3]
+  wtt:
+    tag_0_cameras: [cam1, cam2]
+    tag_1_cameras: [cam3]
+ldv:
+  tunnel_b:
+    dside_m: 0.13
+    db_m: 0.20
+    dp: 1.5384615384615385
+frequencies_hz:
+  bending: 1.430
+  torsion: 3.103
+quality:
+  expected_fps_hz: 60.0
+  hard_min_fps_hz: 55.0
+  warn_fps_range_hz: [59.0, 61.0]
+  warn_max_gap_s: 0.1
+  fail_max_gap_s: 0.5
+  dropped_frame_gap_s: 0.025

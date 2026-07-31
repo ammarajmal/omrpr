@@ -1,51 +1,55 @@
-# Python
+# Python and tools
+.venv/
 __pycache__/
 *.py[cod]
-.venv/
-venv/
-env/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+htmlcov/
 .ipynb_checkpoints/
 
-# Build/cache
-build/
-dist/
-*.egg-info/
-.cache/
-
-# Private/large data
-data/raw/
-data/private/
-../omrpr_private_data/
-*.bag
-*.db3
-*.avi
-*.mp4
-*.mkv
-*.zip
-*.tar
-*.tar.gz
-
-# Huge generated outputs
-results/step01/
-results/raw_images/
-results/**/*.png
-results/**/*.jpg
-results/**/*.jpeg
-
-# OS/editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-
-# Env
+# Local configuration and upgrade backups
 .env
 .env.*
+!.env.example
+.envrc
+.local/
+.upgrade_backups/
 
-# Hold unreviewed data/results folders out of Git until explicitly audited
-data/
-results/
-zdfds
+# External data links and data payloads
+data/raw/source
+data/interim/source
+data/processed/source
+data/metadata/source
+*.bag
+*.db3
+*.mcap
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Generated outputs
+outputs/**
+!outputs/**/.gitkeep
+manuscript/generated/**
+!manuscript/generated/**/.gitkeep
+manuscript/submission/**
+!manuscript/submission/**/.gitkeep
+state/gates/*.json
+
+# Disposable code-navigation cache; reviewed gate snapshots may remain tracked
+graphify-out/cache/
+
+# MATLAB
+*.asv
+*.m~
+slprj/
+codegen/
+*.mex*
+
+# Editors
+.vscode/
+.idea/
+.DS_Store

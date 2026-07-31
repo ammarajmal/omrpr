@@ -1,0 +1,46 @@
+schema_version: 1
+updated: 2026-07-31
+project: omrpr-analysis
+lifecycle: active_reconstruction
+current_gate: G0
+overall_status: yellow
+write_scope:
+  repository: read_write_bounded_pipeline
+  raw_data: read_only
+  legacy_repositories: read_only
+  manuscripts: read_only
+gates:
+  G0: {name: repository_stabilization, status: review_pending}
+  G1: {name: data_and_observation_control, status: partial}
+  G2: {name: image_plane_primary_measurement, status: not_started}
+  G3: {name: precision_and_admissibility, status: not_started}
+  G4: {name: klt_independent_branch, status: quarantined}
+  G5: {name: state_estimation_ablation, status: quarantined}
+  G6: {name: response_and_modal_analysis, status: not_started}
+  G7: {name: ldv_reconstruction, status: partial_external_patch}
+  G8: {name: condition_level_benchmark, status: not_started}
+  G9: {name: robustness_and_reproducibility, status: partial}
+  G10: {name: publication_package, status: blocked}
+blockers:
+  - id: B001
+    description: no_git_remote_configured
+    disposition: resolved_origin_configured_remote_history_requires_preservation_merge_review
+  - id: B002
+    description: pytest_environment_contaminated_by_system_ros_plugins
+    disposition: resolved_by_locked_python_module_invocation_and_plugin_isolation
+  - id: B002b
+    description: inherited_ruff_violations_remain
+    count: 0
+    disposition: resolved_2026_08_01
+  - id: B003
+    description: fresh_physical_camera_calibration_unavailable
+    disposition: image_plane_primary_and_sensitivity_only
+  - id: B004
+    description: klt_and_state_estimators_lack_preregistered_physical_validation
+    owner: codex
+next_task: review_and_merge_pr_6_then_freeze_G1_observation_control
+evidence_anchor:
+  knowledge_repository_commit: 27f6c5c
+  stabilization_commit: d25029f
+  preservation_merge_commit: e96c4cf
+  stabilization_pull_request: https://github.com/ammarajmal/omrpr/pull/6

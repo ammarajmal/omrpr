@@ -1,33 +1,64 @@
 [project]
-name = "omrpr-fin-analysis"
-version = "0.1.0"
-description = "Clean OMRPR Paper 2 analysis, plotting, and reproducibility environment"
-requires-python = ">=3.12"
+name = "omrpr-analysis"
+version = "0.3.0"
+description = "Clean-room camera-LDV analysis for OMRPR wind-tunnel research"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+authors = [{name = "Ammar Ajmal"}]
 dependencies = [
-  "numpy",
-  "pandas",
-  "scipy",
-  "matplotlib",
-  "plotly",
-  "opencv-python",
-  "pupil-apriltags",
-  "scikit-learn",
-  "statsmodels",
-  "jupyterlab",
-  "ipykernel",
-  "pyarrow",
-  "openpyxl",
-  "tqdm",
-  "rich",
-  "typer",
-  "ruff",
-  "black",
-  "mypy",
-  "pytest",
+  "h5py>=3.13",
+  "matplotlib>=3.10",
+  "numpy>=2.2",
+  "openpyxl>=3.1",
+  "opencv-python-headless>=4.11",
+  "pandas>=2.2",
+  "pyarrow>=19",
+  "pyyaml>=6.0",
+  "rich>=14",
+  "rosbags>=0.11",
+  "rosbags-image>=0.10",
+  "scikit-image>=0.25",
+  "scikit-learn>=1.6",
+  "scipy>=1.15",
+  "statsmodels>=0.14",
+  "typer>=0.16",
 ]
+
+[project.scripts]
+omrpr = "omrpr_analysis.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.8,<0.12"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+  "ipykernel>=6.30",
+  "jupyterlab>=4.4",
+  "mypy>=1.15",
+  "pre-commit>=4.2",
+  "pytest>=8.4",
+  "pytest-cov>=6.2",
+  "ruff>=0.12",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/python"]
+addopts = "-ra --strict-markers"
 
 [tool.ruff]
 line-length = 100
+target-version = "py312"
+exclude = ["data", "outputs", "manuscript/generated", ".upgrade_backups"]
 
-[tool.black]
-line-length = 100
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["omrpr_analysis"]
+
+[tool.coverage.run]
+source = ["omrpr_analysis"]
+branch = true

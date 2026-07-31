@@ -1,0 +1,21 @@
+schema_version: 2
+target:
+  type: null
+  columns_inner_corners: null
+  rows_inner_corners: null
+  square_size_m: null
+measurement:
+  measured_by: Ammar Ajmal
+  measured_date: null
+  instrument: null
+  uncertainty_m: null
+camera_capture:
+  resolution_px: [1920, 1080]
+  zoom_setting: null
+  focus_mode: manual
+  focus_locked: true
+acceptance:
+  maximum_mean_reprojection_error_px: 0.5
+  maximum_per_image_reprojection_error_px: 1.0
+  minimum_valid_images: 20
+  minimum_pose_diversity_score: null
