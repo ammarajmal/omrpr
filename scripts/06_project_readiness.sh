@@ -4,6 +4,8 @@ set -Eeuo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$ROOT/scripts/activate-project.sh"
 cd "$ROOT"
+python_cmd="$UV_PROJECT_ENVIRONMENT/bin/python"
+ruff_cmd="$UV_PROJECT_ENVIRONMENT/bin/ruff"
 
 pass=0
 warn=0
@@ -53,7 +55,7 @@ section "Required project files"
 section "Python and runtime"
 
 python_version="$(
-    uv run python -c \
+    "$python_cmd" -c \
         'import platform; print(platform.python_version())' \
         2>/dev/null || true
 )"
@@ -65,7 +67,7 @@ else
 fi
 
 python_executable="$(
-    uv run python -c \
+    "$python_cmd" -c \
         'import sys; print(sys.executable)' \
         2>/dev/null || true
 )"
@@ -112,7 +114,7 @@ done
 section "AprilTag detector constraints"
 
 pupil_status="$(
-    uv run python - <<'PY' 2>/dev/null || true
+    "$python_cmd" - <<'PY' 2>/dev/null || true
 import importlib.util
 
 print(
@@ -152,7 +154,7 @@ else
 fi
 
 apriltag_status="$(
-    uv run python - <<'PY' 2>/dev/null || true
+    "$python_cmd" - <<'PY' 2>/dev/null || true
 try:
     from apriltag import apriltag
 
@@ -280,19 +282,19 @@ done
 
 section "Software quality"
 
-if uv run ruff format --check . >/dev/null; then
+if "$ruff_cmd" format --check . >/dev/null; then
     ok "Ruff format"
 else
     bad "Ruff format"
 fi
 
-if uv run ruff check . >/dev/null; then
+if "$ruff_cmd" check . >/dev/null; then
     ok "Ruff lint"
 else
     bad "Ruff lint"
 fi
 
-if uv run python -m mypy src/omrpr_analysis >/dev/null; then
+if "$python_cmd" -m mypy src/omrpr_analysis >/dev/null; then
     ok "mypy"
 else
     bad "mypy"
@@ -300,7 +302,7 @@ fi
 
 if env -u PYTHONPATH \
     PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
-    uv run python -m pytest \
+    "$python_cmd" -m pytest \
         -p pytest_cov \
         -q \
         >/dev/null
@@ -310,7 +312,7 @@ else
     bad "pytest isolated"
 fi
 
-if uv run omrpr doctor >/dev/null; then
+if "$UV_PROJECT_ENVIRONMENT/bin/omrpr" doctor >/dev/null; then
     ok "project doctor"
 else
     bad "project doctor"
