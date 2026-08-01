@@ -11,14 +11,14 @@ ROOT="$OMRPR_PROJECT_ROOT/data/raw/source/camera/rosbag"
 
 echo "[1/6] Preflight checks"
 
-for command_name in python uv sha256sum find awk; do
+for command_name in python sha256sum find awk; do
   command -v "$command_name" >/dev/null || {
     echo "ERROR: Required command unavailable: $command_name"
     exit 3
   }
 done
 
-uv run --active omrpr --help >/dev/null
+"$OMRPR_VENV/bin/omrpr" --help >/dev/null
 python - <<'PY'
 import importlib.util
 missing = [
@@ -29,9 +29,10 @@ if missing:
     raise SystemExit("Missing Python packages: " + ", ".join(missing))
 PY
 
-if [[ -e "$OMRPR_PROJECT_ROOT/.venv" ]]; then
-  echo "ERROR: A repository-local .venv exists and may cause environment ambiguity."
-  echo "Expected only the external environment: $OMRPR_VENV"
+python_executable="$(python -c 'import sys; print(sys.executable)')"
+if [[ "$python_executable" != "$OMRPR_VENV/"* ]]; then
+  echo "ERROR: Python is outside the locked external environment: $python_executable"
+  echo "Expected: $OMRPR_VENV"
   exit 3
 fi
 

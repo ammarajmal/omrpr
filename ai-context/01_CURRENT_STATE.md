@@ -4,7 +4,7 @@
 
 **Lifecycle:** active clean-room reconstruction, before production WTT replay
 
-**Current gate:** G0 — repository/worktree stabilization (draft PR review pending)
+**Current gate:** G1 — data and observation control
 
 ## Established
 
@@ -41,9 +41,25 @@
   common ancestor with this clean-room reconstruction and contains the prior
   pipeline/results lineage. It must be joined by a preservation-only ancestry
   merge on a review branch; its tree must not be imported as production code.
-- Draft PR #6 proposes that preservation merge and clean-room working tree. G0
-  may close after its history strategy and tree replacement are reviewed and
-  merged.
+- PR #6 merged the preservation ancestry and clean-room working tree at
+  `f605a05`. G0 is complete.
+- The 21 canonical `wtt-main` bag identities are frozen by size and SHA-256 in
+  `configs/dataset-identity-manifest.csv`. The expected 63 camera-condition
+  observations and their camera/tag/location identities are frozen in
+  `configs/observation-manifest.csv`.
+- Observation gates are executable in `configs/observation-control.yaml` and
+  `omrpr_analysis.observation_control`. They enforce campaign separation,
+  image-plane primacy, per-stream decisions, 60 RPM diagnostic treatment, and
+  the cam3-only 320 RPM boundary.
+- The fresh Step 00 review run `20260801_022002` completed successfully using
+  the hashed canonical audit CSV plus newly computed static gap/segment
+  diagnostics. All 126 WTT topic rows passed; the 12 non-pass rows are confined
+  to static streams. Static decisions are 8 accept-as-recorded, 5 segment
+  selection, 5 lower-rate pending image review, and 2 long-gap review.
+- The fresh bounded Step 01 run `20260801_022229` sampled 1,752 frames from 146
+  streams with zero decode failures. Automated image checks mark 37 PASS and
+  109 REVIEW because of near-duplicate samples; this is not automatic failure.
+  All contact sheets and 146 manual-review rows remain human-gated.
 - The locked Python 3.12 suite passes 10 tests with third-party pytest plugin
   autoload disabled. Ruff passes all 99 Python files and strict mypy passes the
   production package. Direct virtual-environment tool entry points are not
@@ -55,6 +71,8 @@
 
 ## Next action
 
-Review and merge draft PR #6 to close G0. Then freeze the observation
-manifest/config schema and run Step 00/01 reproducibly before implementing the
-primary image-plane detector branch.
+Complete G1 by running Step 00/01 reproducibly and generating measured
+per-camera/per-condition gate records. Step 00/01 execution is complete; human
+contact-sheet review and the measured gate export remain. Quality-score and
+image-plane-jump thresholds remain deliberately unset until static
+distributions are measured.

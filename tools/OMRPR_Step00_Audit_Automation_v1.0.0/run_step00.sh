@@ -99,7 +99,7 @@ cd "$PROJECT_ROOT"
   printf 'Python: '; python --version
   printf 'Python executable: '; command -v python
   printf 'uv: '; uv --version
-  printf 'OMRPR CLI: '; uv run --active omrpr version 2>&1 || true
+  printf 'OMRPR CLI: '; "$VENV_DIR/bin/omrpr" version 2>&1 || true
   printf '\nDisk:\n'; df -Th "$PROJECT_ROOT" "$VENV_DIR" 2>&1 || true
   printf '\nInstalled project packages:\n'
   python -m pip freeze 2>/dev/null || uv pip freeze --active 2>/dev/null || true

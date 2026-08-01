@@ -17,10 +17,14 @@ markers:
     tag_0_cameras: [cam1, cam2]
     tag_1_cameras: [cam3]
 ldv:
-  tunnel_b:
-    dside_m: 0.13
+  tunnel_a_2024:
+    campaign: D0-D38-principal-2024
+    geometry_status: candidate_human_confirmed_primary_rederivation_pending
+    dside_m: 0.10
     db_m: 0.20
-    dp: 1.5384615384615385
+    dp: 2.0
+    permitted_channel_name: torsion_proxy
+    metric_angle_claim_permitted: false
 frequencies_hz:
   bending: 1.430
   torsion: 3.103
