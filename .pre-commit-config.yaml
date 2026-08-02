@@ -16,3 +16,11 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: detect-private-key
+  - repo: local
+    hooks:
+      - id: number-ledger-check
+        name: Check manuscript numbers against evidence ledger
+        entry: python3 scripts/check_number_ledger.py
+        language: system
+        pass_filenames: false
+        always_run: true
