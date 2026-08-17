@@ -48,6 +48,25 @@ class ConditionStats:
     torsion_peak_mm: float
 
 
+def convert_displacements(
+    data: npt.NDArray[np.float64], bias: npt.NDArray[np.float64]
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    """Convert raw two-channel LDV samples to bending and torsion-proxy mm."""
+
+    calibrated = (data - bias) * PVOLT
+    bending_mm = (calibrated[:, 0] + calibrated[:, 1]) / 2 * CM_TO_MM
+    torsion_mm = (calibrated[:, 1] - calibrated[:, 0]) * DP * CM_TO_MM
+    return bending_mm, torsion_mm
+
+
+def compute_condition_timeseries(
+    data: npt.NDArray[np.float64], bias: npt.NDArray[np.float64]
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    """Return the full bending and torsion-proxy displacement series in mm."""
+
+    return convert_displacements(data, bias)
+
+
 def load_rpm_lookup(windspeed_xlsx: Path) -> dict[int, float]:
     """Dn -> RPM, from the '실험rpm' column. D0 (bias) has no row and is excluded.
 
@@ -79,9 +98,7 @@ def load_dn(path: Path) -> npt.NDArray[np.float64]:
 def compute_condition(
     dn: int, rpm: float, data: npt.NDArray[np.float64], bias: npt.NDArray[np.float64]
 ) -> ConditionStats:
-    dat1 = (data - bias) * PVOLT
-    bending = (dat1[:, 0] + dat1[:, 1]) / 2 * CM_TO_MM
-    torsion = (dat1[:, 1] - dat1[:, 0]) * DP * CM_TO_MM
+    bending, torsion = convert_displacements(data, bias)
 
     bending_mean = float(bending.mean())
     torsion_mean = float(torsion.mean())
@@ -129,15 +146,54 @@ def write_csv(rows: list[ConditionStats], out_path: Path) -> None:
             writer.writerow(row.__dict__)
 
 
+def write_condition_timeseries(
+    dn: int,
+    bending_mm: npt.NDArray[np.float64],
+    torsion_mm: npt.NDArray[np.float64],
+    out_dir: Path,
+) -> Path:
+    """Write one condition's displacement series indexed by raw sample number."""
+
+    if bending_mm.shape != torsion_mm.shape:
+        raise ValueError("bending_mm and torsion_mm must have the same shape")
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / f"D{dn}.csv"
+    with out_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["sample_index", "bending_mm", "torsion_mm"])
+        writer.writerows(zip(range(len(bending_mm)), bending_mm, torsion_mm, strict=True))
+    return out_path
+
+
+def write_all_timeseries(dataset_root: Path, out_dir: Path) -> int:
+    """Convert and write every condition represented in the RPM lookup."""
+
+    lookup = load_rpm_lookup(dataset_root / "Windspeed.xlsx")
+    bias = load_dn(dataset_root / "D0").mean(axis=0)
+    written = 0
+    for dn in sorted(lookup):
+        path = dataset_root / f"D{dn}"
+        if not path.exists():
+            continue
+        bending_mm, torsion_mm = compute_condition_timeseries(load_dn(path), bias)
+        write_condition_timeseries(dn, bending_mm, torsion_mm, out_dir)
+        written += 1
+    return written
+
+
 def main() -> None:
     paths = ProjectPaths.discover()
     dataset_root = paths.raw / "laser/csv/tunnel-a-2024/2D_WTT"
     out_path = paths.interim / "condition-matched/laser_tunnel_a_2024.csv"
+    timeseries_dir = paths.interim / "condition-matched/laser_tunnel_a_2024_timeseries"
 
     rows = parse_all(dataset_root)
     write_csv(rows, out_path)
+    timeseries_count = write_all_timeseries(dataset_root, timeseries_dir)
 
     print(f"{len(rows)} conditions parsed -> {out_path}")
+    print(f"{timeseries_count} condition time series -> {timeseries_dir}")
     for row in rows:
         print(
             f"D{row.dn} rpm={row.rpm:.0f} bending_rms={row.bending_rms_mm:.3f}mm "

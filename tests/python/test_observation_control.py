@@ -5,7 +5,9 @@ import pytest
 
 from omrpr_analysis.observation_control import (
     DetectionMetrics,
+    StaticPrecisionMetrics,
     classify_detection,
+    classify_static_precision,
     load_control,
     validate_conditions,
 )
@@ -19,6 +21,10 @@ def test_frozen_control_and_condition_manifest() -> None:
     assert len(rows) == 21
     assert control["campaigns"]["camera"]["cross_instrument_alignment"] == "condition_only"
     assert control["campaigns"]["ldv"]["concurrency_with_camera"] is False
+    assert {
+        camera: observation["expected_tag_id"]
+        for camera, observation in control["camera_observations"].items()
+    } == {"cam1": 0, "cam2": 0, "cam3": 0}
 
 
 @pytest.mark.parametrize(
@@ -49,11 +55,30 @@ def test_320rpm_forces_cam3_diagnostic_and_rejects_composite_inputs() -> None:
     )
 
 
-def test_unmeasured_thresholds_remain_unset() -> None:
+def test_static_precision_thresholds_are_locked() -> None:
     control = load_control(CONTROL_PATH)
-    gates = control["detection_gates"]
-    assert gates["quality_score_threshold"] is None
-    assert gates["image_plane_jump_threshold_px"] is None
+    gates = control["static_precision_gates"]
+    assert gates["admissible_bending_rms_mm"] == 0.14
+    assert gates["admissible_torsion_rms_mm"] == 0.28
+    assert gates["review_bending_rms_mm"] == 0.22
+    assert gates["review_torsion_rms_mm"] == 0.33
+
+
+@pytest.mark.parametrize(
+    ("bending", "torsion", "expected"),
+    [
+        (0.11, 0.18, "admissible"),
+        (0.18, 0.25, "review"),
+        (0.25, 0.35, "reject"),
+    ],
+)
+def test_static_precision_classification(bending: float, torsion: float, expected: str) -> None:
+    control = load_control(CONTROL_PATH)
+    status, _ = classify_static_precision(
+        StaticPrecisionMetrics(bending, torsion),
+        control,
+    )
+    assert status == expected
 
 
 def test_generated_observation_manifest_has_one_row_per_camera_condition() -> None:

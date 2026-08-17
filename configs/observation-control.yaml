@@ -23,7 +23,11 @@ camera_observations:
     expected_tag_id: 0
     physical_location: documented_center_marker
   cam3:
-    expected_tag_id: 1
+    # Both physical WTT markers decode as tag36h11 ID 0.  Camera identity,
+    # rather than tag ID, distinguishes the side marker from the center marker.
+    # Verified by the official AprilRobotics v3.4.5 full-sweep run; see the
+    # sibling evidence hub's evidence/FRESH_QUALITY_SCORES_SUMMARY_2026-08-02.md.
+    expected_tag_id: 0
     physical_location: documented_side_marker
 
 primary_observable:
@@ -49,6 +53,17 @@ detection_gates:
     Quality-score and jump thresholds remain unset until static-data distributions
     are measured. They must not be borrowed from dimensionally incompatible legacy
     tracker thresholds or selected using LDV agreement.
+
+static_precision_gates:
+  admissible_bending_rms_mm: 0.14
+  admissible_torsion_rms_mm: 0.28
+  review_bending_rms_mm: 0.22
+  review_torsion_rms_mm: 0.33
+  notes: >-
+    First-pass static admissibility gates derived from the measured 0 RPM
+    envelope with a conservative cushion and a separate review band below the
+    60 RPM onset midpoint. Keep these provisional until the next measured
+    calibration pass is complete.
 
 admissibility:
   pass:

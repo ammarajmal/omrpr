@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import importlib.util
 import json
 from pathlib import Path
@@ -8,6 +9,7 @@ import typer
 from rich.console import Console
 
 from . import __version__
+from .background_compensation import compensate_tracks, write_compensation_metadata
 from .bag_audit import audit_tree
 from .inventory import build_inventory
 from .paths import ProjectPaths
@@ -76,10 +78,65 @@ def verify_apriltag() -> None:
     console.print(f"Official AprilTag {data['release']} at {data['commit']}")
 
 
+@app.command("compensate-background")
+def compensate_background(
+    source: Path = typer.Option(  # noqa: B008
+        Path("outputs/apriltag-detections/official-v3.4.5/per_frame_tracks.csv"),
+        "--source",
+    ),
+    output_dir: Path = typer.Option(  # noqa: B008
+        Path("outputs/apriltag-detections/official-v3.4.5"), "--output-dir"
+    ),
+    frame_cache_root: Path = typer.Option(  # noqa: B008
+        Path("/mnt/phd/fin_phd/omrpr_fin/results/step01"),
+        "--frame-cache-root",
+        help=(
+            "Pre-extracted step01 PNG frames reused as a decode cache. "
+            "A stream falls back to decoding its bag if any frame is missing."
+        ),
+    ),
+    workers: int = typer.Option(
+        1,
+        "--workers",
+        help=(
+            "Parallel stream workers (each condition/camera stream is independent). "
+            "ECC has no CUDA path in this OpenCV build, so this is the CPU parallelism lever."
+        ),
+    ),
+) -> None:
+    paths = ProjectPaths.discover()
+    source = paths.root / source if not source.is_absolute() else source
+    output_dir = paths.root / output_dir if not output_dir.is_absolute() else output_dir
+    with (paths.root / "configs/dataset-identity-manifest.csv").open(
+        newline="", encoding="utf-8"
+    ) as stream:
+        bag_paths = {
+            row["condition_id"]: paths.raw / row["relative_source_path"]
+            for row in csv.DictReader(stream)
+            if row["dataset_id"].startswith("camera-wtt-main-")
+        }
+    destination = output_dir / "compensated_tracks.csv"
+    summary = compensate_tracks(
+        source, destination, bag_paths, frame_cache_root=frame_cache_root, max_workers=workers
+    )
+    metadata = destination.with_name("compensation_metadata.json")
+    write_compensation_metadata(metadata, source=source, output=destination, summary=summary)
+    console.print(
+        f"compensated {summary.compensated_frames}/{summary.total_frames} frames "
+        f"across {summary.streams} streams"
+    )
+    console.print(destination)
+    console.print(metadata)
+
+
 @pipeline_app.command("status")
 def pipeline_status() -> None:
+    console.print(
+        "Legacy engineering-step display only. Scientific status is controlled "
+        "by OMRPR-NS-001 in structural-vision-research."
+    )
     for step, title in STEPS.items():
-        console.print(f"{'APPROVED' if approved(step) else 'PENDING':8} Step {step:02d}: {title}")
+        console.print(f"{'RETIRED' if approved(step) else 'UNCLAIMED':9} Step {step:02d}: {title}")
 
 
 @pipeline_app.command("approve")

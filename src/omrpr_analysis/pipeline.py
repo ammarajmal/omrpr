@@ -38,24 +38,8 @@ def approved(step: int) -> bool:
 
 
 def approve(step: int, evidence: Path) -> Path:
-    if step not in STEPS:
-        raise ValueError("step must be 0 through 12")
-    if not evidence.exists():
-        raise FileNotFoundError(evidence)
-    if step > 0 and not approved(step - 1):
-        raise RuntimeError(f"Step {step - 1:02d} is not approved")
-    path = gate_path(step)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(
-            {
-                "step": step,
-                "title": STEPS[step],
-                "approved": True,
-                "evidence": str(evidence.resolve()),
-            },
-            indent=2,
-        ),
-        encoding="utf-8",
+    raise RuntimeError(
+        "Legacy Step 00-12 approval is retired. Record evidence and checkpoint "
+        "status in the OMRPR-NS-001 progress ledger, then run "
+        "structural-vision-research/scripts/research_supervisor.py validate."
     )
-    return path

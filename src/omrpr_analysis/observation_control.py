@@ -16,6 +16,12 @@ class DetectionMetrics:
     max_consecutive_misses: int
 
 
+@dataclass(frozen=True)
+class StaticPrecisionMetrics:
+    bending_rms_mm: float
+    torsion_rms_mm: float
+
+
 def load_control(path: Path) -> dict[str, Any]:
     record = yaml.safe_load(path.read_text(encoding="utf-8"))
     if not isinstance(record, dict):
@@ -29,7 +35,9 @@ def validate_control(control: dict[str, Any]) -> None:
         raise ValueError("unsupported observation-control schema")
 
     observations = control["camera_observations"]
-    expected = {"cam1": 0, "cam2": 0, "cam3": 1}
+    # The two physical markers have the same decoded ID (0); camera identity
+    # distinguishes the two observation locations.
+    expected = {"cam1": 0, "cam2": 0, "cam3": 0}
     actual = {camera: values["expected_tag_id"] for camera, values in observations.items()}
     if actual != expected:
         raise ValueError(f"camera/tag mapping changed: {actual}")
@@ -47,6 +55,16 @@ def validate_control(control: dict[str, Any]) -> None:
         raise ValueError("detection-rate thresholds are not ordered")
     if not 0 <= pass_misses < warning_misses:
         raise ValueError("consecutive-miss thresholds are not ordered")
+
+    static_gates = control["static_precision_gates"]
+    admissible_bending = float(static_gates["admissible_bending_rms_mm"])
+    admissible_torsion = float(static_gates["admissible_torsion_rms_mm"])
+    review_bending = float(static_gates["review_bending_rms_mm"])
+    review_torsion = float(static_gates["review_torsion_rms_mm"])
+    if not 0.0 < admissible_bending < review_bending:
+        raise ValueError("bending static-precision thresholds are not ordered")
+    if not 0.0 < admissible_torsion < review_torsion:
+        raise ValueError("torsion static-precision thresholds are not ordered")
 
     high_wind = control["special_conditions"]["e20_320rpm"]
     if high_wind["cam1"] != "fail" or high_wind["cam2"] != "fail":
@@ -85,6 +103,33 @@ def classify_detection(
     if reasons:
         return "warning", tuple(reasons)
     return "pass", ()
+
+
+def classify_static_precision(
+    metrics: StaticPrecisionMetrics, control: dict[str, Any]
+) -> tuple[str, tuple[str, ...]]:
+    gates = control["static_precision_gates"]
+    reasons: list[str] = []
+
+    admissible_bending = float(gates["admissible_bending_rms_mm"])
+    admissible_torsion = float(gates["admissible_torsion_rms_mm"])
+    review_bending = float(gates["review_bending_rms_mm"])
+    review_torsion = float(gates["review_torsion_rms_mm"])
+
+    if metrics.bending_rms_mm > review_bending:
+        reasons.append("bending_rms_above_review_threshold")
+    if metrics.torsion_rms_mm > review_torsion:
+        reasons.append("torsion_rms_above_review_threshold")
+    if reasons:
+        return "reject", tuple(reasons)
+
+    if metrics.bending_rms_mm > admissible_bending:
+        reasons.append("bending_rms_above_admissible_threshold")
+    if metrics.torsion_rms_mm > admissible_torsion:
+        reasons.append("torsion_rms_above_admissible_threshold")
+    if reasons:
+        return "review", tuple(reasons)
+    return "admissible", ()
 
 
 def validate_conditions(path: Path, control: dict[str, Any]) -> list[dict[str, str]]:

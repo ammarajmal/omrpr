@@ -14,8 +14,14 @@ markers:
     tag_ids: [0]
     cameras: [cam1, cam2, cam3]
   wtt:
-    tag_0_cameras: [cam1, cam2]
-    tag_1_cameras: [cam3]
+    # Both physical markers decode as tag36h11 ID 0. Do not pool them: camera
+    # identity distinguishes marker_a (center) from marker_b (side).
+    marker_a:
+      tag_id: 0
+      cameras: [cam1, cam2]
+    marker_b:
+      tag_id: 0
+      cameras: [cam3]
 ldv:
   tunnel_a_2024:
     campaign: D0-D38-principal-2024
@@ -35,3 +41,8 @@ quality:
   warn_max_gap_s: 0.1
   fail_max_gap_s: 0.5
   dropped_frame_gap_s: 0.025
+static_precision:
+  admissible_bending_rms_mm: 0.14
+  admissible_torsion_rms_mm: 0.28
+  review_bending_rms_mm: 0.22
+  review_torsion_rms_mm: 0.33
