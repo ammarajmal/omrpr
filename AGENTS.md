@@ -3,6 +3,19 @@
 PhD research repo: multi-camera AprilTag displacement tracking of a bridge-deck
 model in wind-tunnel testing, benchmarked non-simultaneously against LDV.
 
+## Governing plan and progress authority
+
+Scientific progress, score, deviations, and publication-stage status are
+controlled by the sibling research hub:
+
+- `/mnt/space/adev/projects/active/structural-vision-research/10_PROJECT_MANAGEMENT/RESEARCH_NORTH_STAR_SUPERVISORY_SYSTEM.md`
+- `/mnt/space/adev/projects/active/structural-vision-research/10_PROJECT_MANAGEMENT/RESEARCH_MASTER_PLAN.json`
+- its progress, deviation, and decision ledgers.
+
+This repository owns implementation and reproducible derived outputs. Its
+legacy Step 00--12 documents are engineering crosswalks only and cannot approve
+scientific progress independently.
+
 **Read `LEGACY_ANALYSIS_REPORT.md` first, in full, before writing any code.**
 It is a full-pipeline audit of a prior 188GB implementation of this same
 project (`/mnt/data/DEV/shm-displacement-project`) and documents concrete
@@ -29,11 +42,12 @@ time of authorization; do not overwrite unrelated or uncertain changes.
 - Tag family `tag36h11`, tag size `0.020 m` (20mm) — confirmed correct in
   all working legacy code (only documentation drafts had a wrong 80mm
   value inherited from a different, earlier paper).
-- Static tests: 1 AprilTag shared by all 3 cameras. WTT tests: 2 AprilTags
-  — marker A (tag ID 0) viewed by cam1+cam2 (stereo-capable), marker B
-  (tag ID 1) viewed by cam3 (monocular). Always fuse per tag ID explicitly;
-  never pool detections across tag IDs (see report §5 for the exact legacy
-  bug this avoids).
+- Static tests: 1 AprilTag shared by all 3 cameras. WTT tests: 2 physical
+  AprilTags, both decoding as tag ID 0 — marker A viewed by cam1+cam2
+  (stereo-capable), marker B viewed by cam3 (monocular). Camera coverage and
+  explicit marker-group identity distinguish the two physical markers. Always
+  fuse within the declared marker group; never pool observations across marker
+  groups (see report §5 for the exact legacy bug this avoids).
 - Do not treat any legacy camera-intrinsics/calibration file as valid production
   calibration. Fresh physical calibration is currently unavailable. The
   approved workaround is to keep image-plane displacement as the primary
@@ -61,3 +75,10 @@ Use `uv` for the Python environment. PEP 723 inline-script dependencies
 (`#!/usr/bin/env -S uv run` + `# /// script ... ///`) are the preferred
 style for standalone pipeline-step scripts, consistent with how the
 previous iteration of this repo (before the reset) was structured.
+
+## Tooling session record
+
+For what commit-hook/CI infrastructure exists in this repo and why
+(number-ledger pre-commit gate, `core.hooksPath` setup), see
+`structural-vision-research/10_PROJECT_MANAGEMENT/TOOLING_SESSION_2026-08-02.md`
+(sibling repo at `/mnt/space/adev/projects/active/structural-vision-research`).

@@ -1,5 +1,10 @@
 # Master Execution Roadmap
 
+> **Historical engineering crosswalk (retired as an approval authority on
+> 2026-08-08).** The controlling lifecycle is OMRPR-NS-001 in the sibling
+> `structural-vision-research` repository. These numbered steps remain useful
+> implementation labels, but their JSON files cannot award scientific progress.
+
 | Step | Stage | Exit gate |
 |---:|---|---|
 | 00 | Source inventory and bag audit | Canonical bags classified; timing report reviewed |
@@ -16,5 +21,5 @@
 | 11 | Manuscript outputs | Every value generated and consistency-checked |
 | 12 | Submission readiness | Claims, anonymization, files, and reproducibility package audited |
 
-A stage is approved only by writing a reviewed JSON gate with
-`uv run omrpr pipeline approve --step N --evidence <path>`.
+A stage is accepted only through the evidence-backed checkpoint and deviation
+ledgers controlled by OMRPR-NS-001. The former JSON approval command is disabled.

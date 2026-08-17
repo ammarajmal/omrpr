@@ -1,8 +1,10 @@
-schema_version: 1
-updated: 2026-07-31
+schema_version: 2
+updated: 2026-08-08
 project: omrpr-analysis
-lifecycle: active_reconstruction
-current_gate: G0
+lifecycle: active_north_star_controlled_reconstruction
+governing_plan: OMRPR-NS-001
+governing_document: /mnt/space/adev/projects/active/structural-vision-research/10_PROJECT_MANAGEMENT/RESEARCH_NORTH_STAR_SUPERVISORY_SYSTEM.md
+current_gate: S04
 overall_status: yellow
 write_scope:
   repository: read_write_bounded_pipeline
@@ -11,14 +13,14 @@ write_scope:
   manuscripts: read_only
 gates:
   G0: {name: repository_stabilization, status: completed}
-  G1: {name: data_and_observation_control, status: in_progress}
-  G2: {name: image_plane_primary_measurement, status: not_started}
-  G3: {name: precision_and_admissibility, status: not_started}
+  G1: {name: data_and_observation_control, status: completed}
+  G2: {name: image_plane_primary_measurement, status: in_progress}
+  G3: {name: precision_and_admissibility, status: provisional_not_accepted}
   G4: {name: klt_independent_branch, status: quarantined}
   G5: {name: state_estimation_ablation, status: quarantined}
   G6: {name: response_and_modal_analysis, status: not_started}
   G7: {name: ldv_reconstruction, status: partial_external_patch}
-  G8: {name: condition_level_benchmark, status: not_started}
+  G8: {name: condition_level_benchmark, status: provisional_not_accepted}
   G9: {name: robustness_and_reproducibility, status: partial}
   G10: {name: publication_package, status: blocked}
 blockers:
@@ -40,8 +42,10 @@ blockers:
     owner: codex
   - id: B005
     description: step01_contact_sheets_and_146_stream_manual_review_rows_require_human_review
-    owner: user
-next_task: human_review_step01_contact_sheets_then_export_measured_admissibility
+    disposition: resolved_2026_08_02
+next_task: complete_primary_pixel_tracks_and_stationary_background_compensation
+legacy_step_gate_authority: retired_2026_08_08
+legacy_step_gate_archive: /mnt/space/adev/backups/omrpr-analysis/retired-gates-20260808
 evidence_anchor:
   knowledge_repository_commit: 27f6c5c
   stabilization_commit: d25029f
@@ -51,4 +55,4 @@ evidence_anchor:
   step00_run: outputs/audit-runs/20260801_022002
   step00_status: success_reused_canonical_topic_audit_with_fresh_static_gap_diagnostics
   step01_run: outputs/image-audit-runs/20260801_022229
-  step01_status: success_1752_frames_zero_decode_failures_manual_review_pending
+  step01_status: success_1752_frames_zero_decode_failures_manual_review_complete_measured_admissibility_exported

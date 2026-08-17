@@ -16,5 +16,6 @@ Complete this stage reproducibly without bypassing prior gates.
 ## Approval
 
 ```bash
-uv run omrpr pipeline approve --step 6 --evidence outputs/reports/step_06_review.md
+Record the corresponding OMRPR-NS-001 checkpoint evidence in the sibling
+research hub; legacy JSON gate approval is retired.
 ```

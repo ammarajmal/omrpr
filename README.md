@@ -1,5 +1,9 @@
 # OMRPR Clean-Room Analysis — Mastery Baseline v3.0.0
 
+> **Governance:** Read `GOVERNANCE.md` before interpreting pipeline status or
+> approving work. OMRPR-NS-001 in the sibling `structural-vision-research`
+> repository is the sole scientific progress authority.
+
 Professional, reproducible camera–LDV analysis project for Ammar Ajmal's OMRPR
 wind-tunnel research. The package follows the validated Ammar Engineering
 Mastery workstation model: durable source and datasets on `/mnt/space`, a
@@ -15,7 +19,8 @@ dependency upgrades, and release-grade backups.
   physical calibration cannot be acquired, image-plane displacement is primary
   and metric outputs remain calibration-sensitive until bounded sensitivity
   analysis supports them.
-- Fusion strictly separated by tag ID.
+- Fusion is strictly separated by physical marker group and camera coverage.
+  Both physical WTT markers decode as tag ID 0.
 - Camera–LDV results are non-simultaneous condition-level benchmarking.
 - Laser geometry is campaign-specific. For the canonical 2024 laser campaign,
   the current locked candidate is `dside=0.10 m`, `db=0.20 m`, and `dp=2.0`.

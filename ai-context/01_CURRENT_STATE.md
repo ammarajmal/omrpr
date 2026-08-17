@@ -1,10 +1,14 @@
 # Current State
 
-**As of:** 2026-07-31
+**As of:** 2026-08-08
 
-**Lifecycle:** active clean-room reconstruction, before production WTT replay
+**Lifecycle:** active OMRPR-NS-001-controlled reconstruction
 
-**Current gate:** G1 — data and observation control
+**Current gate:** S04 — primary official-AprilTag image-plane measurement
+
+**Authoritative score:** 24/100. Read it from the sibling research hub with
+`python3 scripts/research_supervisor.py status`; do not infer completion from
+the presence of review reports or legacy Step JSON files.
 
 ## Established
 
@@ -71,8 +75,7 @@
 
 ## Next action
 
-Complete G1 by running Step 00/01 reproducibly and generating measured
-per-camera/per-condition gate records. Step 00/01 execution is complete; human
-contact-sheet review and the measured gate export remain. Quality-score and
-image-plane-jump thresholds remain deliberately unset until static
-distributions are measured.
+Complete the S04 primary pixel-domain track and stationary-background-
+compensation chain. Treat existing metric static-precision, LDV comparison,
+frequency, and manuscript artifacts as provisional evidence until their
+OMRPR-NS-001 checkpoints are accepted.

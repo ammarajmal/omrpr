@@ -1,5 +1,8 @@
 # Task Queue
 
+> OMRPR-NS-001 controls ordering and progress. This file is an implementation
+> view; checked boxes do not independently earn score.
+
 ## Now — G0
 
 - [x] Record bounded write authorization in both repositories.
@@ -17,17 +20,19 @@
 - [x] Import/freeze the reviewed expected-observation manifest as runtime
   configuration.
 - [x] Freeze the 21 canonical `wtt-main` bag identities by SHA-256.
-- [ ] Populate the manifest with measured per-camera/per-condition gate records;
+- [x] Populate the manifest with measured per-camera/per-condition gate records;
   schema validation and deterministic pass/warning/fail decisions are implemented.
 - [x] Run Step 00 structural/timing and static-gap audit reproducibly.
 - [x] Run bounded Step 01 decode sampling across all 146 streams with zero
   decode failures.
-- [ ] Human-review all Step 01 contact sheets and complete the 146-row manual
+- [x] Human-review all Step 01 contact sheets and complete the 146-row manual
   review ledger before approving image content.
-- [ ] Verify official AprilRobotics binary/version at runtime.
-- [ ] Implement image-plane AprilTag observation export with provenance and
+- [x] Verify official AprilRobotics binary/version at runtime.
+- [x] Implement image-plane AprilTag observation export with provenance and
   explicit rejection reasons.
-- [ ] Add stationary-background compensation and static precision/PSD reports.
+- [ ] Complete raw pixel-domain tracks and stationary-background compensation.
+- [ ] Rebuild static precision/PSD without promoting provisional metric results.
+- [ ] Produce the signed admitted-observation manifest required by S05.
 
 ## Then — G4 to G6
 
